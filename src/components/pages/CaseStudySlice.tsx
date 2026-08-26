@@ -18,7 +18,7 @@ import { Link } from "@/lib/routing";
 import { useEffect, useState, useRef, useCallback } from "react";
 
 // CDN URLs for assets
-const SLICE_LOGO_URL = "/images/logo-slice.webp";
+const SLICE_LOGO_URL = "/images/slice-logo.png";
 const VIDEO_TESTIMONIAL_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663269151870/NKnKdFDxhaRVudBQKnGMGB/AlyssaWong-SliceLife_76a30443.mp4";
 
 /* ─── Animated Counter Hook ─── */
