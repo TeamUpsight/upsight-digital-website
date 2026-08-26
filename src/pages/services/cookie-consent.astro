@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CookieConsent from '../../components/pages/CookieConsent';
+import { serviceSchema } from '../../lib/seo';
+---
+<BaseLayout title="Cookie Consent & CMP Setup | Upsight Digital" description="Implement Cookie Consent, CMP setup, Google Consent Mode v2, and GTM consent routing to protect compliance and improve marketing data accuracy." canonical="https://upsight.digital/services/cookie-consent" jsonLd={serviceSchema('Cookie Consent & CMP Setup', 'Professional consent management platform implementation including Google Consent Mode v2, GTM consent routing, and privacy compliance.')}>
+  <CookieConsent client:only="react" />
+</BaseLayout>

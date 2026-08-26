@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudySlice from '../../components/pages/CaseStudySlice';
+import { caseStudySchema } from '../../lib/seo';
+const schema = caseStudySchema('How Slice Life Improved Marketing Efficiency, Data Accuracy & Compliance', 'Server-side analytics transformation delivering +57.91% Google Ads ROAS and 99% order match accuracy.', 'Slice Life', 'Food & Drink');
+---
+<BaseLayout title="Slice Case Study - Server-Side Analytics Transformation | Upsight Digital" description="How Upsight Digital helped Slice Life improve marketing efficiency with +57.91% Google Ads ROAS, +130.43% Facebook Ads ROAS, and 99% order match accuracy through server-side tracking." canonical="https://upsight.digital/case-studies/slice" ogType="article" jsonLd={schema}>
+  <CaseStudySlice client:only="react" />
+</BaseLayout>

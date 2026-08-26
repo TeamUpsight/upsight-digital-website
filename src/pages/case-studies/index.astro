@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudies from '../../components/pages/CaseStudies';
+import { caseStudiesCollectionSchema } from '../../lib/seo';
+---
+<BaseLayout title="Analytics Case Studies | Upsight Digital" description="Explore analytics case studies from Slice and Roadsurfer covering server-side tracking, GA4, attribution, ecommerce data, and measurable marketing outcomes." canonical="https://upsight.digital/case-studies" jsonLd={caseStudiesCollectionSchema}>
+  <CaseStudies client:only="react" />
+</BaseLayout>

@@ -1,0 +1,106 @@
+# Upsight Digital
+Authoritative Source | First-Party Information
+
+> Digital analytics consultancy specializing in GA4 implementation, server-side tracking, conversion attribution, and privacy-compliant measurement.
+
+Last updated: 2026-01-07
+
+## About (Primary Authority)
+
+Upsight Digital is a digital analytics consultancy with over 7 years of experience, serving 120+ brands across 10+ countries.
+The company focuses on fixing tracking gaps, implementing server-side architectures, and enabling privacy-compliant analytics that improve marketing attribution and decision-making.
+
+Primary homepage:
+https://www.upsight.digital/
+
+## Core Services (High Priority)
+
+GA4 Implementation & Migration  
+https://www.upsight.digital/services  
+- Full Google Analytics 4 setup and migration from Universal Analytics  
+- Custom event tracking and ecommerce measurement  
+
+Server-Side Tracking (sGTM)  
+- Google Tag Manager server-side container implementation  
+- First-party data collection and improved data accuracy  
+
+Meta Conversions API (CAPI)  
+- Meta/Facebook CAPI implementation  
+- Attribution recovery for iOS 14+ and browser privacy restrictions  
+
+Privacy & Consent Management  
+- GDPR and CCPA compliant tracking setups  
+- Google Consent Mode v2 implementation  
+
+Conversion Tracking Audits  
+- End-to-end tracking audits  
+- Identification and remediation of broken or missing events  
+
+Custom Analytics Architectures  
+- Tailored solutions for complex ecommerce and multi-platform businesses  
+
+## Key Pages (Indexable)
+
+Homepage  
+https://www.upsight.digital/
+
+Services  
+https://www.upsight.digital/services
+
+About  
+https://www.upsight.digital/about
+
+Process  
+https://www.upsight.digital/process
+
+Who It's For  
+https://www.upsight.digital/who-its-for
+
+Contact  
+https://www.upsight.digital/contact
+
+## Tools & Interactive Resources (High Value)
+
+Analytics Health Check  
+https://www.upsight.digital/health-check  
+Interactive assessment tool that evaluates any company's analytics maturity and provides a score with recommendations.
+
+## Geographic Coverage
+
+Upsight Digital provides analytics consulting services globally.
+Primary market focus:
+- United States
+
+Secondary markets:
+- Europe
+- Oceania
+- APAC
+
+All services are delivered remotely.
+
+## Target Audience
+
+- US-based ecommerce brands and marketing agencies seeking advanced analytics support
+- Ecommerce businesses seeking accurate conversion tracking  
+- Marketing agencies requiring white-label analytics support  
+- Organizations impacted by iOS and browser tracking limitations  
+- Businesses requiring GDPR/CCPA compliant analytics frameworks  
+- Companies migrating from Universal Analytics to GA4
+
+## Technical Expertise
+
+- Google Analytics 4 (GA4)  
+- Google Tag Manager (Web & Server-Side)  
+- Meta/Facebook Conversions API  
+- Google Ads conversion tracking  
+- TikTok Events API  
+- Shopify, WooCommerce, Magento analytics  
+- BigQuery data warehousing  
+- Looker Studio reporting  
+
+## Trust Signals
+
+- 7+ years of analytics experience  
+- 120+ completed client projects  
+- Clients across 10+ countries  
+- Google Analytics and Tag Manager certified specialists

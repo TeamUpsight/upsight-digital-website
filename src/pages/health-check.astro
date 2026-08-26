@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HealthCheck from '../components/pages/HealthCheck';
+---
+<BaseLayout title="Free Analytics Health Check | Upsight Digital" description="Take our free 3-minute analytics health check. Get your tracking score, identify gaps, and receive personalized recommendations to improve your data quality." canonical="https://upsight.digital/health-check">
+  <HealthCheck client:only="react" />
+</BaseLayout>

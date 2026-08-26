@@ -1,0 +1,84 @@
+---
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const mainNavLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/services', label: 'Services' },
+];
+const resourceLinks = [
+  { href: '/who-its-for', label: "Who It's For" },
+  { href: '/process', label: 'Process' },
+  { href: '/about', label: 'About' },
+  { href: '/case-studies', label: 'Case Studies' },
+  { href: '/services/cookie-consent', label: 'Cookie Consent' },
+];
+const active = (href: string) => path === href;
+const resourcesActive = resourceLinks.some((link) => active(link.href) || (link.href === '/case-studies' && path.startsWith('/case-studies/')));
+---
+<nav class="fixed top-0 left-0 right-0 z-50 min-h-16 border-b border-border bg-background/95 backdrop-blur-sm md:min-h-20" aria-label="Primary navigation">
+  <div class="container">
+    <div class="flex h-16 min-h-16 items-center justify-between md:h-20 md:min-h-20">
+      <a href="/" class="flex items-center gap-2" aria-label="Upsight Digital home">
+        <img src="/images/logo-optimized.webp" alt="Upsight Digital" class="h-8 w-auto" width="151" height="32" loading="eager" />
+      </a>
+
+      <div class="hidden items-center gap-8 md:flex">
+        {mainNavLinks.map((link) => (
+          <a href={link.href} class:list={["text-sm font-medium transition-colors hover:text-primary", active(link.href) ? "text-primary" : "text-foreground/80"]}>{link.label}</a>
+        ))}
+
+        <details class="group relative">
+          <summary class:list={["flex list-none items-center gap-1 text-sm font-medium transition-colors hover:text-primary [&::-webkit-details-marker]:hidden", resourcesActive ? "text-primary" : "text-foreground/80"]}>
+            Resources
+            <span class="text-xs transition-transform group-open:rotate-180">⌄</span>
+          </summary>
+          <div class="absolute left-0 top-full pt-2">
+            <div class="min-w-[190px] rounded-lg border border-border bg-card py-2 shadow-xl">
+              {resourceLinks.map((link) => (
+                <a href={link.href} class:list={["block px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary", active(link.href) || (link.href === '/case-studies' && path.startsWith('/case-studies/')) ? "bg-muted/50 text-primary" : "text-foreground/80"]}>{link.label}</a>
+              ))}
+            </div>
+          </div>
+        </details>
+
+        <a href="/health-check" class="relative rounded-full bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary shadow-[0_0_20px_rgba(0,173,132,0.25)] transition-shadow hover:shadow-[0_0_30px_rgba(0,173,132,0.4)]">
+          Free Health Check
+        </a>
+      </div>
+
+      <a href="/contact" class="hidden h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 md:inline-flex">Get Free Consultation</a>
+
+      <button id="mobile-menu-button" class="rounded-md p-2 md:hidden" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu">
+        <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        <svg id="menu-close-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden border-t border-border bg-background md:hidden">
+    <div class="container flex flex-col gap-2 py-4">
+      {mainNavLinks.map((link) => <a href={link.href} class:list={["block py-2 text-base font-medium", active(link.href) ? "text-primary" : "text-foreground/80"]}>{link.label}</a>)}
+      <details class="py-2">
+        <summary class:list={["flex list-none items-center justify-between text-base font-medium [&::-webkit-details-marker]:hidden", resourcesActive ? "text-primary" : "text-foreground/80"]}>Resources <span>⌄</span></summary>
+        <div class="mt-2 ml-4 flex flex-col gap-1 border-l-2 border-border pl-4">
+          {resourceLinks.map((link) => <a href={link.href} class:list={["block py-1.5 text-sm font-medium", active(link.href) || (link.href === '/case-studies' && path.startsWith('/case-studies/')) ? "text-primary" : "text-foreground/70"]}>{link.label}</a>)}
+        </div>
+      </details>
+      <a href="/health-check" class="rounded-lg bg-primary/10 px-4 py-2 text-base font-semibold text-primary shadow-[0_0_15px_rgba(0,173,132,0.2)]">✨ Free Health Check</a>
+      <a href="/contact" class="mt-2 inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground">Get Free Consultation</a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('#mobile-menu-button');
+  const menu = document.querySelector<HTMLElement>('#mobile-menu');
+  const openIcon = document.querySelector<HTMLElement>('#menu-open-icon');
+  const closeIcon = document.querySelector<HTMLElement>('#menu-close-icon');
+  button?.addEventListener('click', () => {
+    const isOpen = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!isOpen));
+    menu?.classList.toggle('hidden', isOpen);
+    openIcon?.classList.toggle('hidden', !isOpen);
+    closeIcon?.classList.toggle('hidden', isOpen);
+  });
+</script>

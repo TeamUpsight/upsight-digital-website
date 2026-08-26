@@ -1,0 +1,8 @@
+import React, { createContext, useContext, useState } from "react";
+type CtxType={value:string; setValue:(v:string)=>void; collapsible:boolean};
+const AccCtx=createContext<CtxType>({value:"",setValue:()=>{},collapsible:true});
+const ItemCtx=createContext("");
+export function Accordion({children, defaultValue="", type="single", collapsible=true, ...props}: React.HTMLAttributes<HTMLDivElement> & {type?:string; collapsible?:boolean; defaultValue?:string}) { const [value,setValue]=useState(defaultValue); return <AccCtx.Provider value={{value,setValue,collapsible}}><div {...props}>{children}</div></AccCtx.Provider>; }
+export function AccordionItem({value,children,className="",...props}: React.HTMLAttributes<HTMLDivElement> & {value:string}) { return <ItemCtx.Provider value={value}><div className={`border-b last:border-b-0 ${className}`} {...props}>{children}</div></ItemCtx.Provider>; }
+export function AccordionTrigger({children,className="",...props}:React.ButtonHTMLAttributes<HTMLButtonElement>){const item=useContext(ItemCtx), c=useContext(AccCtx), open=c.value===item; return <button type="button" aria-expanded={open} onClick={()=>c.setValue(open&&c.collapsible?"":item)} className={`flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium hover:underline ${className}`} {...props}>{children}<span aria-hidden="true" className={`transition-transform ${open?"rotate-180":""}`}>⌄</span></button>;}
+export function AccordionContent({children,className="",...props}:React.HTMLAttributes<HTMLDivElement>){const item=useContext(ItemCtx), c=useContext(AccCtx); if(c.value!==item) return null; return <div className={`pt-0 pb-4 text-sm ${className}`} {...props}>{children}</div>;}

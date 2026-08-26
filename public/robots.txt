@@ -1,0 +1,12 @@
+# Robots.txt for Upsight Digital
+# https://upsight.digital
+
+User-agent: *
+Allow: /
+Allow: /llms.txt
+
+# Sitemap location
+Sitemap: https://upsight.digital/sitemap.xml
+
+# AI/LLM information
+# See /llms.txt for AI-readable site information
