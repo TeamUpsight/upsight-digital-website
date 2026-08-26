@@ -3,8 +3,8 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Link } from "@/lib/routing";
 
 const SLICE_LOGO_URL =
-  "/images/logo-slice.webp";
-const ROADSURFER_LOGO_URL = "/images/logo-roadsurfer.webp";
+  "/images/slice-logo.png";
+const ROADSURFER_LOGO_URL = "/images/roadsurfer-logo.png";
 
 const collectionSchema = {
   "@context": "https://schema.org",
