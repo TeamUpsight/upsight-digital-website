@@ -39,7 +39,7 @@ export function contactTeamHtml(data: {name:string; email:string; phone?:string;
 
 export function contactConfirmationHtml(name: string) {
   const first = escapeHtml(name.trim().split(/\s+/)[0] || name);
-  return `<div style="font-family:Arial,sans-serif;max-width:640px;margin:auto"><img src="https://upsight.digital/images/logo.png" alt="Upsight Digital" style="max-width:180px;height:auto"><h2 style="color:#111827">Thanks, ${first}. We received your message.</h2><p style="line-height:1.7;color:#374151">An Upsight Digital analytics specialist will review your message and get back to you shortly.</p><p style="line-height:1.7;color:#374151">If you want to choose a time directly, you can <a href="https://calendly.com/team-upsight/30min" style="color:#00AD84">book a free consultation here</a>.</p></div>`;
+  return `<div style="font-family:Arial,sans-serif;max-width:640px;margin:auto"><img src="https://upsight.digital/images/logo-email.png" alt="Upsight Digital" style="max-width:180px;height:auto"><h2 style="color:#111827">Thanks, ${first}. We received your message.</h2><p style="line-height:1.7;color:#374151">An Upsight Digital analytics specialist will review your message and get back to you shortly.</p><p style="line-height:1.7;color:#374151">If you want to choose a time directly, you can <a href="https://calendly.com/team-upsight/30min" style="color:#00AD84">book a free consultation here</a>.</p></div>`;
 }
 
 function scoreColor(score:number){return score>=70?'#22c55e':score>=40?'#f59e0b':'#ef4444'}

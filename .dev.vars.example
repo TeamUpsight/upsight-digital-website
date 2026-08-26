@@ -1,3 +1,0 @@
-# Copy this file to .dev.vars for local form/email testing.
-# Never commit the real key.
-RESEND_API_KEY=re_your_key_here

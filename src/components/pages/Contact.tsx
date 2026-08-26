@@ -26,12 +26,11 @@ import {
   Send,
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useLocation, Link } from "@/lib/routing";
+import { Link } from "@/lib/routing";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
+import { submitContact } from "@/lib/api";
 
 export default function Contact() {
-  const [location] = useLocation();
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   // SEO is handled by the SEO component in the return
@@ -49,7 +48,7 @@ export default function Contact() {
         }
       }, 300);
     }
-  }, [location]);
+  }, []);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -91,24 +90,6 @@ export default function Contact() {
     }
   };
 
-  const submitMutation = trpc.contact.submit.useMutation({
-    onSuccess: (data) => {
-      // Push to dataLayer for analytics tracking
-      if (typeof window !== 'undefined' && (window as any).dataLayer) {
-        (window as any).dataLayer.push({
-          event: 'contact_form_submitted',
-          form_id: 'contact',
-        });
-      }
-      // Show inline success message instead of toast
-      setIsSubmitted(true);
-      setFormData({ name: "", email: "", phone: "", company: "", message: "" });
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to send message. Please try again.");
-    },
-  });
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -125,13 +106,21 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      await submitMutation.mutateAsync({
+      await submitContact({
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         company: formData.company || undefined,
         message: formData.message,
       });
+
+      if (typeof window !== "undefined" && (window as any).dataLayer) {
+        (window as any).dataLayer.push({ event: "contact_form_submitted", form_id: "contact" });
+      }
+      setIsSubmitted(true);
+      setFormData({ name: "", email: "", phone: "", company: "", message: "" });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to send message. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

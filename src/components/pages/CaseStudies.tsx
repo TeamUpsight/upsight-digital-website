@@ -6,32 +6,6 @@ const SLICE_LOGO_URL =
   "/images/logo-slice.webp";
 const ROADSURFER_LOGO_URL = "/images/logo-roadsurfer.webp";
 
-const collectionSchema = {
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  name: "Analytics Case Studies | Upsight Digital",
-  description:
-    "Explore how Upsight Digital improves analytics accuracy, attribution, server-side measurement, and marketing performance for ambitious brands.",
-  url: "https://upsight.digital/case-studies",
-  mainEntity: {
-    "@type": "ItemList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        url: "https://upsight.digital/case-studies/slice",
-        name: "Slice analytics transformation",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        url: "https://upsight.digital/case-studies/roadsurfer",
-        name: "Roadsurfer analytics transformation",
-      },
-    ],
-  },
-};
-
 const studies = [
   {
     client: "Slice Life",

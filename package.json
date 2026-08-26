@@ -9,9 +9,8 @@
     "dev": "astro dev --config astro.config.local.mjs",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "generate-types": "wrangler types",
-    "dev:cloudflare": "astro dev"
+    "deploy": "wrangler deploy",
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.2.4",
@@ -21,7 +20,6 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
     "astro": "^7.2.6",
-    "framer-motion": "^13.1.1",
     "lucide-react": "^1.34.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

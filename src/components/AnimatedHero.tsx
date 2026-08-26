@@ -17,15 +17,15 @@ export default function AnimatedHero() {
   ];
 
   return (
-    <section className="relative flex min-h-[680px] items-center justify-center overflow-hidden bg-gradient-to-br from-background to-muted/50 pt-24 md:min-h-[760px] md:pt-28">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/85 to-muted/20" />
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-background to-muted/50">
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/82 to-muted/20" />
 
       <canvas
         id="analytics-hero-canvas"
         width="1600"
         height="900"
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 hidden h-full w-full opacity-80 md:block"
+        className="pointer-events-none absolute inset-0 block h-full w-full opacity-90"
       />
 
       {dataNodes.map((node) => (
@@ -40,70 +40,116 @@ export default function AnimatedHero() {
           }}
           aria-hidden="true"
         >
-          <div className="relative h-5 w-5 rounded-full bg-primary/70 shadow-[0_0_18px_rgba(0,173,132,0.65)]">
-            <div className="absolute -inset-2 rounded-full bg-primary/20 animate-ping" style={{ animationDuration: "2.5s" }} />
-            <div className="absolute inset-1 rounded-full bg-primary" />
+          <div className="relative h-6 w-6 rounded-full bg-primary/60">
+            <div
+              className="absolute -inset-2 rounded-full bg-primary/40 animate-ping"
+              style={{ animationDuration: "2.5s" }}
+            />
+            <div
+              className="absolute -inset-1 rounded-full bg-primary/30 animate-ping"
+              style={{ animationDuration: "2.5s", animationDelay: "0.5s" }}
+            />
+            <div className="absolute inset-1 rounded-full bg-primary shadow-[0_0_15px_#00AD84,0_0_30px_rgba(0,173,132,0.31),0_0_45px_rgba(0,173,132,0.19)]" />
           </div>
-          <span className="font-mono text-sm font-semibold text-primary drop-shadow-[0_0_8px_rgba(0,173,132,0.35)]">{node.label}</span>
+          <span className="font-mono text-base font-semibold text-primary drop-shadow-[0_0_10px_rgba(0,173,132,0.31)]">
+            {node.label}
+          </span>
         </div>
       ))}
 
-      <div className="container relative z-10">
+      <div className="container relative z-10 pt-20">
         <div className="mx-auto max-w-4xl text-center">
-          <h1 className="heading-xl mb-6 text-foreground">
+          <h1 className="heading-xl mb-6 text-foreground animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
             Stop Losing Revenue to{" "}
             <span className="relative inline-block text-primary">
               Broken Tracking
-              <svg className="absolute -bottom-2 left-0 w-full" height="8" viewBox="0 0 200 8" fill="none" preserveAspectRatio="none" aria-hidden="true">
-                <path d="M0 4 Q50 0 100 4 T200 4" stroke="#00AD84" strokeWidth="3" fill="none" />
+              <svg
+                className="absolute -bottom-2 left-0 w-full"
+                height="8"
+                viewBox="0 0 200 8"
+                fill="none"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M0 4 Q50 0 100 4 T200 4"
+                  stroke="#00AD84"
+                  strokeWidth="3"
+                  fill="none"
+                  className="hero-underline"
+                />
               </svg>
             </span>
           </h1>
 
-          <p className="body-lg mx-auto mb-8 max-w-3xl text-muted-foreground">
+          <p className="body-lg mx-auto mb-8 max-w-3xl text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
             We fix tracking gaps, implement server-side solutions, and deliver privacy-compliant analytics that turn your ad spend into measurable growth.
           </p>
 
-          <div className="mb-16 flex flex-col justify-center gap-4 sm:flex-row">
+          <div className="mb-16 flex flex-col justify-center gap-4 sm:flex-row animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
             <Link href="/contact">
-              <Button size="lg" className="group relative h-12 overflow-hidden px-8 text-base shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30">
+              <Button
+                size="lg"
+                className="group relative h-12 overflow-hidden px-8 text-base shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30"
+              >
                 <span className="relative z-10 flex items-center">
                   Get Free Consultation
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80 opacity-0 transition-opacity group-hover:opacity-100" />
               </Button>
             </Link>
             <Link href="/health-check">
               <Button
                 size="lg"
                 variant="outline"
-                className="group relative h-12 overflow-hidden border-primary px-8 text-base text-primary transition-all duration-300 hover:bg-primary/10"
+                className="hero-health-button group relative h-12 overflow-hidden px-8 text-base backdrop-blur-sm transition-all duration-300 hover:bg-primary/10"
               >
                 <span className="relative z-10">✨ Free Health Check</span>
+                <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,173,132,0.3)_0%,transparent_50%,rgba(0,173,132,0.3)_100%)] opacity-20 transition-opacity group-hover:opacity-30" />
               </Button>
             </Link>
           </div>
 
-          <div className="mx-auto grid max-w-2xl grid-cols-3 gap-4 sm:gap-8">
+          <div className="mx-auto grid max-w-2xl grid-cols-3 gap-4 sm:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-400">
             {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="mb-2 text-3xl font-bold text-primary md:text-5xl">{stat.value}</div>
-                <div className="text-xs text-muted-foreground sm:text-sm">{stat.label}</div>
+              <div key={stat.label} className="group cursor-default text-center">
+                <div className="mb-2 text-3xl font-bold text-primary transition-all duration-300 group-hover:scale-110 group-hover:text-primary/90 md:text-5xl">
+                  {stat.value}
+                </div>
+                <div className="text-xs text-muted-foreground transition-colors duration-300 group-hover:text-foreground sm:text-sm">
+                  {stat.label}
+                </div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-background to-transparent" aria-hidden="true" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" aria-hidden="true" />
 
       <style>{`
+        .hero-underline {
+          stroke-dasharray: 200;
+          stroke-dashoffset: 200;
+          animation: hero-draw 1.5s ease-out .5s forwards;
+        }
+        .hero-health-button {
+          box-shadow: 0 0 20px rgba(0, 173, 132, 0.2);
+          animation: hero-button-glow 2s ease-in-out infinite;
+        }
+        @keyframes hero-draw { to { stroke-dashoffset: 0; } }
+        @keyframes hero-button-glow {
+          0%,100% { box-shadow: 0 0 16px rgba(0,173,132,.13); }
+          50% { box-shadow: 0 0 26px rgba(0,173,132,.28); }
+        }
         @keyframes float-1 { 0%,100%{transform:translate(0,0)} 25%{transform:translate(15px,-10px)} 50%{transform:translate(5px,15px)} 75%{transform:translate(-10px,5px)} }
         @keyframes float-2 { 0%,100%{transform:translate(0,0)} 25%{transform:translate(-12px,8px)} 50%{transform:translate(10px,-12px)} 75%{transform:translate(8px,10px)} }
         @keyframes float-3 { 0%,100%{transform:translate(0,0)} 25%{transform:translate(10px,12px)} 50%{transform:translate(-15px,-8px)} 75%{transform:translate(-5px,15px)} }
         @keyframes float-4 { 0%,100%{transform:translate(0,0)} 25%{transform:translate(-8px,-15px)} 50%{transform:translate(12px,10px)} 75%{transform:translate(15px,-5px)} }
         @media (prefers-reduced-motion: reduce) {
-          [style*="float-"] { animation: none !important; }
+          .hero-underline { animation: none; stroke-dashoffset: 0; }
+          .hero-health-button, [style*="float-"] { animation: none !important; }
         }
       `}</style>
     </section>

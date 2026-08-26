@@ -19,15 +19,13 @@ import {
   TrendingUp,
   Zap,
   Globe,
-  Download,
   Search,
   Database,
   BarChart3,
 } from "lucide-react";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
+import { submitHealthCheck } from "@/lib/api";
 
 // Declare dataLayer type
 declare global {
@@ -720,30 +718,8 @@ export default function HealthCheck() {
     }, 300);
   };
 
-  const submitEmailMutation = trpc.contact.submit.useMutation({
-    onSuccess: () => {
-      toast.success("Report sent! Check your inbox.");
-      setShowEmailCapture(false);
-      pushDataLayerEvent('health_check_email_submitted');
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to send report. Please try again.");
-    },
-  });
-
   // Submit the completed assessment to the Astro/Cloudflare API.
   // PDF generation from the Manus backend was removed because the UI never exposed the generated file.
-  const generateReportMutation = trpc.healthCheck.generateReport.useMutation({
-    onSuccess: () => {
-      setEmailSubmitted(true);
-      toast.success("Thank you! Your assessment has been sent. Our team will follow up with detailed insights.");
-      pushDataLayerEvent('health_check_email_submitted');
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to send report. Please try again.");
-    },
-  });
-
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !results) return;
@@ -751,8 +727,7 @@ export default function HealthCheck() {
     setIsSubmittingEmail(true);
     
     try {
-      // Generate PDF report
-      await generateReportMutation.mutateAsync({
+      await submitHealthCheck({
         email,
         score: results.total,
         maturity: results.maturity,
@@ -770,8 +745,13 @@ export default function HealthCheck() {
         })),
         improvementEstimation: results.improvementEstimation,
         answers: answers as Record<string, string | string[]>,
-        websiteUrl: typeof answers.q8 === 'string' ? answers.q8 : undefined,
+        websiteUrl: typeof answers.q8 === "string" ? answers.q8 : undefined,
       });
+      setEmailSubmitted(true);
+      toast.success("Thank you! Your assessment has been sent. Our team will follow up with detailed insights.");
+      pushDataLayerEvent("health_check_email_submitted");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to send report. Please try again.");
     } finally {
       setIsSubmittingEmail(false);
     }
@@ -837,16 +817,9 @@ export default function HealthCheck() {
           {/* Widget Container - Responsive, no internal scroll */}
           <Card className="border-2">
             <CardContent className="p-6 md:p-8">
-              <AnimatePresence mode="wait">
                 {/* Intro Screen */}
                 {currentStep === "intro" && (
-                  <motion.div
-                    key="intro"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    className="text-center py-8"
-                  >
+                  <div key="intro" className="health-step text-center py-8">
                     <div className="mb-6 p-4 rounded-full bg-primary/10 inline-block">
                       <Activity className="h-12 w-12 text-primary" />
                     </div>
@@ -878,18 +851,12 @@ export default function HealthCheck() {
                       Start Health Check
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
-                  </motion.div>
+                  </div>
                 )}
 
                 {/* Questions */}
                 {currentStep === "questions" && currentQuestion && (
-                  <motion.div
-                    key={currentQuestion.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    className="space-y-6"
-                  >
+                  <div key={currentQuestion.id} className="health-step space-y-6">
                     {/* Bot Message */}
                     <div className="flex gap-3">
                       <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -993,18 +960,12 @@ export default function HealthCheck() {
                         </div>
                       ) : null}
                     </div>
-                  </motion.div>
+                  </div>
                 )}
 
                 {/* Analyzing Animation */}
                 {currentStep === "analyzing" && (
-                  <motion.div
-                    key="analyzing"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    className="text-center py-12"
-                  >
+                  <div key="analyzing" className="health-step text-center py-12">
                     <div className="mb-8">
                       <div className="relative inline-flex items-center justify-center">
                         {/* Outer spinning ring */}
@@ -1026,19 +987,15 @@ export default function HealthCheck() {
                         const isComplete = index < loadingMessage;
                         
                         return (
-                          <motion.div
+                          <div
                             key={index}
-                            initial={{ opacity: 0.4 }}
-                            animate={{ 
-                              opacity: isActive || isComplete ? 1 : 0.4,
-                              scale: isActive ? 1.02 : 1
-                            }}
-                            transition={{ duration: 0.3 }}
-                            className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
-                              isActive 
-                                ? 'bg-primary/10 border border-primary/30' 
-                                : isComplete 
-                                ? 'bg-muted/30' 
+                            className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 ${
+                              isActive || isComplete ? 'opacity-100' : 'opacity-40'
+                            } ${
+                              isActive
+                                ? 'scale-[1.02] bg-primary/10 border border-primary/30'
+                                : isComplete
+                                ? 'bg-muted/30'
                                 : 'bg-transparent'
                             }`}
                           >
@@ -1064,7 +1021,7 @@ export default function HealthCheck() {
                             }`}>
                               {msg.text}
                             </span>
-                          </motion.div>
+                          </div>
                         );
                       })}
                     </div>
@@ -1072,17 +1029,12 @@ export default function HealthCheck() {
                     <p className="text-sm text-muted-foreground mt-6">
                       Please wait while we analyze your responses...
                     </p>
-                  </motion.div>
+                  </div>
                 )}
 
                 {/* Results */}
                 {currentStep === "results" && results && (
-                  <motion.div
-                    key="results"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-8"
-                  >
+                  <div key="results" className="health-step space-y-8">
                     {/* Score Header */}
                     <div className="text-center">
                       <h2 className="text-2xl font-bold mb-4">Your Analytics Health Score</h2>
@@ -1263,9 +1215,8 @@ export default function HealthCheck() {
                         </Button>
                       </a>
                     </div>
-                  </motion.div>
+                  </div>
                 )}
-              </AnimatePresence>
             </CardContent>
           </Card>
 
