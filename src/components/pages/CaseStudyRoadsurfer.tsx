@@ -16,7 +16,7 @@ import {
 import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
 import { Link } from "@/lib/routing";
 
-const ROADSURFER_LOGO_URL = "/images/logo-roadsurfer.webp";
+const ROADSURFER_LOGO_URL = "/images/roadsurfer-logo.png";
 
 function useInView(threshold = 0.12) {
   const ref = useRef<HTMLDivElement>(null);
