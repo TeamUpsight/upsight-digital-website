@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 
 export default defineConfig({
   site: 'https://upsight.digital',
-  integrations: [react(), sitemap()],
+  integrations: [react(), sitemap({ namespaces: { news: false, xhtml: false, video: false } })],
   adapter: cloudflare(),
   vite: {
     plugins: [tailwindcss()],

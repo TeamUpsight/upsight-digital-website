@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Home from '../components/pages/Home';
-import { organizationSchema } from '../lib/seo';
 ---
-<BaseLayout title="Digital Analytics Consultancy | Upsight Digital" description="Fix tracking gaps, implement server-side solutions, and get privacy-compliant analytics. GA4, sGTM, Meta CAPI experts serving 120+ brands worldwide." canonical="https://upsight.digital/" jsonLd={organizationSchema}>
-  <Home client:only="react" />
+<BaseLayout title="Digital Analytics Consultancy | Upsight Digital" description="Fix tracking gaps, implement server-side solutions, and get privacy-compliant analytics. GA4, sGTM, Meta CAPI experts serving 120+ brands worldwide." canonical="https://upsight.digital/">
+  <Home />
+  <script is:inline src="/hero-canvas.js" defer></script>
 </BaseLayout>

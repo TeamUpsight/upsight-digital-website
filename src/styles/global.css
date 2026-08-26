@@ -146,7 +146,7 @@
   }
   
   code, pre, .font-mono {
-    font-family: 'Roboto Mono', 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-family: ui-monospace, 'SF Mono', Monaco, 'Cascadia Code', 'Segoe UI Mono', monospace;
   }
   
   button:not(:disabled),
@@ -262,4 +262,20 @@
       box-shadow: 0 0 30px rgba(0, 173, 132, 0.4), 0 0 60px rgba(0, 173, 132, 0.2);
     }
   }
+}
+
+
+/* Performance and accessibility helpers */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.defer-render {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
 }

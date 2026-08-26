@@ -22,7 +22,6 @@ import {
   Building2,
 } from "lucide-react";
 import { Link } from "@/lib/routing";
-import { useEffect } from "react";
 
 export default function CookieConsent() {
   // SEO is handled by the SEO component in the return
@@ -448,7 +447,7 @@ export default function CookieConsent() {
                 your business, and preserves the data your marketing needs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
-                <Link href="/contact">
+                <Link href="/health-check">
                   <Button size="lg" className="text-base px-8 h-12">
                     Audit My Tracking & Compliance
                     <ArrowRight className="ml-2 h-5 w-5" />

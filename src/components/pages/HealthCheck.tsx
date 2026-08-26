@@ -805,7 +805,7 @@ export default function HealthCheck() {
     <div className="min-h-screen flex flex-col bg-background">
 
 
-      <main className="flex-1 pt-24 pb-16">
+      <div className="flex-1 pt-24 pb-16">
         <div className="container max-w-4xl">
           {/* Progress Bar with Reset Button */}
           {currentStep !== "intro" && (
@@ -1287,7 +1287,7 @@ export default function HealthCheck() {
             </div>
           </div>
         </div>
-      </main>
+      </div>
 
       
     </div>

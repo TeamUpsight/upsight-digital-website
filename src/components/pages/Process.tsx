@@ -10,7 +10,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { Link } from "@/lib/routing";
-import { useEffect } from "react";
 
 export default function Process() {
   // SEO is handled by the SEO component in the return

@@ -3,8 +3,8 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Link } from "@/lib/routing";
 
 const SLICE_LOGO_URL =
-  "/images/slice-logo.png";
-const ROADSURFER_LOGO_URL = "/images/roadsurfer-logo.png";
+  "/images/logo-slice.webp";
+const ROADSURFER_LOGO_URL = "/images/logo-roadsurfer.webp";
 
 const collectionSchema = {
   "@context": "https://schema.org",
@@ -74,7 +74,7 @@ export default function CaseStudies() {
     <div className="min-h-screen bg-background text-foreground">
 
 
-      <main>
+      <div>
         <section className="relative overflow-hidden border-b border-border/40 pb-14 pt-28 md:pb-20 md:pt-36">
           <div
             className="absolute inset-0 opacity-70"
@@ -194,7 +194,7 @@ export default function CaseStudies() {
             </div>
           </div>
         </section>
-      </main>
+      </div>
 
       
     </div>

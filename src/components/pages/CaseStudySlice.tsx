@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
+  ArrowLeft,
   ArrowRight,
   Play,
   AlertTriangle,
@@ -17,7 +18,7 @@ import { Link } from "@/lib/routing";
 import { useEffect, useState, useRef, useCallback } from "react";
 
 // CDN URLs for assets
-const SLICE_LOGO_URL = "/images/slice-logo.png";
+const SLICE_LOGO_URL = "/images/logo-slice.webp";
 const VIDEO_TESTIMONIAL_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663269151870/NKnKdFDxhaRVudBQKnGMGB/AlyssaWong-SliceLife_76a30443.mp4";
 
 /* ─── Animated Counter Hook ─── */
@@ -384,6 +385,10 @@ export default function CaseStudySlice() {
       <section id="overview" className="relative pt-28 pb-16 md:pt-36 md:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-background" />
         <div className="container relative z-10">
+          <Link href="/case-studies" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Case Studies
+          </Link>
 
           <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-16 items-center">
             {/* Left: Title & subtitle */}
@@ -661,7 +666,7 @@ export default function CaseStudySlice() {
                   </p>
                   <div className="space-y-3">
                     <Link href="/contact">
-                      <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/25">
+                      <Button size="lg" className="w-full bg-[#008466] hover:bg-[#007A5E] text-white shadow-lg shadow-primary/25">
                         Book a Free Consultation
                         <ArrowRight className="ml-2 h-5 w-5" />
                       </Button>

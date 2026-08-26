@@ -15,7 +15,6 @@ import {
   Zap,
 } from "lucide-react";
 import { Link } from "@/lib/routing";
-import { useEffect } from "react";
 
 export default function Services() {
   // SEO is handled by the SEO component in the return
@@ -269,7 +268,7 @@ export default function Services() {
         <section
           key={categoryIndex}
           id={category.id}
-          className={`section-spacing ${
+          className={`section-spacing defer-render ${
             categoryIndex % 2 === 0 ? "bg-muted/30" : ""
           }`}
         >
@@ -288,7 +287,7 @@ export default function Services() {
                   <Card
                     key={serviceIndex}
                     id={service.id}
-                    className={`hover:border-primary transition-all duration-300 scroll-mt-24 ${(service as any).link ? 'cursor-pointer' : ''}`}
+                    className="hover:border-primary transition-all duration-300 scroll-mt-24"
                   >
                     <CardContent className="p-8">
                       <div className="grid md:grid-cols-3 gap-8">
@@ -333,7 +332,7 @@ export default function Services() {
                           </p>
                           <Link href={(service as any).link || "/contact"}>
                             <Button size="sm" className="w-full">
-                              {(service as any).link ? "Learn More" : "Get Started"}
+                              {(service as any).link ? `Explore ${service.title}` : `Discuss ${service.title}`}
                             </Button>
                           </Link>
                         </div>
@@ -341,9 +340,6 @@ export default function Services() {
                     </CardContent>
                   </Card>
                 );
-                if ((service as any).link) {
-                  return <Link key={serviceIndex} href={(service as any).link}>{cardContent}</Link>;
-                }
                 return cardContent;
               })}
             </div>
@@ -352,7 +348,7 @@ export default function Services() {
       ))}
 
       {/* Technologies Section */}
-      <section className="section-spacing">
+      <section className="section-spacing defer-render">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">Technologies We Work With</h2>
@@ -383,9 +379,10 @@ export default function Services() {
                       src={tech.logo} 
                       alt={tech.name} 
                       className="h-8 w-8 object-contain"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
+                      width="32"
+                      height="32"
+                      loading="lazy"
+                      decoding="async"
                     />
                   ) : (
                     <div className="h-8 w-8 rounded bg-primary/10 flex items-center justify-center">

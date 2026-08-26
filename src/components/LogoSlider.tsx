@@ -1,12 +1,3 @@
-/**
- * LogoSlider Component
- * Design: Infinite scrolling logo carousel with smooth CSS animation
- * Features: Dark background matching theme, translucent green boxes behind logos, uniform sizes, left-to-right motion
- * Performance: GPU-accelerated with will-change and transform3d
- */
-
-import { useEffect, useState } from "react";
-
 interface Logo {
   src: string;
   alt: string;
@@ -17,54 +8,26 @@ interface LogoSliderProps {
 }
 
 export default function LogoSlider({ logos }: LogoSliderProps) {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const checkReducedMotion = () => {
-      setPrefersReducedMotion(
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      );
-    };
-    checkReducedMotion();
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    motionQuery.addEventListener("change", checkReducedMotion);
-    return () => motionQuery.removeEventListener("change", checkReducedMotion);
-  }, []);
-
-  // Duplicate logos for seamless infinite scroll
-  const duplicatedLogos = [...logos, ...logos, ...logos];
+  const duplicatedLogos = [...logos, ...logos];
 
   return (
-    <section className="py-16 bg-[#0f1219] overflow-hidden" style={{ contain: 'layout style' }}>
+    <section className="overflow-hidden bg-[#0f1219] py-16 defer-render">
       <div className="container mb-10">
-        <p className="text-center text-sm text-muted-foreground uppercase tracking-wider font-medium">
+        <p className="text-center text-sm font-medium uppercase tracking-wider text-muted-foreground">
           Trusted by leading brands worldwide
         </p>
       </div>
-      
+
       <div className="relative">
-        {/* Gradient fade edges - matching dark background */}
-        <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-[#0f1219] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-[#0f1219] to-transparent z-10 pointer-events-none" />
-        
-        {/* Scrolling container - GPU accelerated */}
-        <div 
-          className="flex items-center gap-4 md:gap-6 lg:gap-8 hover:[animation-play-state:paused]"
-          style={{
-            animation: prefersReducedMotion ? 'none' : `scrollLeftToRight 60s linear infinite`,
-            width: 'fit-content',
-            willChange: 'transform',
-            transform: 'translateZ(0)',
-          }}
-        >
+        <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-20 bg-gradient-to-r from-[#0f1219] to-transparent md:w-32" />
+        <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-20 bg-gradient-to-l from-[#0f1219] to-transparent md:w-32" />
+
+        <div className="logo-track flex w-max items-center gap-4 md:gap-6 lg:gap-8">
           {duplicatedLogos.map((logo, index) => (
-            <div
-              key={index}
-              className="flex-shrink-0 h-20 md:h-24 lg:h-28 w-[160px] md:w-[200px] lg:w-[240px] flex items-center justify-center p-2 rounded-lg bg-[#00AD84]/15 border border-[#00AD84]/20"
-            >
+            <div key={`${logo.src}-${index}`} className="flex h-20 w-[160px] shrink-0 items-center justify-center rounded-lg border border-[#00AD84]/20 bg-[#00AD84]/15 p-2 md:h-24 md:w-[200px] lg:h-28 lg:w-[240px]">
               <img
                 src={logo.src}
-                alt={logo.alt}
+                alt={index < logos.length ? logo.alt : ""}
                 className="h-full w-full object-contain p-1"
                 width="200"
                 height="100"
@@ -76,20 +39,19 @@ export default function LogoSlider({ logos }: LogoSliderProps) {
         </div>
       </div>
 
-      {/* CSS Animation - GPU accelerated with translate3d */}
       <style>{`
-        @keyframes scrollLeftToRight {
-          0% {
-            transform: translate3d(calc(-100% / 3), 0, 0);
-          }
-          100% {
-            transform: translate3d(0, 0, 0);
-          }
+        .logo-track {
+          animation: logo-scroll 60s linear infinite;
+          will-change: transform;
+          transform: translate3d(-50%, 0, 0);
+        }
+        .logo-track:hover { animation-play-state: paused; }
+        @keyframes logo-scroll {
+          from { transform: translate3d(-50%, 0, 0); }
+          to { transform: translate3d(0, 0, 0); }
         }
         @media (prefers-reduced-motion: reduce) {
-          .hover\\:[animation-play-state\\:paused] {
-            animation: none !important;
-          }
+          .logo-track { animation: none; transform: none; }
         }
       `}</style>
     </section>

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 const variantClass: Record<string, string> = {
-  default: "bg-primary text-primary-foreground hover:bg-primary/90",
+  default: "bg-[#008466] text-white hover:bg-[#007A5E]",
   destructive: "bg-destructive text-white hover:bg-destructive/90",
   outline: "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground",
   secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",

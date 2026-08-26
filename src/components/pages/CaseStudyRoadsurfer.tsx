@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import {
   ArrowDownRight,
+  ArrowLeft,
   ArrowRight,
   BarChart3,
   Check,
@@ -16,7 +17,7 @@ import {
 import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
 import { Link } from "@/lib/routing";
 
-const ROADSURFER_LOGO_URL = "/images/roadsurfer-logo.png";
+const ROADSURFER_LOGO_URL = "/images/logo-roadsurfer.webp";
 
 function useInView(threshold = 0.12) {
   const ref = useRef<HTMLDivElement>(null);
@@ -238,7 +239,7 @@ export default function CaseStudyRoadsurfer() {
     <div className="min-h-screen bg-background text-foreground">
 
 
-      <main>
+      <div>
         <section className="relative overflow-hidden border-b border-border/40 pb-16 pt-28 md:pb-24 md:pt-36">
           <div
             className="absolute inset-0 opacity-60"
@@ -252,6 +253,10 @@ export default function CaseStudyRoadsurfer() {
           <div className="absolute -right-24 top-20 h-80 w-80 rounded-full bg-primary/10 blur-[100px]" />
 
           <div className="container relative z-10">
+            <Link href="/case-studies" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Case Studies
+            </Link>
             <div className="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
               <div>
                 <h1 className="max-w-3xl text-4xl font-bold leading-[1.06] tracking-tight md:text-6xl lg:text-[4.25rem]">
@@ -513,7 +518,7 @@ export default function CaseStudyRoadsurfer() {
             </div>
           </div>
         </section>
-      </main>
+      </div>
 
       
     </div>

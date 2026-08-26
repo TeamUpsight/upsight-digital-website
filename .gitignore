@@ -28,6 +28,3 @@ pnpm-debug.log*
 
 # Local Cloudflare secrets
 .dev.vars
-
-# Wrangler configuration folder
-.wrangler/

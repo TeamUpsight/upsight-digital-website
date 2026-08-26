@@ -15,33 +15,10 @@ import {
   Users,
 } from "lucide-react";
 import { Link } from "@/lib/routing";
-import { useEffect, useState, lazy, Suspense } from "react";
-
-// Lazy-load heavy components - below the fold
-const AnimatedHero = lazy(() => import("@/components/AnimatedHero"));
-const LogoSlider = lazy(() => import("@/components/LogoSlider"));
-
-// Loading skeleton for lazy components
-const ComponentSkeleton = () => (
-  <div className="w-full h-64 bg-muted animate-pulse rounded-lg" />
-);
+import AnimatedHero from "@/components/AnimatedHero";
+import LogoSlider from "@/components/LogoSlider";
 
 export default function Home() {
-// Track if animations should be enabled (defer on mobile)
-  const [enableAnimations, setEnableAnimations] = useState(false);
-
-  useEffect(() => {
-    // Title is now handled by SEO component
-    
-    // Enable animations after initial paint completes
-    // Use requestIdleCallback for better performance
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(() => setEnableAnimations(true), { timeout: 2000 });
-    } else {
-      // Fallback for browsers without requestIdleCallback
-      setTimeout(() => setEnableAnimations(true), 2000);
-    }
-  }, []);
 
   const clientLogos = [
     { src: "/images/client-logo-1.webp", alt: "Client 1" },
@@ -64,37 +41,42 @@ export default function Home() {
       title: "Server-Side Tracking",
       description:
         "Bypass browser restrictions with sGTM. Improve data accuracy, reduce page load, and recover lost conversions from iOS 14+ restrictions.",
+      link: "/services#server-side-tracking",
     },
     {
       icon: Activity,
       title: "Meta Conversions API",
       description:
         "Implement CAPI for Facebook and Instagram ads. Recover lost conversions, improve attribution accuracy, and optimize ad delivery.",
+      link: "/services#meta-capi",
     },
     {
       icon: Lock,
       title: "Consent & Compliance",
       description:
         "Stay compliant with GDPR, CCPA, and privacy regulations. Integrate CMPs and Consent Mode v2 for privacy-first tracking.",
-      link: "/services/cookie-consent",
+      link: "/services#consent-compliance",
     },
     {
       icon: BarChart3,
       title: "Tracking Audits",
       description:
         "Comprehensive audit of your analytics setup. Identify gaps, fix errors, and ensure data accuracy across all platforms.",
+      link: "/services#tracking-audits",
     },
     {
       icon: TrendingUp,
       title: "Custom Dashboards",
       description:
         "Looker Studio dashboards with decision-focused insights. Automated reporting that saves time and aligns teams.",
+      link: "/services#dashboards-reports",
     },
     {
       icon: ShoppingCart,
       title: "Ecommerce Tracking",
       description:
         "Track the full customer journey from product view to purchase. Enhanced ecommerce for Shopify, WooCommerce, and custom platforms.",
+      link: "/services#ecommerce-tracking",
     },
   ];
 
@@ -153,37 +135,8 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
 
 
-      {/* Interactive Hero Section - Lazy load with fallback */}
-      <section className="section-spacing bg-gradient-to-br from-background to-muted/50 relative overflow-hidden min-h-[600px] md:min-h-[700px]">
-        {enableAnimations ? (
-          <Suspense fallback={<ComponentSkeleton />}>
-            <AnimatedHero />
-          </Suspense>
-        ) : (
-          <div className="container">
-            <div className="max-w-3xl mx-auto text-center py-20">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Stop Losing Revenue to <span className="text-primary">Broken Tracking</span>
-              </h1>
-              <p className="text-lg text-muted-foreground mb-8">
-                We fix tracking gaps, implement server-side solutions, and deliver privacy-compliant analytics that turn your ad spend into measurable growth.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link href="/contact">
-                  <Button size="lg" className="bg-primary hover:bg-primary/90">
-                    Get Free Consultation →
-                  </Button>
-                </Link>
-                <Link href="/health-check">
-                  <Button size="lg" variant="outline">
-                    ✨ Free Health Check
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
-      </section>
+      {/* Hero: server-rendered HTML with a lightweight progressive canvas enhancement */}
+      <AnimatedHero />
 
       {/* Problem/Solution Section */}
       <section className="section-spacing bg-muted/30 min-h-[600px] md:min-h-[700px]">
@@ -270,7 +223,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section className="section-spacing min-h-[500px] md:min-h-[600px]">
+      <section className="section-spacing min-h-[500px] md:min-h-[600px] defer-render">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">
@@ -288,7 +241,7 @@ export default function Home() {
               const cardContent = (
                 <Card
                   key={index}
-                  className={`group hover:border-primary transition-all duration-300 ${service.link ? "cursor-pointer" : ""}`}
+                  className="group h-full cursor-pointer hover:border-primary transition-all duration-300"
                 >
                   <CardContent className="p-6">
                     <div className="mb-4 p-3 rounded-lg bg-primary/10 inline-block">
@@ -303,12 +256,10 @@ export default function Home() {
                   </CardContent>
                 </Card>
               );
-              return service.link ? (
-                <Link key={index} href={service.link}>
+              return (
+                <Link key={index} href={service.link} className="block h-full" aria-label={`Learn more about ${service.title}`}>
                   {cardContent}
                 </Link>
-              ) : (
-                cardContent
               );
             })}
           </div>
@@ -325,7 +276,7 @@ export default function Home() {
       </section>
 
       {/* Who We Serve Section */}
-      <section className="section-spacing bg-muted/30 min-h-[500px] md:min-h-[600px]">
+      <section className="section-spacing bg-muted/30 min-h-[500px] md:min-h-[600px] defer-render">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">Who We Serve</h2>
@@ -366,7 +317,7 @@ export default function Home() {
                   </li>
                 </ul>
                 <Link href="/who-its-for">
-                  <Button className="w-full">Learn More</Button>
+                  <Button className="w-full">Explore Agency Solutions</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -401,7 +352,7 @@ export default function Home() {
                   </li>
                 </ul>
                 <Link href="/who-its-for">
-                  <Button className="w-full">Learn More</Button>
+                  <Button className="w-full">Explore Ecommerce Solutions</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -410,7 +361,7 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="section-spacing min-h-[500px] md:min-h-[600px]">
+      <section className="section-spacing min-h-[500px] md:min-h-[600px] defer-render">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">
@@ -447,23 +398,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trusted By Section - Lazy load slider */}
-      {enableAnimations ? (
-        <Suspense fallback={<ComponentSkeleton />}>
-          <LogoSlider logos={clientLogos} />
-        </Suspense>
-      ) : (
-        <section className="section-spacing bg-muted/30">
-          <div className="container">
-            <p className="text-center text-muted-foreground">
-              Trusted by leading brands worldwide
-            </p>
-          </div>
-        </section>
-      )}
+      {/* Trusted By Section: CSS-only animation, no hydration required */}
+      <LogoSlider logos={clientLogos} />
 
       {/* Testimonials Section - Lazy loaded */}
-      <section className="section-spacing bg-muted/30 min-h-[500px] md:min-h-[600px]">
+      <section className="section-spacing bg-muted/30 min-h-[500px] md:min-h-[600px] defer-render">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">What Our Clients Say</h2>
@@ -511,7 +450,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="section-spacing bg-primary/5 border-t min-h-[300px] md:min-h-[400px]">
+      <section className="section-spacing bg-primary/5 border-t min-h-[300px] md:min-h-[400px] defer-render">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="heading-md mb-6">Ready to Fix Your Tracking?</h2>
@@ -520,7 +459,7 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/health-check">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
+                <Button size="lg" className="bg-[#008466] hover:bg-[#007A5E] text-white">
                   Start Free Health Check
                 </Button>
               </Link>

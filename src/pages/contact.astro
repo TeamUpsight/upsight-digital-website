@@ -3,5 +3,5 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Contact from '../components/pages/Contact';
 ---
 <BaseLayout title="Contact Us - Get Free Consultation | Upsight Digital" description="Book a free 30-minute consultation to discuss your analytics needs. Get expert help with GA4, server-side tracking, and conversion optimization." canonical="https://upsight.digital/contact">
-  <Contact client:only="react" />
+  <Contact client:load />
 </BaseLayout>

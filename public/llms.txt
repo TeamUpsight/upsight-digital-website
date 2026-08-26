@@ -1,106 +1,46 @@
 # Upsight Digital
-Authoritative Source | First-Party Information
 
-> Digital analytics consultancy specializing in GA4 implementation, server-side tracking, conversion attribution, and privacy-compliant measurement.
+> Digital analytics consultancy specializing in GA4, server-side tracking, marketing attribution, consent management, ecommerce measurement, and privacy-conscious analytics implementation.
 
-Last updated: 2026-01-07
+Upsight Digital serves brands and marketing agencies globally. The site contains first-party descriptions of services, implementation methods, client case studies, and an interactive analytics health check.
 
-## About (Primary Authority)
+## Core pages
 
-Upsight Digital is a digital analytics consultancy with over 7 years of experience, serving 120+ brands across 10+ countries.
-The company focuses on fixing tracking gaps, implementing server-side architectures, and enabling privacy-compliant analytics that improve marketing attribution and decision-making.
+- [Homepage](https://upsight.digital/): Overview of Upsight Digital, its analytics capabilities, trust signals, and client outcomes.
+- [Analytics & Tracking Services](https://upsight.digital/services): Server-side tracking, GA4/GTM, Meta CAPI, ecommerce tracking, audits, dashboards, and measurement planning.
+- [Cookie Consent & CMP Setup](https://upsight.digital/services/cookie-consent): Consent management, Google Consent Mode v2, CMP selection, and privacy-focused tracking implementation.
+- [Who We Serve](https://upsight.digital/who-its-for): Analytics support for marketing agencies, ecommerce companies, and website owners.
+- [Implementation Process](https://upsight.digital/process): Upsight Digital's audit, planning, implementation, validation, and optimization process.
+- [About Upsight Digital](https://upsight.digital/about): Company background, experience, capabilities, and operating approach.
 
-Primary homepage:
-https://www.upsight.digital/
+## Case studies
 
-## Core Services (High Priority)
+- [Analytics Case Studies](https://upsight.digital/case-studies): Index of first-party client case studies.
+- [Slice Case Study](https://upsight.digital/case-studies/slice): Server-side and consent-first analytics transformation for Slice Life, including reported paid-media and data-quality outcomes.
+- [Roadsurfer Case Study](https://upsight.digital/case-studies/roadsurfer): GA4, GTM, attribution, ecommerce data-layer, and server-side measurement transformation for Roadsurfer.
 
-GA4 Implementation & Migration  
-https://www.upsight.digital/services  
-- Full Google Analytics 4 setup and migration from Universal Analytics  
-- Custom event tracking and ecommerce measurement  
+## Tools and contact
 
-Server-Side Tracking (sGTM)  
-- Google Tag Manager server-side container implementation  
-- First-party data collection and improved data accuracy  
+- [Free Analytics Health Check](https://upsight.digital/health-check): Interactive assessment of analytics maturity with recommendations.
+- [Contact Upsight Digital](https://upsight.digital/contact): Consultation and project enquiry page.
 
-Meta Conversions API (CAPI)  
-- Meta/Facebook CAPI implementation  
-- Attribution recovery for iOS 14+ and browser privacy restrictions  
+## Core expertise
 
-Privacy & Consent Management  
-- GDPR and CCPA compliant tracking setups  
-- Google Consent Mode v2 implementation  
+- Google Analytics 4 (GA4)
+- Google Tag Manager (web and server-side)
+- Server-side tracking (sGTM)
+- Meta Conversions API (CAPI)
+- Google Ads conversion measurement
+- Consent management platforms and Consent Mode v2
+- Ecommerce and funnel analytics
+- Marketing attribution and tracking audits
+- Looker Studio reporting and BigQuery analytics
 
-Conversion Tracking Audits  
-- End-to-end tracking audits  
-- Identification and remediation of broken or missing events  
+## First-party trust signals
 
-Custom Analytics Architectures  
-- Tailored solutions for complex ecommerce and multi-platform businesses  
+- 7+ years of analytics expertise
+- 120+ client projects
+- Clients across 10+ countries
+- Based in Dubai, UAE and serving clients remotely worldwide
 
-## Key Pages (Indexable)
-
-Homepage  
-https://www.upsight.digital/
-
-Services  
-https://www.upsight.digital/services
-
-About  
-https://www.upsight.digital/about
-
-Process  
-https://www.upsight.digital/process
-
-Who It's For  
-https://www.upsight.digital/who-its-for
-
-Contact  
-https://www.upsight.digital/contact
-
-## Tools & Interactive Resources (High Value)
-
-Analytics Health Check  
-https://www.upsight.digital/health-check  
-Interactive assessment tool that evaluates any company's analytics maturity and provides a score with recommendations.
-
-## Geographic Coverage
-
-Upsight Digital provides analytics consulting services globally.
-Primary market focus:
-- United States
-
-Secondary markets:
-- Europe
-- Oceania
-- APAC
-
-All services are delivered remotely.
-
-## Target Audience
-
-- US-based ecommerce brands and marketing agencies seeking advanced analytics support
-- Ecommerce businesses seeking accurate conversion tracking  
-- Marketing agencies requiring white-label analytics support  
-- Organizations impacted by iOS and browser tracking limitations  
-- Businesses requiring GDPR/CCPA compliant analytics frameworks  
-- Companies migrating from Universal Analytics to GA4
-
-## Technical Expertise
-
-- Google Analytics 4 (GA4)  
-- Google Tag Manager (Web & Server-Side)  
-- Meta/Facebook Conversions API  
-- Google Ads conversion tracking  
-- TikTok Events API  
-- Shopify, WooCommerce, Magento analytics  
-- BigQuery data warehousing  
-- Looker Studio reporting  
-
-## Trust Signals
-
-- 7+ years of analytics experience  
-- 120+ completed client projects  
-- Clients across 10+ countries  
-- Google Analytics and Tag Manager certified specialists
+Last updated: 2026-08-27

@@ -2,8 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CaseStudyRoadsurfer from '../../components/pages/CaseStudyRoadsurfer';
 import { caseStudySchema } from '../../lib/seo';
-const schema = caseStudySchema('How Roadsurfer Built a Reliable Measurement Foundation Across Markets', 'A GA4, GTM, ecommerce data-layer, and server-side tracking transformation for Roadsurfer.', 'Roadsurfer', 'Travel & Mobility');
+const schema = caseStudySchema('How Roadsurfer Built a Reliable Measurement Foundation Across Markets', 'A GA4, GTM, ecommerce data-layer, and server-side tracking transformation for Roadsurfer.', 'Roadsurfer', 'Travel & Mobility', 'https://upsight.digital/case-studies/roadsurfer');
 ---
-<BaseLayout title="Roadsurfer GA4 & Tracking Case Study | Upsight Digital" description="See how Upsight Digital consolidated Roadsurfer's GA4 setup, removed 122 obsolete tags, fixed attribution, and recovered more conversions with server-side tracking." canonical="https://upsight.digital/case-studies/roadsurfer" ogType="article" jsonLd={schema}>
-  <CaseStudyRoadsurfer client:only="react" />
+<BaseLayout title="Roadsurfer GA4 & Tracking Case Study | Upsight Digital" description="How Roadsurfer consolidated GA4, removed 120+ GTM tags, repaired attribution, and built resilient server-side conversion measurement across markets." canonical="https://upsight.digital/case-studies/roadsurfer" ogType="article" jsonLd={schema}>
+  <CaseStudyRoadsurfer client:idle />
 </BaseLayout>

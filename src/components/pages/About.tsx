@@ -13,7 +13,6 @@ import {
   Settings,
 } from "lucide-react";
 import { Link } from "@/lib/routing";
-import { useEffect } from "react";
 
 export default function About() {
   // SEO is handled by the SEO component in the return
@@ -273,9 +272,10 @@ export default function About() {
                         src={tech.logo} 
                         alt={tech.name} 
                         className="h-8 w-8 object-contain"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                        }}
+                        width="32"
+                        height="32"
+                        loading="lazy"
+                        decoding="async"
                       />
                       <span className="text-xs font-medium text-center">{tech.name}</span>
                     </CardContent>

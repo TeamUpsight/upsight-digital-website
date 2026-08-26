@@ -2,6 +2,11 @@
 
 Migrated production website for `https://upsight.digital`.
 
-Website deployed through Cloudflare Workers Builds.
+Start locally:
+
+```bash
+npm install
+npm run dev
+```
 
 See `MIGRATION-NOTES.md` for migration status and deployment notes.

@@ -3,10 +3,6 @@
 
 User-agent: *
 Allow: /
-Allow: /llms.txt
 
-# Sitemap location
-Sitemap: https://upsight.digital/sitemap.xml
-
-# AI/LLM information
-# See /llms.txt for AI-readable site information
+# Astro generates the sitemap index and URL sitemap at build time.
+Sitemap: https://upsight.digital/sitemap-index.xml
