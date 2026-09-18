@@ -30,3 +30,8 @@ Use Node 24 LTS (minimum 22.18). `npm run build` runs type/hook checks and the s
 See [hardening and deployment notes](docs/HARDENING.md) before merging or deploying these changes.
 
 See `docs/DEVELOPMENT.md` and `docs/ARCHITECTURE.md` for details.
+
+
+## AI/agent development
+
+Start with [AGENTS.md](AGENTS.md) for task-specific repository guidance. It links to focused architecture, domain, risk and growth context without replacing the technical references above.
