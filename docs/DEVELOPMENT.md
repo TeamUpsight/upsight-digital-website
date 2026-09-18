@@ -29,3 +29,6 @@ Use Node 24 LTS (minimum 22.18). Install the browser with `npx playwright instal
 - `public/images/` — production image assets only
 - `public/hero-canvas.js` — lightweight homepage canvas animation
 - `wrangler.jsonc` — Cloudflare Worker deployment configuration
+
+
+For agent session/branch guidance, start at [AGENTS.md](../AGENTS.md); this remains the current technical development reference.

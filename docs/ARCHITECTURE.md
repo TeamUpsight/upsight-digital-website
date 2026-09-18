@@ -22,3 +22,6 @@ Google Tag Manager is loaded from `BaseLayout.astro` with its existing container
 ## Asset policy
 
 Only assets referenced by the live site, email templates, SEO metadata or browser endpoints should remain under `public/`. Prefer WebP for website imagery; PNG is retained only where broader email/client compatibility is useful.
+
+
+For task-based reading and non-negotiable change rules, start at [AGENTS.md](../AGENTS.md); this remains the current technical reference.
