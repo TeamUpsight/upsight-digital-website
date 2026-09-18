@@ -6,13 +6,17 @@
 2. Run `npm run dev`.
 3. Test changes at `http://localhost:4321`.
 4. Stop the dev server with `Ctrl+C`.
-5. Run `npm run build` before committing.
-6. Commit and push with GitHub Desktop.
-7. Cloudflare automatically builds and deploys `main`.
+5. Run `npm ci`, `npm run check`, `npm run build`, and `npm run test:browser` before committing.
+6. Commit to a feature branch. Review the changes and configuration before merging.
+7. Cloudflare automatically builds and deploys `main`; use `npm run build` as its build command.
 
 ## Local environment
 
 Create `.env` from `.env.example` and add the local `RESEND_API_KEY` when testing Contact or Health Check submissions.
+
+For verification locally, set `TURNSTILE_LOCAL_BYPASS=true` and leave the public site key blank, or use a widget registered for your local hostname. The bypass is ignored outside development on loopback. The automated tests mock both providers and never send emails. Do not send automated tests to production with a live Resend key.
+
+Use Node 24 LTS (minimum 22.18). Install the browser with `npx playwright install chromium`. On this Windows workstation, `PLAYWRIGHT_CHANNEL=chrome` uses the installed Chrome instead. Playwright owns a foreground dev server on port 4322; Astro's dev toolbar is disabled only in that test environment.
 
 ## Important files
 
