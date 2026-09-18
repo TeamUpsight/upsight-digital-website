@@ -241,7 +241,7 @@ export default function Home() {
               const cardContent = (
                 <Card
                   key={index}
-                  className="group h-full cursor-pointer hover:border-primary transition-all duration-300"
+                  className="group h-full cursor-pointer border-border transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-[0_10px_28px_rgba(0,173,132,0.12)]"
                 >
                   <CardContent className="p-6">
                     <div className="mb-4 p-3 rounded-lg bg-primary/10 inline-block">
@@ -253,6 +253,10 @@ export default function Home() {
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {service.description}
                     </p>
+                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary">
+                      Explore service
+                      <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-focus-within:translate-x-1" aria-hidden="true" />
+                    </span>
                   </CardContent>
                 </Card>
               );
