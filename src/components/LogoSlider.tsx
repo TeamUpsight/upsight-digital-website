@@ -11,7 +11,7 @@ export default function LogoSlider({ logos }: LogoSliderProps) {
   const duplicatedLogos = [...logos, ...logos];
 
   return (
-    <section className="overflow-hidden bg-[#0f1219] py-16 defer-render">
+    <section className="overflow-hidden bg-[#0f1219] py-16">
       <div className="container mb-10">
         <p className="text-center text-sm font-medium uppercase tracking-wider text-muted-foreground">
           Trusted by leading brands worldwide

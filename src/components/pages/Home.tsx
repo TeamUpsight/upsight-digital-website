@@ -223,7 +223,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section className="section-spacing min-h-[500px] md:min-h-[600px] defer-render">
+      <section className="section-spacing min-h-[500px] md:min-h-[600px]">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">
@@ -278,7 +278,7 @@ export default function Home() {
       </section>
 
       {/* Who We Serve Section */}
-      <section className="section-spacing bg-muted/30 min-h-[500px] md:min-h-[600px] defer-render">
+      <section className="section-spacing bg-muted/30 min-h-[500px] md:min-h-[600px]">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">Who We Serve</h2>
@@ -359,7 +359,7 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="section-spacing min-h-[500px] md:min-h-[600px] defer-render">
+      <section className="section-spacing min-h-[500px] md:min-h-[600px]">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">
@@ -400,7 +400,7 @@ export default function Home() {
       <LogoSlider logos={clientLogos} />
 
       {/* Testimonials Section - Lazy loaded */}
-      <section className="section-spacing bg-muted/30 min-h-[500px] md:min-h-[600px] defer-render">
+      <section className="section-spacing bg-muted/30 min-h-[500px] md:min-h-[600px]">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">What Our Clients Say</h2>
@@ -446,7 +446,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="section-spacing bg-primary/5 border-t min-h-[300px] md:min-h-[400px] defer-render">
+      <section className="section-spacing bg-primary/5 border-t min-h-[300px] md:min-h-[400px]">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="heading-md mb-6">Ready to Fix Your Tracking?</h2>

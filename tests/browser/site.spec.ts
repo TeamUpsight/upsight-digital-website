@@ -49,10 +49,19 @@ test('keyboard navigation, Resources, skip link and mobile menu', async ({page})
   await expect(resources).toBeFocused();
   await expect(page.locator('#resources-menu')).not.toHaveAttribute('open');
   await page.setViewportSize({width:390,height:844});
+  const mobileServices = page.locator('#mobile-menu').getByRole('link',{name:'Services',exact:true});
+  await expect(mobileServices).toBeHidden();
+  await page.getByRole('button',{name:'Toggle menu'}).focus();
+  await page.keyboard.press('Tab');
+  await expect(mobileServices).not.toBeFocused();
   await page.getByRole('button',{name:'Toggle menu'}).click();
   await expect(page.locator('#mobile-menu-button')).toHaveAttribute('aria-expanded','true');
+  await expect(mobileServices).toBeVisible();
+  await mobileServices.focus();
+  await expect(mobileServices).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(page.locator('#mobile-menu-button')).toHaveAttribute('aria-expanded','false');
+  await expect(mobileServices).toBeHidden();
   await page.getByRole('button',{name:'Toggle menu'}).click();
   await page.locator('#mobile-menu').getByRole('link',{name:'Services',exact:true}).click();
   await expect(page).toHaveURL(/\/services$/);
@@ -65,6 +74,10 @@ test('service cards, hash anchors and case-study back links', async ({page}) => 
   await serviceLink.click();
   expect(new URL(page.url()).pathname+new URL(page.url()).hash).toBe(href);
   await expect(page.locator(new URL(page.url()).hash)).toBeInViewport();
+  const target = page.locator(new URL(page.url()).hash);
+  await page.waitForTimeout(2300);
+  await target.hover();
+  await expect(target).toHaveCSS('box-shadow', /rgba\(0, 173, 132, 0\.12\)|none/);
   for (const slug of ['slice','roadsurfer']) {
     await page.goto(`/case-studies/${slug}`);
     await page.locator('main a[href="/case-studies"]').click();

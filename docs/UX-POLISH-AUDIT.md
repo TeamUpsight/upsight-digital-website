@@ -4,6 +4,10 @@ Baseline recorded locally with `tests/browser/ux-audit.spec.ts` across the publi
 routes at 390, 768, 1440 and 1920px, including representative scroll and
 interaction states.
 
+Typography now self-hosts the required Latin WOFF2 subsets (DM Sans 400/500/600/700
+and Inter 400/500/600). Roboto Mono remains a system stack because it is not a
+material part of the public visual language.
+
 ## P1
 
 - The async, `display=optional` Google Fonts strategy could leave Windows users
@@ -26,3 +30,6 @@ interaction states.
 No router, page-wide hydration, animation package, remote logo request, or
 security/scoring boundary is introduced. The existing case-study and hero motion
 remain server-first and reduced-motion aware.
+
+The Contact disclosure remains native `<details>`: Chrome does not reliably
+animate its closed content, so no ineffective animation layer is retained.

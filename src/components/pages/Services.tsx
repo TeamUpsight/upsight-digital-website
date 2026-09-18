@@ -261,7 +261,7 @@ export default function Services() {
         <section
           key={categoryIndex}
           id={category.id}
-          className={`section-spacing defer-render ${
+          className={`section-spacing ${
             categoryIndex % 2 === 0 ? "bg-muted/30" : ""
           }`}
         >
@@ -339,7 +339,7 @@ export default function Services() {
       ))}
 
       {/* Technologies Section */}
-      <section className="section-spacing defer-render">
+      <section className="section-spacing">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">Technologies We Work With</h2>
