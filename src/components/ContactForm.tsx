@@ -66,7 +66,7 @@ export default function ContactForm() {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
+
     // Validate phone number on change
     if (name === 'phone') {
       if (value && !validatePhone(value)) {
@@ -79,7 +79,7 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     // Validate phone before submission
     if (!formData.phone) {
       setPhoneError('Phone number is required');
@@ -89,7 +89,7 @@ export default function ContactForm() {
       setPhoneError('Please enter a valid phone number with country code (e.g., +1 555 123 4567)');
       return;
     }
-    
+
     if (isSubmitting) return;
     setSubmissionError("");
     setIsSubmitting(true);

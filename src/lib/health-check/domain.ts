@@ -398,7 +398,7 @@ export function calculateScore(answers: HealthCheckAnswers): {
     if (question.type === "input") return;
 
     const questionKey = question.id;
-    
+
     if (question.type === "single" && typeof answer === "string") {
       const scores = scoreMap[questionKey]?.[answer];
       if (scores) {
@@ -461,13 +461,13 @@ export function calculateScore(answers: HealthCheckAnswers): {
   }));
 
   // Get recommendations for lowest 3 categories
-  const recommendations: Recommendation[] = lowestThreeCategories.map(({ category }) => 
+  const recommendations: Recommendation[] = lowestThreeCategories.map(({ category }) =>
     categoryRecommendations[category]
   );
 
   // Improvement estimation
   const improvementEstimation: string[] = [];
-  
+
   if (percentages.attribution < 0.5) {
     improvementEstimation.push("Recover 30-50% of lost conversion data");
   } else if (percentages.attribution < 0.75) {
