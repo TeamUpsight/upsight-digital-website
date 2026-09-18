@@ -1,131 +1,15 @@
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import {
   Calendar,
   CheckCircle2,
-  ChevronDown,
   Clock,
   Mail,
   MapPin,
-  MessageSquare,
-  Phone,
-  Send,
+  Phone
 } from "lucide-react";
-import { useState, useEffect } from "react";
-import { Link } from "@/lib/routing";
-import { toast } from "@/lib/toast";
-import { submitContact } from "@/lib/api";
 
-export default function Contact() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-
-  // SEO is handled by the SEO component in the return
-
-  // Auto-expand form if URL has ?form=open parameter
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    if (searchParams.get('form') === 'open') {
-      setIsFormOpen(true);
-      // Scroll to form after a short delay
-      setTimeout(() => {
-        const formElement = document.getElementById('contact-form');
-        if (formElement) {
-          formElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }, 300);
-    }
-  }, []);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [phoneError, setPhoneError] = useState("");
-
-  // Phone number validation - requires country code starting with +
-  const validatePhone = (phone: string): boolean => {
-    // Must start with + for country code
-    if (!phone.startsWith('+')) {
-      return false;
-    }
-    // Remove all non-digit characters except + at the start
-    const cleaned = phone.replace(/[^\d+]/g, '');
-    // Must have at least 7 digits (some countries have short numbers)
-    // and at most 15 digits (ITU-T E.164 max)
-    const digitCount = cleaned.replace(/\D/g, '').length;
-    return digitCount >= 7 && digitCount <= 15;
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    
-    // Validate phone number on change
-    if (name === 'phone') {
-      if (value && !validatePhone(value)) {
-        setPhoneError('Please enter a valid phone number with country code (e.g., +1 555 123 4567)');
-      } else {
-        setPhoneError('');
-      }
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validate phone before submission
-    if (!formData.phone) {
-      setPhoneError('Phone number is required');
-      return;
-    }
-    if (!validatePhone(formData.phone)) {
-      setPhoneError('Please enter a valid phone number with country code (e.g., +1 555 123 4567)');
-      return;
-    }
-    
-    setIsSubmitting(true);
-
-    try {
-      await submitContact({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        company: formData.company || undefined,
-        message: formData.message,
-      });
-
-      if (typeof window !== "undefined" && (window as any).dataLayer) {
-        (window as any).dataLayer.push({ event: "contact_form_submitted", form_id: "contact" });
-      }
-      setIsSubmitted(true);
-      setFormData({ name: "", email: "", phone: "", company: "", message: "" });
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to send message. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
+export default function Contact({ children }: { children: React.ReactNode }) {
   const contactMethods = [
     {
       icon: Mail,
@@ -239,17 +123,10 @@ export default function Contact() {
                     ))}
                   </ul>
 
-                  <a
-                    href="https://calendly.com/team-upsight/30min"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
-                  >
-                    <Button size="lg" className="w-full text-base h-12">
+                  <ButtonLink href="https://calendly.com/team-upsight/30min" target="_blank" rel="noopener noreferrer" size="lg" className="block w-full text-base h-12">
                       <Calendar className="mr-2 h-5 w-5" />
                       Schedule Free Consultation
-                    </Button>
-                  </a>
+                    </ButtonLink>
 
                   <div className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="h-4 w-4" />
@@ -302,149 +179,7 @@ export default function Contact() {
               </div>
 
               {/* Expandable Contact Form */}
-              <Card id="contact-form">
-                <Collapsible open={isFormOpen} onOpenChange={setIsFormOpen}>
-                  <CollapsibleTrigger asChild>
-                    <CardContent className="p-6 cursor-pointer hover:bg-muted/50 transition-colors">
-                      <div className="flex items-start gap-4">
-                        <div className="p-2 rounded-lg bg-primary/10">
-                          <MessageSquare className="h-5 w-5 text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between">
-                            <h3 className="font-semibold mb-2">
-                              Prefer to Send a Message?
-                            </h3>
-                            <ChevronDown
-                              className={`h-5 w-5 text-muted-foreground transition-transform duration-200 ${
-                                isFormOpen ? "rotate-180" : ""
-                              }`}
-                            />
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            Fill out the form below with details about your
-                            project, and we'll get back to you within 24 hours.
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </CollapsibleTrigger>
-
-                  <CollapsibleContent>
-                    <div className="px-6 pb-6 border-t border-border pt-6">
-                      {isSubmitted ? (
-                        <div className="text-center py-8">
-                          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                            <CheckCircle2 className="h-8 w-8 text-primary" />
-                          </div>
-                          <h3 className="text-xl font-semibold mb-2">Message Sent Successfully!</h3>
-                          <p className="text-muted-foreground mb-6">
-                            Thank you for reaching out. We'll get back to you within 24 hours.
-                          </p>
-                          <Button
-                            variant="outline"
-                            onClick={() => {
-                              setIsSubmitted(false);
-                              setPhoneError('');
-                            }}
-                          >
-                            Send Another Message
-                          </Button>
-                        </div>
-                      ) : (
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label htmlFor="name">Name *</Label>
-                              <Input
-                                id="name"
-                                name="name"
-                                placeholder="Your name"
-                                value={formData.name}
-                                onChange={handleInputChange}
-                                required
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label htmlFor="email">Email *</Label>
-                              <Input
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="your@email.com"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                required
-                              />
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label htmlFor="phone">Phone *</Label>
-                              <Input
-                                id="phone"
-                                name="phone"
-                                type="tel"
-                                placeholder="+1 (555) 123-4567"
-                                value={formData.phone}
-                                onChange={handleInputChange}
-                                required
-                                className={phoneError ? 'border-destructive' : ''}
-                              />
-                              {phoneError && (
-                                <p className="text-sm text-destructive">{phoneError}</p>
-                              )}
-                            </div>
-                            <div className="space-y-2">
-                              <Label htmlFor="company">Company</Label>
-                              <Input
-                                id="company"
-                                name="company"
-                                placeholder="Your company name"
-                                value={formData.company}
-                                onChange={handleInputChange}
-                              />
-                            </div>
-                          </div>
-
-                          <div className="space-y-2">
-                            <Label htmlFor="message">Message *</Label>
-                            <Textarea
-                              id="message"
-                              name="message"
-                              placeholder="Tell us about your project and analytics challenges..."
-                              rows={4}
-                              value={formData.message}
-                              onChange={handleInputChange}
-                              required
-                              minLength={10}
-                            />
-                            {formData.message.length > 0 && formData.message.length < 10 && (
-                              <p className="text-sm text-destructive">Message must be at least 10 characters</p>
-                            )}
-                          </div>
-
-                          <Button
-                            type="submit"
-                            className="w-full"
-                            disabled={isSubmitting || !!phoneError}
-                          >
-                            {isSubmitting ? (
-                              "Sending..."
-                            ) : (
-                              <>
-                                <Send className="mr-2 h-4 w-4" />
-                                Send Message
-                              </>
-                            )}
-                          </Button>
-                        </form>
-                      )}
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
-              </Card>
+              {children}
             </div>
           </div>
         </div>
@@ -457,22 +192,21 @@ export default function Contact() {
             <h2 className="heading-md mb-12 text-center">
               Frequently Asked Questions
             </h2>
-            <Accordion type="single" collapsible className="space-y-4">
+            <div className="space-y-4">
               {faqItems.map((item, index) => (
-                <AccordionItem
+                <details name="contact-faq"
                   key={index}
-                  value={`item-${index}`}
                   className="bg-card border border-border rounded-lg px-6"
                 >
-                  <AccordionTrigger className="text-left font-semibold hover:no-underline py-6">
-                    {item.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground pb-6">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-sm font-semibold py-6 [&::-webkit-details-marker]:hidden">
+                    {item.question}<span aria-hidden="true">⌄</span>
+                  </summary>
+                  <div className="text-sm text-muted-foreground pb-6">
                     {item.answer}
-                  </AccordionContent>
-                </AccordionItem>
+                  </div>
+                </details>
               ))}
-            </Accordion>
+            </div>
           </div>
         </div>
       </section>
@@ -491,26 +225,14 @@ export default function Contact() {
                 drives real growth.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="https://calendly.com/team-upsight/30min"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button size="lg" className="text-base px-8 h-12">
+                <ButtonLink href="https://calendly.com/team-upsight/30min" target="_blank" rel="noopener noreferrer" size="lg" className="text-base px-8 h-12">
                     <Calendar className="mr-2 h-5 w-5" />
                     Book Free Consultation Now
-                  </Button>
-                </a>
-                <Link href="/health-check">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group"
-                    style={{
+                  </ButtonLink>
+                <ButtonLink href="/health-check" size="lg" variant="outline" style={{
                       boxShadow: '0 0 20px rgba(0, 173, 132, 0.2)',
                       animation: 'button-glow 2s ease-in-out infinite',
-                    }}
-                  >
+                    }} className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group">
                     <span className="relative z-10">✨ Free Health Check</span>
                     <div 
                       className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity"
@@ -518,8 +240,7 @@ export default function Contact() {
                         background: 'linear-gradient(135deg, rgba(0, 173, 132, 0.3) 0%, transparent 50%, rgba(0, 173, 132, 0.3) 100%)',
                       }}
                     />
-                  </Button>
-                </Link>
+                  </ButtonLink>
               </div>
             </CardContent>
           </Card>

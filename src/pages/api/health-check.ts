@@ -1,27 +1,20 @@
 import type { APIRoute } from "astro";
 import { getSecret } from "astro:env/server";
-import { z } from "zod";
 import { healthConfirmationHtml, healthTeamHtml, sendResendEmail, TEAM_EMAIL } from "../../lib/email";
+import { calculateScore, type HealthReport } from "../../lib/health-check/domain";
+import { healthSubmissionSchema } from "../../lib/health-check/schema";
+import { readSubmission, submissionFailure, verifySubmission } from "../../lib/submission-security";
 
 export const prerender = false;
 
-const schema = z.object({
-  email: z.string().trim().email().max(254),
-  score: z.number().min(0).max(100),
-  maturity: z.string().max(100),
-  breakdown: z.object({ reliability: z.number(), coverage: z.number(), attribution: z.number(), privacy: z.number(), ownership: z.number() }),
-  risks: z.array(z.object({ title: z.string(), description: z.string(), severity: z.string() })).max(20),
-  recommendations: z.array(z.object({ title: z.string(), description: z.string(), impact: z.string(), link: z.string() })).max(20),
-  improvementEstimation: z.array(z.string()).max(20),
-  answers: z.record(z.string(), z.union([z.string(), z.array(z.string())])),
-  websiteUrl: z.string().optional(),
-});
-
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const input = schema.parse(await request.json());
+    const submission = healthSubmissionSchema.parse(await readSubmission(request));
+    await verifySubmission(request, submission, { action: 'health-check', secret: getSecret('TURNSTILE_SECRET_KEY'), development: import.meta.env.DEV, localBypass: getSecret('TURNSTILE_LOCAL_BYPASS') });
+    const result = calculateScore(submission.answers);
+    const input: HealthReport = { ...result, score: result.total, email: submission.email, answers: submission.answers, websiteUrl: typeof submission.answers.q8 === 'string' ? submission.answers.q8 : undefined };
     const apiKey = getSecret("RESEND_API_KEY");
-    if (!apiKey) return Response.json({ message: "Email service is not configured yet. Add RESEND_API_KEY to Cloudflare (or .env locally)." }, { status: 503 });
+    if (!apiKey) return Response.json({ message: "Email is temporarily unavailable. Please try again later." }, { status: 503 });
 
     await Promise.all([
       sendResendEmail(apiKey, {
@@ -38,8 +31,6 @@ export const POST: APIRoute = async ({ request }) => {
     ]);
     return Response.json({ success: true, message: "Your assessment has been sent." });
   } catch (error) {
-    if (error instanceof z.ZodError) return Response.json({ message: error.issues[0]?.message || "Please check your assessment data." }, { status: 400 });
-    console.error("[health-check]", error);
-    return Response.json({ message: "We couldn't send the assessment right now. Please try again." }, { status: 500 });
+    return submissionFailure(error, "We couldn't send the assessment right now. Please try again.");
   }
 };
