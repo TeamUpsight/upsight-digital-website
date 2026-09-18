@@ -28,3 +28,9 @@ pnpm-debug.log*
 
 # Local Cloudflare secrets
 .dev.vars
+
+# Local Cloudflare runtime and validation output
+.wrangler/
+.hardening/
+test-results/
+playwright-report/
