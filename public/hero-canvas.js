@@ -1,7 +1,7 @@
 (() => {
   const canvas = document.getElementById('analytics-hero-canvas');
   if (!(canvas instanceof HTMLCanvasElement)) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const ctx = canvas.getContext('2d', { alpha: true });
   if (!ctx) return;
@@ -12,6 +12,8 @@
   let animationFrame = 0;
   let lastFrame = 0;
   let elapsed = 0;
+  let visible = false;
+  let gridPath = new Path2D();
   let particles = [];
   let pointer = { x: 0, y: 0, active: false };
 
@@ -60,6 +62,11 @@
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // Grid geometry changes only with canvas size or breakpoint.
+    gridPath = new Path2D();
+    const grid = isMobile() ? 56 : 60;
+    for (let x = 0; x < width; x += grid) { gridPath.moveTo(x, 0); gridPath.lineTo(x, height); }
+    for (let y = 0; y < height; y += grid) { gridPath.moveTo(0, y); gridPath.lineTo(width, y); }
 
     if (!particles.length || particles.length !== particleCount()) {
       resetParticles();
@@ -74,13 +81,7 @@
     ctx.save();
     ctx.strokeStyle = 'rgba(0,173,132,0.05)';
     ctx.lineWidth = 1;
-    const grid = isMobile() ? 56 : 60;
-    for (let x = 0; x < width; x += grid) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
-    }
-    for (let y = 0; y < height; y += grid) {
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
-    }
+    ctx.stroke(gridPath);
     ctx.restore();
   }
 
@@ -174,8 +175,10 @@
   }
 
   function draw(time) {
+    animationFrame = 0;
+    if (!visible || document.hidden || motion.matches) return;
     animationFrame = requestAnimationFrame(draw);
-    if (document.hidden || time - lastFrame < frameInterval()) return;
+    if (time - lastFrame < frameInterval()) return;
     const dt = lastFrame ? time - lastFrame : 33;
     lastFrame = time;
     elapsed = time;
@@ -201,12 +204,30 @@
   observer.observe(canvas);
   window.addEventListener('pointermove', onPointerMove, { passive: true });
   window.addEventListener('pointerleave', onPointerLeave, { passive: true });
-  animationFrame = requestAnimationFrame(draw);
-
-  window.addEventListener('pagehide', () => {
-    cancelAnimationFrame(animationFrame);
-    observer.disconnect();
-    window.removeEventListener('pointermove', onPointerMove);
-    window.removeEventListener('pointerleave', onPointerLeave);
-  }, { once: true });
+  function syncAnimation() {
+    const shouldRun = visible && !document.hidden && !motion.matches;
+    if (!shouldRun) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+      lastFrame = 0;
+      pointer.active = false;
+      if (motion.matches) ctx.clearRect(0, 0, width, height);
+    } else if (!animationFrame) {
+      lastFrame = 0;
+      animationFrame = requestAnimationFrame(draw);
+    }
+  }
+  const visibility = new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    syncAnimation();
+  });
+  visibility.observe(canvas);
+  document.addEventListener('visibilitychange', syncAnimation);
+  motion.addEventListener('change', syncAnimation);
+  window.addEventListener('pagehide', () => { visible = false; syncAnimation(); });
+  window.addEventListener('pageshow', () => {
+    const rect = canvas.getBoundingClientRect();
+    visible = rect.bottom > 0 && rect.top < window.innerHeight;
+    syncAnimation();
+  });
 })();
