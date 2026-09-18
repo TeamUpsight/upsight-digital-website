@@ -1,0 +1,52 @@
+<script>
+  // Server HTML always contains the complete article and final chart values.
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!motion.matches && 'IntersectionObserver' in window) {
+    const animations = new Set<Animation>();
+    const frames = new Map<HTMLElement, { id: number; final: string }>();
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        observer.unobserve(entry.target);
+        const element = entry.target as HTMLElement;
+        if (motion.matches) continue;
+        const delay = parseFloat(element.style.transitionDelay || '0') * 1000;
+        let animation: Animation | undefined;
+        if (element.hasAttribute('data-reveal')) {
+          animation = element.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 600, delay, easing: 'ease-out' });
+        } else if (element.hasAttribute('data-grow')) {
+          animation = element.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 1500, delay, easing: 'ease-out' });
+          element.style.transformOrigin = 'left';
+        } else if (element.hasAttribute('data-donut')) {
+          animation = element.animate([{ strokeDashoffset: element.dataset.donut }, { strokeDashoffset: element.getAttribute('stroke-dashoffset') ?? '0' }], { duration: 2000, easing: 'ease-out' });
+        } else if (element.hasAttribute('data-counter')) {
+          const target = Number(element.dataset.counter);
+          const decimals = Number(element.dataset.decimals);
+          const start = performance.now();
+          const final = element.textContent ?? '';
+          const tick = (now: number) => {
+            const progress = Math.min(1, (now - start) / 2000);
+            element.textContent = (target * progress).toFixed(decimals);
+            if (progress < 1) frames.set(element, { id: requestAnimationFrame(tick), final });
+            else { element.textContent = final; frames.delete(element); }
+          };
+          frames.set(element, { id: requestAnimationFrame(tick), final });
+        }
+        if (animation) {
+          animations.add(animation);
+          animation.onfinish = () => { animations.delete(animation); animation.cancel(); };
+        }
+      }
+    }, { threshold: 0.15 });
+    document.querySelectorAll('[data-reveal], [data-grow], [data-donut], [data-counter]').forEach(element => observer.observe(element));
+    const stop = () => {
+      observer.disconnect();
+      for (const animation of animations) animation.cancel();
+      animations.clear();
+      for (const [element, frame] of frames) { cancelAnimationFrame(frame.id); element.textContent = frame.final; }
+      frames.clear();
+    };
+    motion.addEventListener('change', event => { if (event.matches) stop(); });
+    window.addEventListener('pagehide', stop, { once: true });
+  }
+</script>

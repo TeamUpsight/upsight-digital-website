@@ -1,42 +1,22 @@
-import { useState, useEffect, useRef } from "react";
 import {
-  Globe,
-  Smartphone,
-  Handshake,
   BarChart3,
-  Megaphone,
   Database,
+  Globe,
+  Handshake,
+  Megaphone,
   Server,
+  Smartphone,
 } from "lucide-react";
-
-/* ─── Scroll reveal hook ─── */
-function useScrollReveal(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setIsVisible(true); obs.disconnect(); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, isVisible };
-}
 
 /* ─── Animated connection line between two points ─── */
 function FlowLine({
   from,
   to,
   delay,
-  isVisible,
 }: {
   from: { x: number; y: number };
   to: { x: number; y: number };
   delay: number;
-  isVisible: boolean;
 }) {
   const midX = (from.x + to.x) / 2;
   const d = `M ${from.x} ${from.y} C ${midX} ${from.y}, ${midX} ${to.y}, ${to.x} ${to.y}`;
@@ -49,7 +29,7 @@ function FlowLine({
         fill="none"
         stroke="rgba(0,173,132,0.08)"
         strokeWidth="3"
-        className={`transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
+        className="transition-opacity duration-1000 opacity-100"
         style={{ transitionDelay: `${delay}ms` }}
       />
       {/* Static track line */}
@@ -58,7 +38,7 @@ function FlowLine({
         fill="none"
         stroke="rgba(0,173,132,0.2)"
         strokeWidth="1.5"
-        className={`transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
+        className="transition-opacity duration-1000 opacity-100"
         style={{ transitionDelay: `${delay}ms` }}
       />
       {/* Animated flowing particles */}
@@ -68,10 +48,10 @@ function FlowLine({
         stroke="rgba(0,173,132,0.7)"
         strokeWidth="2"
         strokeDasharray="6 14"
-        className={`transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
+        className="transition-opacity duration-1000 opacity-100"
         style={{
           transitionDelay: `${delay + 200}ms`,
-          animation: isVisible ? "dataFlow 2s linear infinite" : "none",
+          animation: "dataFlow 2s linear infinite",
           animationDelay: `${delay + 200}ms`,
         }}
       />
@@ -81,7 +61,7 @@ function FlowLine({
         cy={to.y}
         r="3"
         fill="#00AD84"
-        className={`transition-opacity duration-700 ${isVisible ? "opacity-100" : "opacity-0"}`}
+        className="transition-opacity duration-700 opacity-100"
         style={{
           transitionDelay: `${delay + 400}ms`,
           filter: "drop-shadow(0 0 4px rgba(0,173,132,0.6))",
@@ -99,7 +79,6 @@ function DiagramNode({
   label,
   sublabel,
   delay,
-  isVisible,
   floatClass,
 }: {
   x: number;
@@ -108,21 +87,18 @@ function DiagramNode({
   label: string;
   sublabel: string;
   delay: number;
-  isVisible: boolean;
   floatClass: string;
 }) {
-  const [hovered, setHovered] = useState(false);
 
   return (
     <g
-      className={`${floatClass} cursor-pointer transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0"}`}
+      className={`${floatClass} cursor-pointer transition-all duration-700 opacity-100`}
       style={{ transitionDelay: `${delay}ms` }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      data-diagram-node
     >
       {/* Outer glow on hover */}
-      {hovered && (
-        <rect
+      {(
+        <rect className="diagram-hover-glow"
           x={x - 2}
           y={y - 2}
           width="144"
@@ -144,8 +120,7 @@ function DiagramNode({
         rx="12"
         ry="12"
         fill="#0f1923"
-        stroke={hovered ? "rgba(0,173,132,0.7)" : "rgba(0,173,132,0.25)"}
-        strokeWidth={hovered ? "2" : "1"}
+        className="diagram-node-card" stroke="rgba(0,173,132,0.25)" strokeWidth="1"
         className="transition-all duration-300"
       />
       {/* Top accent line */}
@@ -155,7 +130,7 @@ function DiagramNode({
         width="108"
         height="2"
         rx="1"
-        fill={hovered ? "#00AD84" : "rgba(0,173,132,0.4)"}
+        className="diagram-node-accent" fill="rgba(0,173,132,0.4)"
         className="transition-all duration-300"
       />
       {/* Icon container */}
@@ -215,13 +190,10 @@ function DiagramNode({
 function CenterNode({
   cx,
   cy,
-  isVisible,
 }: {
   cx: number;
   cy: number;
-  isVisible: boolean;
 }) {
-  const [hovered, setHovered] = useState(false);
   const r = 62;
   const hexPoints = Array.from({ length: 6 }, (_, i) => {
     const angle = (Math.PI / 3) * i - Math.PI / 2;
@@ -235,10 +207,9 @@ function CenterNode({
 
   return (
     <g
-      className={`cursor-pointer transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0"}`}
+      className="cursor-pointer transition-all duration-700 opacity-100"
       style={{ transitionDelay: "500ms" }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      data-diagram-node
     >
       {/* Outer pulse ring */}
       <circle
@@ -262,12 +233,9 @@ function CenterNode({
       <polygon
         points={hexPoints}
         fill="#0a2e24"
-        stroke={hovered ? "#00AD84" : "rgba(0,173,132,0.5)"}
-        strokeWidth={hovered ? "2.5" : "1.5"}
+        className="diagram-server" stroke="rgba(0,173,132,0.5)" strokeWidth="1.5"
         style={{
-          filter: hovered
-            ? "drop-shadow(0 0 16px rgba(0,173,132,0.5))"
-            : "drop-shadow(0 0 6px rgba(0,173,132,0.2))",
+          filter: "drop-shadow(0 0 6px rgba(0,173,132,0.2))",
           transition: "all 0.3s ease",
         }}
       />
@@ -320,7 +288,6 @@ function CenterNode({
 
 /* ─── Main Diagram ─── */
 export default function DataFlowDiagram() {
-  const { ref, isVisible } = useScrollReveal();
 
   // Layout positions
   const centerX = 450;
@@ -341,7 +308,7 @@ export default function DataFlowDiagram() {
   const floatClasses = ["diagram-float-1", "diagram-float-2", "diagram-float-3"];
 
   return (
-    <div ref={ref} className="relative max-w-5xl mx-auto overflow-hidden">
+    <div data-reveal className="relative max-w-5xl mx-auto overflow-hidden">
       <style>{`
         @keyframes dataFlow {
           0% { stroke-dashoffset: 40; }
@@ -401,7 +368,6 @@ export default function DataFlowDiagram() {
             from={{ x: node.x + 140, y: node.y + 40 }}
             to={{ x: centerX - 62, y: centerY }}
             delay={node.delay + 300}
-            isVisible={isVisible}
           />
         ))}
 
@@ -412,7 +378,6 @@ export default function DataFlowDiagram() {
             from={{ x: centerX + 62, y: centerY }}
             to={{ x: node.x, y: node.y + 40 }}
             delay={node.delay + 300}
-            isVisible={isVisible}
           />
         ))}
 
@@ -426,13 +391,12 @@ export default function DataFlowDiagram() {
             label={node.label}
             sublabel={node.sublabel}
             delay={node.delay}
-            isVisible={isVisible}
             floatClass={floatClasses[i]}
           />
         ))}
 
         {/* ─── Center Node ─── */}
-        <CenterNode cx={centerX} cy={centerY} isVisible={isVisible} />
+        <CenterNode cx={centerX} cy={centerY} />
 
         {/* ─── Right Nodes ─── */}
         {rightNodes.map((node, i) => (
@@ -444,7 +408,6 @@ export default function DataFlowDiagram() {
             label={node.label}
             sublabel={node.sublabel}
             delay={node.delay}
-            isVisible={isVisible}
             floatClass={floatClasses[i]}
           />
         ))}

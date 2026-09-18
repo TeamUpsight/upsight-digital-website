@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Activity,
@@ -14,12 +14,13 @@ import {
   TrendingUp,
   Zap,
 } from "lucide-react";
-import { Link } from "@/lib/routing";
+
+interface Service { id: string; icon: typeof Server; title: string; description: string; benefits: string[]; whoNeedsIt: string; link?: string }
+interface ServiceCategory { id: string; category: string; description: string; services: Service[] }
 
 export default function Services() {
-  // SEO is handled by the SEO component in the return
 
-  const serviceCategories = [
+  const serviceCategories: ServiceCategory[] = [
     {
       id: "tracking-implementation",
       category: "Tracking & Implementation",
@@ -233,22 +234,14 @@ export default function Services() {
               with your business goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact">
-                <Button size="lg" className="text-base px-8 h-12">
+              <ButtonLink href="/contact" size="lg" className="text-base px-8 h-12">
                   Get Free Consultation
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Link href="/health-check">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group"
-                  style={{
+                </ButtonLink>
+              <ButtonLink href="/health-check" size="lg" variant="outline" style={{
                     boxShadow: '0 0 20px rgba(0, 173, 132, 0.2)',
                     animation: 'button-glow 2s ease-in-out infinite',
-                  }}
-                >
+                  }} className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group">
                   <span className="relative z-10">✨ Free Health Check</span>
                   <div 
                     className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity"
@@ -256,8 +249,7 @@ export default function Services() {
                       background: 'linear-gradient(135deg, rgba(0, 173, 132, 0.3) 0%, transparent 50%, rgba(0, 173, 132, 0.3) 100%)',
                     }}
                   />
-                </Button>
-              </Link>
+                </ButtonLink>
             </div>
           </div>
         </div>
@@ -330,11 +322,9 @@ export default function Services() {
                           <p className="text-sm text-muted-foreground mb-4">
                             {service.whoNeedsIt}
                           </p>
-                          <Link href={(service as any).link || "/contact"}>
-                            <Button size="sm" className="w-full">
-                              {(service as any).link ? `Explore ${service.title}` : `Discuss ${service.title}`}
-                            </Button>
-                          </Link>
+                          <ButtonLink href={service.link || "/contact"} size="sm" className="w-full">
+                              {service.link ? `Explore ${service.title}` : `Discuss ${service.title}`}
+                            </ButtonLink>
                         </div>
                       </div>
                     </CardContent>
@@ -359,17 +349,17 @@ export default function Services() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
             {[
-              { name: "Google Analytics 4", logo: "https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg" },
-              { name: "Google Tag Manager", logo: "https://www.gstatic.com/analytics-suite/header/suite/v2/ic_tag_manager.svg" },
-              { name: "Server-Side GTM", logo: "https://www.gstatic.com/analytics-suite/header/suite/v2/ic_tag_manager.svg" },
-              { name: "Meta Conversions API", logo: "https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" },
-              { name: "Segment", logo: "https://cdn.worldvectorlogo.com/logos/segment-1.svg" },
-              { name: "Tealium", logo: "https://images.g2crowd.com/uploads/product/image/social_landscape/social_landscape_7c3c1d3b8f9b3e8a8c5b5a5a5a5a5a5a/tealium.png" },
-              { name: "Shopify", logo: "https://cdn.worldvectorlogo.com/logos/shopify.svg" },
-              { name: "WooCommerce", logo: "https://cdn.worldvectorlogo.com/logos/woocommerce.svg" },
-              { name: "Consent Mode v2", logo: "https://www.gstatic.com/images/branding/product/2x/google_g_64dp.png" },
-              { name: "Looker Studio", logo: "https://www.gstatic.com/analytics-suite/header/suite/v2/ic_data_studio.svg" },
-              { name: "BigQuery", logo: "https://cdn.worldvectorlogo.com/logos/google-bigquery-logo-1.svg" },
+              { name: "Google Analytics 4", logo: null },
+              { name: "Google Tag Manager", logo: null },
+              { name: "Server-Side GTM", logo: null },
+              { name: "Meta Conversions API", logo: null },
+              { name: "Segment", logo: null },
+              { name: "Tealium", logo: null },
+              { name: "Shopify", logo: null },
+              { name: "WooCommerce", logo: null },
+              { name: "Consent Mode v2", logo: null },
+              { name: "Looker Studio", logo: null },
+              { name: "BigQuery", logo: null },
               { name: "Custom Platforms", logo: null },
             ].map((tech, index) => (
               <Card key={index} className="hover:border-primary/50 transition-colors">
@@ -386,7 +376,7 @@ export default function Services() {
                     />
                   ) : (
                     <div className="h-8 w-8 rounded bg-primary/10 flex items-center justify-center">
-                      <span className="text-primary font-bold text-xs">API</span>
+                      <span aria-hidden="true" className="text-primary font-bold text-xs">{tech.name === "Custom Platforms" ? "API" : tech.name.split(/[ -]/).map(word => word[0]).slice(0, 3).join("")}</span>
                     </div>
                   )}
                   <span className="text-sm font-medium text-center">{tech.name}</span>
@@ -411,22 +401,14 @@ export default function Services() {
                 business.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/contact">
-                  <Button size="lg" className="text-base px-8 h-12">
+                <ButtonLink href="/contact" size="lg" className="text-base px-8 h-12">
                     Get Free Consultation
                     <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <Link href="/health-check">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group"
-                    style={{
+                  </ButtonLink>
+                <ButtonLink href="/health-check" size="lg" variant="outline" style={{
                       boxShadow: '0 0 20px rgba(0, 173, 132, 0.2)',
                       animation: 'button-glow 2s ease-in-out infinite',
-                    }}
-                  >
+                    }} className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group">
                     <span className="relative z-10">✨ Free Health Check</span>
                     <div 
                       className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity"
@@ -434,8 +416,7 @@ export default function Services() {
                         background: 'linear-gradient(135deg, rgba(0, 173, 132, 0.3) 0%, transparent 50%, rgba(0, 173, 132, 0.3) 100%)',
                       }}
                     />
-                  </Button>
-                </Link>
+                  </ButtonLink>
               </div>
             </CardContent>
           </Card>

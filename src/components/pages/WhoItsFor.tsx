@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ArrowRight,
@@ -23,10 +23,8 @@ import {
   Wallet,
   Zap,
 } from "lucide-react";
-import { Link } from "@/lib/routing";
 
 export default function WhoItsFor() {
-  // SEO is handled by the SEO component in the return
 
   const agencyBenefits = [
     {
@@ -149,12 +147,10 @@ export default function WhoItsFor() {
                 ))}
               </ul>
 
-              <Link href="/contact?form=open">
-                <Button size="lg" className="text-base px-8 h-12">
+              <ButtonLink href="/contact?form=open" size="lg" className="text-base px-8 h-12">
                   Partner With Us
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
+                </ButtonLink>
             </div>
 
             {/* Right: Benefits Grid */}
@@ -283,12 +279,10 @@ export default function WhoItsFor() {
                 ))}
               </ul>
 
-              <Link href="/contact">
-                <Button size="lg" className="text-base px-8 h-12">
+              <ButtonLink href="/contact" size="lg" className="text-base px-8 h-12">
                   Get Free Consultation
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
+                </ButtonLink>
             </div>
           </div>
         </div>
@@ -384,22 +378,14 @@ export default function WhoItsFor() {
                 show you exactly how we can help.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/contact">
-                  <Button size="lg" className="text-base px-8 h-12">
+                <ButtonLink href="/contact" size="lg" className="text-base px-8 h-12">
                     Book Free Consultation
                     <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <Link href="/health-check">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group"
-                    style={{
+                  </ButtonLink>
+                <ButtonLink href="/health-check" size="lg" variant="outline" style={{
                       boxShadow: '0 0 20px rgba(0, 173, 132, 0.2)',
                       animation: 'button-glow 2s ease-in-out infinite',
-                    }}
-                  >
+                    }} className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group">
                     <span className="relative z-10">✨ Free Health Check</span>
                     <div 
                       className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity"
@@ -407,8 +393,7 @@ export default function WhoItsFor() {
                         background: 'linear-gradient(135deg, rgba(0, 173, 132, 0.3) 0%, transparent 50%, rgba(0, 173, 132, 0.3) 100%)',
                       }}
                     />
-                  </Button>
-                </Link>
+                  </ButtonLink>
               </div>
             </CardContent>
           </Card>

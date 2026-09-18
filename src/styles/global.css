@@ -288,3 +288,15 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 700px;
 }
+
+:where(a, button, summary, input, textarea):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+section[id], #contact-form { scroll-margin-top: 6rem; }
+.diagram-hover-glow { opacity: 0; }
+[data-diagram-node]:hover .diagram-hover-glow { opacity: 1; }
+[data-diagram-node]:hover .diagram-node-card { stroke: rgba(0,173,132,0.7); stroke-width: 2; }
+[data-diagram-node]:hover .diagram-node-accent { fill: #00AD84; }
+[data-diagram-node]:hover .diagram-server { stroke: #00AD84; stroke-width: 2.5; filter: drop-shadow(0 0 16px rgba(0,173,132,0.5)) !important; }
