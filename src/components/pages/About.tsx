@@ -1,21 +1,19 @@
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ArrowRight,
   Award,
+  Cpu,
   Globe,
+  Handshake,
+  Settings,
+  Shield,
   Target,
   TrendingUp,
   Users,
-  Cpu,
-  Shield,
-  Handshake,
-  Settings,
 } from "lucide-react";
-import { Link } from "@/lib/routing";
 
 export default function About() {
-  // SEO is handled by the SEO component in the return
 
   const stats = [
     { value: "2019", label: "Founded" },
@@ -259,24 +257,16 @@ export default function About() {
               <h3 className="font-semibold mb-6 text-center text-muted-foreground">Technologies We Master</h3>
               <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
                 {[
-                  { name: "GA4", logo: "https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg" },
-                  { name: "GTM", logo: "https://www.gstatic.com/analytics-suite/header/suite/v2/ic_tag_manager.svg" },
-                  { name: "Meta CAPI", logo: "https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" },
-                  { name: "Segment", logo: "https://cdn.worldvectorlogo.com/logos/segment-1.svg" },
-                  { name: "Shopify", logo: "https://cdn.worldvectorlogo.com/logos/shopify.svg" },
-                  { name: "Looker", logo: "https://www.gstatic.com/analytics-suite/header/suite/v2/ic_data_studio.svg" },
+                  { name: "GA4" },
+                  { name: "GTM" },
+                  { name: "Meta CAPI" },
+                  { name: "Segment" },
+                  { name: "Shopify" },
+                  { name: "Looker" },
                 ].map((tech, index) => (
                   <Card key={index} className="hover:border-primary/50 transition-colors">
                     <CardContent className="p-3 flex flex-col items-center justify-center gap-2 min-h-[80px]">
-                      <img 
-                        src={tech.logo} 
-                        alt={tech.name} 
-                        className="h-8 w-8 object-contain"
-                        width="32"
-                        height="32"
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      <span aria-hidden="true" className="h-8 w-8 rounded bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">{tech.name.split(/[ -]/).map(word => word[0]).slice(0, 3).join("")}</span>
                       <span className="text-xs font-medium text-center">{tech.name}</span>
                     </CardContent>
                   </Card>
@@ -397,22 +387,14 @@ export default function About() {
                 needs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/contact">
-                  <Button size="lg" className="text-base px-8 h-12">
+                <ButtonLink href="/contact" size="lg" className="text-base px-8 h-12">
                     Get Free Consultation
                     <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <Link href="/health-check">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group"
-                    style={{
+                  </ButtonLink>
+                <ButtonLink href="/health-check" size="lg" variant="outline" style={{
                       boxShadow: '0 0 20px rgba(0, 173, 132, 0.2)',
                       animation: 'button-glow 2s ease-in-out infinite',
-                    }}
-                  >
+                    }} className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group">
                     <span className="relative z-10">✨ Free Health Check</span>
                     <div 
                       className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity"
@@ -420,8 +402,7 @@ export default function About() {
                         background: 'linear-gradient(135deg, rgba(0, 173, 132, 0.3) 0%, transparent 50%, rgba(0, 173, 132, 0.3) 100%)',
                       }}
                     />
-                  </Button>
-                </Link>
+                  </ButtonLink>
               </div>
             </CardContent>
           </Card>

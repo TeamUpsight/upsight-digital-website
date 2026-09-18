@@ -1,0 +1,789 @@
+[
+  {
+    "name": "representative-1",
+    "answers": {
+      "q1": "Ecommerce",
+      "q2": "Website Only",
+      "q3": "GA4 + GTM",
+      "q4": [
+        "Social (Facebook, Snapchat, Tiktok, etc.)"
+      ],
+      "q5": "Very confident",
+      "q6": [
+        "Attribution gaps"
+      ],
+      "q7": "Proper CMP",
+      "q8": "https://example.com",
+      "q9": "Server-side / CAPI",
+      "q10": "Under $5,000",
+      "q11": "In-house + agency",
+      "q12": "ASAP"
+    },
+    "expected": {
+      "total": 64,
+      "breakdown": {
+        "reliability": 10,
+        "coverage": 18,
+        "attribution": 13,
+        "privacy": 13,
+        "ownership": 10
+      },
+      "percentages": {
+        "coverage": 0.6,
+        "reliability": 0.6666666666666666,
+        "attribution": 0.43333333333333335,
+        "privacy": 0.8666666666666667,
+        "ownership": 1
+      },
+      "maturity": "Developing",
+      "risks": [
+        {
+          "title": "Attribution Blind Spots",
+          "description": "You can't accurately measure which channels drive conversions, leading to misallocated budgets.",
+          "severity": "medium",
+          "category": "attribution"
+        },
+        {
+          "title": "Tracking Coverage Gaps",
+          "description": "Missing events and incomplete funnel tracking are hiding critical drop-off points and optimization opportunities.",
+          "severity": "low",
+          "category": "coverage"
+        },
+        {
+          "title": "Data Trust Issues",
+          "description": "Low confidence in conversion data leads to poor decision-making and wasted ad spend.",
+          "severity": "low",
+          "category": "reliability"
+        }
+      ],
+      "recommendations": [
+        {
+          "title": "Improve Attribution with Server-Side/CAPI",
+          "description": "Use server-side tracking (and CAPIs) to reduce iOS/Safari loss and improve attribution accuracy.",
+          "impact": "Recover 30-50% of lost conversion data",
+          "link": "/services#meta-capi",
+          "category": "attribution"
+        },
+        {
+          "title": "Track Key Events and Full Funnel Steps",
+          "description": "Implement comprehensive event tracking to capture the complete user journey from first touch to conversion.",
+          "impact": "Complete visibility into user behavior",
+          "link": "/services#server-side-tracking",
+          "category": "coverage"
+        },
+        {
+          "title": "Audit and Validate Tracking Accuracy",
+          "description": "Conduct a thorough audit of your current tracking setup to identify and fix data quality issues.",
+          "impact": "Trustworthy data for confident decisions",
+          "link": "/services#tracking-audits",
+          "category": "reliability"
+        }
+      ],
+      "improvementEstimation": [
+        "Recover 30-50% of lost conversion data",
+        "Some funnel blind spots remain."
+      ]
+    }
+  },
+  {
+    "name": "representative-2",
+    "answers": {
+      "q1": "Lead Generation",
+      "q2": "Mobile app",
+      "q3": "CMS plugin only (Shopify/Woo)",
+      "q4_app": "AppsFlyer",
+      "q4": [
+        "Search (Google Ads, Microsoft Ads, Apple Search, etc.)"
+      ],
+      "q5": "Somewhat confident",
+      "q6": [
+        "Missing events"
+      ],
+      "q7": "Basic banner",
+      "q8": "https://example.com",
+      "q9": "Partial setup",
+      "q10": "$5,000 - $25,000",
+      "q11": "In-house only",
+      "q12": "1-3 Months"
+    },
+    "expected": {
+      "total": 41,
+      "breakdown": {
+        "reliability": 5,
+        "coverage": 9,
+        "attribution": 14,
+        "privacy": 7,
+        "ownership": 6
+      },
+      "percentages": {
+        "coverage": 0.3,
+        "reliability": 0.3333333333333333,
+        "attribution": 0.4666666666666667,
+        "privacy": 0.4666666666666667,
+        "ownership": 0.6
+      },
+      "maturity": "Weak",
+      "risks": [
+        {
+          "title": "Tracking Coverage Gaps",
+          "description": "Missing events and incomplete funnel tracking are hiding critical drop-off points and optimization opportunities.",
+          "severity": "high",
+          "category": "coverage"
+        },
+        {
+          "title": "Data Trust Issues",
+          "description": "Low confidence in conversion data leads to poor decision-making and wasted ad spend.",
+          "severity": "high",
+          "category": "reliability"
+        },
+        {
+          "title": "Attribution Blind Spots",
+          "description": "You can't accurately measure which channels drive conversions, leading to misallocated budgets.",
+          "severity": "medium",
+          "category": "attribution"
+        }
+      ],
+      "recommendations": [
+        {
+          "title": "Track Key Events and Full Funnel Steps",
+          "description": "Implement comprehensive event tracking to capture the complete user journey from first touch to conversion.",
+          "impact": "Complete visibility into user behavior",
+          "link": "/services#server-side-tracking",
+          "category": "coverage"
+        },
+        {
+          "title": "Audit and Validate Tracking Accuracy",
+          "description": "Conduct a thorough audit of your current tracking setup to identify and fix data quality issues.",
+          "impact": "Trustworthy data for confident decisions",
+          "link": "/services#tracking-audits",
+          "category": "reliability"
+        },
+        {
+          "title": "Improve Attribution with Server-Side/CAPI",
+          "description": "Use server-side tracking (and CAPIs) to reduce iOS/Safari loss and improve attribution accuracy.",
+          "impact": "Recover 30-50% of lost conversion data",
+          "link": "/services#meta-capi",
+          "category": "attribution"
+        }
+      ],
+      "improvementEstimation": [
+        "Recover 30-50% of lost conversion data",
+        "Major tracking gaps are hiding funnel drop-offs."
+      ]
+    }
+  },
+  {
+    "name": "representative-3",
+    "answers": {
+      "q1": "App-First Business",
+      "q2": "Both",
+      "q3": "Custom setup",
+      "q4_app": "Firebase only",
+      "q4": [
+        "DSPs (DV360, Amazon Ads, The Trade Desk, etc.)"
+      ],
+      "q5": "Low confidence",
+      "q6": [
+        "iOS/Safari issues"
+      ],
+      "q7": "No",
+      "q8": "https://example.com",
+      "q9": "Browser-only",
+      "q10": "$25,000 - $100,000",
+      "q11": "Agency only",
+      "q12": "Just Exploring Options"
+    },
+    "expected": {
+      "total": 26,
+      "breakdown": {
+        "reliability": 5,
+        "coverage": 12,
+        "attribution": 1,
+        "privacy": 2,
+        "ownership": 6
+      },
+      "percentages": {
+        "coverage": 0.4,
+        "reliability": 0.3333333333333333,
+        "attribution": 0.03333333333333333,
+        "privacy": 0.13333333333333333,
+        "ownership": 0.6
+      },
+      "maturity": "High Risk",
+      "risks": [
+        {
+          "title": "Attribution Blind Spots",
+          "description": "You can't accurately measure which channels drive conversions, leading to misallocated budgets.",
+          "severity": "high",
+          "category": "attribution"
+        },
+        {
+          "title": "Compliance Risk",
+          "description": "Inadequate consent management exposes you to GDPR/CCPA penalties and data loss.",
+          "severity": "high",
+          "category": "privacy"
+        },
+        {
+          "title": "Data Trust Issues",
+          "description": "Low confidence in conversion data leads to poor decision-making and wasted ad spend.",
+          "severity": "high",
+          "category": "reliability"
+        }
+      ],
+      "recommendations": [
+        {
+          "title": "Improve Attribution with Server-Side/CAPI",
+          "description": "Use server-side tracking (and CAPIs) to reduce iOS/Safari loss and improve attribution accuracy.",
+          "impact": "Recover 30-50% of lost conversion data",
+          "link": "/services#meta-capi",
+          "category": "attribution"
+        },
+        {
+          "title": "Implement a CMP with Consent Mode v2",
+          "description": "Set up a proper Consent Management Platform with Google Consent Mode v2 for GDPR/CCPA compliance.",
+          "impact": "Ensure compliance and improve data modeling",
+          "link": "/services#consent-compliance",
+          "category": "privacy"
+        },
+        {
+          "title": "Audit and Validate Tracking Accuracy",
+          "description": "Conduct a thorough audit of your current tracking setup to identify and fix data quality issues.",
+          "impact": "Trustworthy data for confident decisions",
+          "link": "/services#tracking-audits",
+          "category": "reliability"
+        }
+      ],
+      "improvementEstimation": [
+        "Recover 30-50% of lost conversion data",
+        "Major tracking gaps are hiding funnel drop-offs."
+      ]
+    }
+  },
+  {
+    "name": "representative-4",
+    "answers": {
+      "q1": "SaaS",
+      "q2": "Not sure",
+      "q3": "Not sure / none",
+      "q4": [
+        "Affiliates (CJ, Impact, Awin, Rakuten, etc.)"
+      ],
+      "q5": "Not confident",
+      "q6": [
+        "Consent/compliance"
+      ],
+      "q7": "Not sure",
+      "q8": "https://example.com",
+      "q9": "Not sure",
+      "q10": "$100,000+",
+      "q11": "Freelancer",
+      "q12": "ASAP"
+    },
+    "expected": {
+      "total": 4,
+      "breakdown": {
+        "reliability": 0,
+        "coverage": 0,
+        "attribution": 0,
+        "privacy": 0,
+        "ownership": 4
+      },
+      "percentages": {
+        "coverage": 0,
+        "reliability": 0,
+        "attribution": 0,
+        "privacy": 0,
+        "ownership": 0.4
+      },
+      "maturity": "High Risk",
+      "risks": [
+        {
+          "title": "Tracking Coverage Gaps",
+          "description": "Missing events and incomplete funnel tracking are hiding critical drop-off points and optimization opportunities.",
+          "severity": "high",
+          "category": "coverage"
+        },
+        {
+          "title": "Data Trust Issues",
+          "description": "Low confidence in conversion data leads to poor decision-making and wasted ad spend.",
+          "severity": "high",
+          "category": "reliability"
+        },
+        {
+          "title": "Attribution Blind Spots",
+          "description": "You can't accurately measure which channels drive conversions, leading to misallocated budgets.",
+          "severity": "high",
+          "category": "attribution"
+        }
+      ],
+      "recommendations": [
+        {
+          "title": "Track Key Events and Full Funnel Steps",
+          "description": "Implement comprehensive event tracking to capture the complete user journey from first touch to conversion.",
+          "impact": "Complete visibility into user behavior",
+          "link": "/services#server-side-tracking",
+          "category": "coverage"
+        },
+        {
+          "title": "Audit and Validate Tracking Accuracy",
+          "description": "Conduct a thorough audit of your current tracking setup to identify and fix data quality issues.",
+          "impact": "Trustworthy data for confident decisions",
+          "link": "/services#tracking-audits",
+          "category": "reliability"
+        },
+        {
+          "title": "Improve Attribution with Server-Side/CAPI",
+          "description": "Use server-side tracking (and CAPIs) to reduce iOS/Safari loss and improve attribution accuracy.",
+          "impact": "Recover 30-50% of lost conversion data",
+          "link": "/services#meta-capi",
+          "category": "attribution"
+        }
+      ],
+      "improvementEstimation": [
+        "Recover 30-50% of lost conversion data",
+        "Major tracking gaps are hiding funnel drop-offs."
+      ]
+    }
+  },
+  {
+    "name": "representative-5",
+    "answers": {
+      "q1": "Marketing Agency",
+      "q2": "Website Only",
+      "q3": "GA4 + GTM",
+      "q4": [
+        "Not sure / None of the above"
+      ],
+      "q5": "Very confident",
+      "q6": [
+        "Reporting mismatch"
+      ],
+      "q7": "Proper CMP",
+      "q8": "https://example.com",
+      "q9": "Server-side / CAPI",
+      "q10": "Under $5,000",
+      "q11": "No clear owner",
+      "q12": "1-3 Months"
+    },
+    "expected": {
+      "total": 52,
+      "breakdown": {
+        "reliability": 10,
+        "coverage": 18,
+        "attribution": 11,
+        "privacy": 13,
+        "ownership": 0
+      },
+      "percentages": {
+        "coverage": 0.6,
+        "reliability": 0.6666666666666666,
+        "attribution": 0.36666666666666664,
+        "privacy": 0.8666666666666667,
+        "ownership": 0
+      },
+      "maturity": "Weak",
+      "risks": [
+        {
+          "title": "Ownership Gap",
+          "description": "No clear owner for analytics means issues go undetected and optimizations don't happen.",
+          "severity": "high",
+          "category": "ownership"
+        },
+        {
+          "title": "Attribution Blind Spots",
+          "description": "You can't accurately measure which channels drive conversions, leading to misallocated budgets.",
+          "severity": "high",
+          "category": "attribution"
+        },
+        {
+          "title": "Tracking Coverage Gaps",
+          "description": "Missing events and incomplete funnel tracking are hiding critical drop-off points and optimization opportunities.",
+          "severity": "low",
+          "category": "coverage"
+        }
+      ],
+      "recommendations": [
+        {
+          "title": "Define Clear Ownership and Monitoring",
+          "description": "Establish clear ownership of analytics with documented processes and regular monitoring workflows.",
+          "impact": "Proactive issue detection and resolution",
+          "link": "/services#reporting-optimization",
+          "category": "ownership"
+        },
+        {
+          "title": "Improve Attribution with Server-Side/CAPI",
+          "description": "Use server-side tracking (and CAPIs) to reduce iOS/Safari loss and improve attribution accuracy.",
+          "impact": "Recover 30-50% of lost conversion data",
+          "link": "/services#meta-capi",
+          "category": "attribution"
+        },
+        {
+          "title": "Track Key Events and Full Funnel Steps",
+          "description": "Implement comprehensive event tracking to capture the complete user journey from first touch to conversion.",
+          "impact": "Complete visibility into user behavior",
+          "link": "/services#server-side-tracking",
+          "category": "coverage"
+        }
+      ],
+      "improvementEstimation": [
+        "Recover 30-50% of lost conversion data",
+        "Some funnel blind spots remain."
+      ]
+    }
+  },
+  {
+    "name": "representative-6",
+    "answers": {
+      "q1": "Other",
+      "q2": "Mobile app",
+      "q3": "CMS plugin only (Shopify/Woo)",
+      "q4_app": "Adjust",
+      "q4": [
+        "Social (Facebook, Snapchat, Tiktok, etc.)"
+      ],
+      "q5": "Somewhat confident",
+      "q6": [
+        "Not sure where to start"
+      ],
+      "q7": "Basic banner",
+      "q8": "https://example.com",
+      "q9": "Partial setup",
+      "q10": "$5,000 - $25,000",
+      "q11": "In-house + agency",
+      "q12": "Just Exploring Options"
+    },
+    "expected": {
+      "total": 52,
+      "breakdown": {
+        "reliability": 7,
+        "coverage": 14,
+        "attribution": 14,
+        "privacy": 7,
+        "ownership": 10
+      },
+      "percentages": {
+        "coverage": 0.4666666666666667,
+        "reliability": 0.4666666666666667,
+        "attribution": 0.4666666666666667,
+        "privacy": 0.4666666666666667,
+        "ownership": 1
+      },
+      "maturity": "Weak",
+      "risks": [
+        {
+          "title": "Tracking Coverage Gaps",
+          "description": "Missing events and incomplete funnel tracking are hiding critical drop-off points and optimization opportunities.",
+          "severity": "medium",
+          "category": "coverage"
+        },
+        {
+          "title": "Data Trust Issues",
+          "description": "Low confidence in conversion data leads to poor decision-making and wasted ad spend.",
+          "severity": "medium",
+          "category": "reliability"
+        },
+        {
+          "title": "Attribution Blind Spots",
+          "description": "You can't accurately measure which channels drive conversions, leading to misallocated budgets.",
+          "severity": "medium",
+          "category": "attribution"
+        }
+      ],
+      "recommendations": [
+        {
+          "title": "Track Key Events and Full Funnel Steps",
+          "description": "Implement comprehensive event tracking to capture the complete user journey from first touch to conversion.",
+          "impact": "Complete visibility into user behavior",
+          "link": "/services#server-side-tracking",
+          "category": "coverage"
+        },
+        {
+          "title": "Audit and Validate Tracking Accuracy",
+          "description": "Conduct a thorough audit of your current tracking setup to identify and fix data quality issues.",
+          "impact": "Trustworthy data for confident decisions",
+          "link": "/services#tracking-audits",
+          "category": "reliability"
+        },
+        {
+          "title": "Improve Attribution with Server-Side/CAPI",
+          "description": "Use server-side tracking (and CAPIs) to reduce iOS/Safari loss and improve attribution accuracy.",
+          "impact": "Recover 30-50% of lost conversion data",
+          "link": "/services#meta-capi",
+          "category": "attribution"
+        }
+      ],
+      "improvementEstimation": [
+        "Recover 30-50% of lost conversion data",
+        "Major tracking gaps are hiding funnel drop-offs."
+      ]
+    }
+  },
+  {
+    "name": "representative-7",
+    "answers": {
+      "q1": "Ecommerce",
+      "q2": "Both",
+      "q3": "Custom setup",
+      "q4_app": "AppsFlyer",
+      "q4": [
+        "Search (Google Ads, Microsoft Ads, Apple Search, etc.)"
+      ],
+      "q5": "Low confidence",
+      "q6": [
+        "Attribution gaps"
+      ],
+      "q7": "No",
+      "q8": "https://example.com",
+      "q9": "Browser-only",
+      "q10": "$25,000 - $100,000",
+      "q11": "In-house only",
+      "q12": "ASAP"
+    },
+    "expected": {
+      "total": 31,
+      "breakdown": {
+        "reliability": 0,
+        "coverage": 17,
+        "attribution": 7,
+        "privacy": 1,
+        "ownership": 6
+      },
+      "percentages": {
+        "coverage": 0.5666666666666667,
+        "reliability": 0,
+        "attribution": 0.23333333333333334,
+        "privacy": 0.06666666666666667,
+        "ownership": 0.6
+      },
+      "maturity": "High Risk",
+      "risks": [
+        {
+          "title": "Data Trust Issues",
+          "description": "Low confidence in conversion data leads to poor decision-making and wasted ad spend.",
+          "severity": "high",
+          "category": "reliability"
+        },
+        {
+          "title": "Compliance Risk",
+          "description": "Inadequate consent management exposes you to GDPR/CCPA penalties and data loss.",
+          "severity": "high",
+          "category": "privacy"
+        },
+        {
+          "title": "Attribution Blind Spots",
+          "description": "You can't accurately measure which channels drive conversions, leading to misallocated budgets.",
+          "severity": "high",
+          "category": "attribution"
+        }
+      ],
+      "recommendations": [
+        {
+          "title": "Audit and Validate Tracking Accuracy",
+          "description": "Conduct a thorough audit of your current tracking setup to identify and fix data quality issues.",
+          "impact": "Trustworthy data for confident decisions",
+          "link": "/services#tracking-audits",
+          "category": "reliability"
+        },
+        {
+          "title": "Implement a CMP with Consent Mode v2",
+          "description": "Set up a proper Consent Management Platform with Google Consent Mode v2 for GDPR/CCPA compliance.",
+          "impact": "Ensure compliance and improve data modeling",
+          "link": "/services#consent-compliance",
+          "category": "privacy"
+        },
+        {
+          "title": "Improve Attribution with Server-Side/CAPI",
+          "description": "Use server-side tracking (and CAPIs) to reduce iOS/Safari loss and improve attribution accuracy.",
+          "impact": "Recover 30-50% of lost conversion data",
+          "link": "/services#meta-capi",
+          "category": "attribution"
+        }
+      ],
+      "improvementEstimation": [
+        "Recover 30-50% of lost conversion data",
+        "Some funnel blind spots remain."
+      ]
+    }
+  },
+  {
+    "name": "representative-8",
+    "answers": {
+      "q1": "Lead Generation",
+      "q2": "Not sure",
+      "q3": "Not sure / none",
+      "q4": [
+        "DSPs (DV360, Amazon Ads, The Trade Desk, etc.)"
+      ],
+      "q5": "Not confident",
+      "q6": [
+        "Missing events"
+      ],
+      "q7": "Not sure",
+      "q8": "https://example.com",
+      "q9": "Not sure",
+      "q10": "$100,000+",
+      "q11": "Agency only",
+      "q12": "1-3 Months"
+    },
+    "expected": {
+      "total": 6,
+      "breakdown": {
+        "reliability": 0,
+        "coverage": 0,
+        "attribution": 0,
+        "privacy": 0,
+        "ownership": 6
+      },
+      "percentages": {
+        "coverage": 0,
+        "reliability": 0,
+        "attribution": 0,
+        "privacy": 0,
+        "ownership": 0.6
+      },
+      "maturity": "High Risk",
+      "risks": [
+        {
+          "title": "Tracking Coverage Gaps",
+          "description": "Missing events and incomplete funnel tracking are hiding critical drop-off points and optimization opportunities.",
+          "severity": "high",
+          "category": "coverage"
+        },
+        {
+          "title": "Data Trust Issues",
+          "description": "Low confidence in conversion data leads to poor decision-making and wasted ad spend.",
+          "severity": "high",
+          "category": "reliability"
+        },
+        {
+          "title": "Attribution Blind Spots",
+          "description": "You can't accurately measure which channels drive conversions, leading to misallocated budgets.",
+          "severity": "high",
+          "category": "attribution"
+        }
+      ],
+      "recommendations": [
+        {
+          "title": "Track Key Events and Full Funnel Steps",
+          "description": "Implement comprehensive event tracking to capture the complete user journey from first touch to conversion.",
+          "impact": "Complete visibility into user behavior",
+          "link": "/services#server-side-tracking",
+          "category": "coverage"
+        },
+        {
+          "title": "Audit and Validate Tracking Accuracy",
+          "description": "Conduct a thorough audit of your current tracking setup to identify and fix data quality issues.",
+          "impact": "Trustworthy data for confident decisions",
+          "link": "/services#tracking-audits",
+          "category": "reliability"
+        },
+        {
+          "title": "Improve Attribution with Server-Side/CAPI",
+          "description": "Use server-side tracking (and CAPIs) to reduce iOS/Safari loss and improve attribution accuracy.",
+          "impact": "Recover 30-50% of lost conversion data",
+          "link": "/services#meta-capi",
+          "category": "attribution"
+        }
+      ],
+      "improvementEstimation": [
+        "Recover 30-50% of lost conversion data",
+        "Major tracking gaps are hiding funnel drop-offs."
+      ]
+    }
+  },
+  {
+    "name": "multi-platform-with-multiple-challenges",
+    "answers": {
+      "q1": "Ecommerce",
+      "q2": "Both",
+      "q3": "GA4 + GTM",
+      "q4": [
+        "Social (Facebook, Snapchat, Tiktok, etc.)",
+        "Search (Google Ads, Microsoft Ads, Apple Search, etc.)",
+        "DSPs (DV360, Amazon Ads, The Trade Desk, etc.)",
+        "Affiliates (CJ, Impact, Awin, Rakuten, etc.)",
+        "Not sure / None of the above"
+      ],
+      "q5": "Very confident",
+      "q6": [
+        "Attribution gaps",
+        "Missing events",
+        "iOS/Safari issues",
+        "Consent/compliance",
+        "Reporting mismatch"
+      ],
+      "q7": "Proper CMP",
+      "q8": "https://example.com",
+      "q9": "Server-side / CAPI",
+      "q10": "Under $5,000",
+      "q11": "In-house + agency",
+      "q12": "ASAP",
+      "q4_app": "Adjust"
+    },
+    "expected": {
+      "total": 42,
+      "breakdown": {
+        "reliability": 0,
+        "coverage": 12,
+        "attribution": 13,
+        "privacy": 7,
+        "ownership": 10
+      },
+      "percentages": {
+        "coverage": 0.4,
+        "reliability": 0,
+        "attribution": 0.43333333333333335,
+        "privacy": 0.4666666666666667,
+        "ownership": 1
+      },
+      "maturity": "Weak",
+      "risks": [
+        {
+          "title": "Data Trust Issues",
+          "description": "Low confidence in conversion data leads to poor decision-making and wasted ad spend.",
+          "severity": "high",
+          "category": "reliability"
+        },
+        {
+          "title": "Tracking Coverage Gaps",
+          "description": "Missing events and incomplete funnel tracking are hiding critical drop-off points and optimization opportunities.",
+          "severity": "medium",
+          "category": "coverage"
+        },
+        {
+          "title": "Attribution Blind Spots",
+          "description": "You can't accurately measure which channels drive conversions, leading to misallocated budgets.",
+          "severity": "medium",
+          "category": "attribution"
+        }
+      ],
+      "recommendations": [
+        {
+          "title": "Audit and Validate Tracking Accuracy",
+          "description": "Conduct a thorough audit of your current tracking setup to identify and fix data quality issues.",
+          "impact": "Trustworthy data for confident decisions",
+          "link": "/services#tracking-audits",
+          "category": "reliability"
+        },
+        {
+          "title": "Track Key Events and Full Funnel Steps",
+          "description": "Implement comprehensive event tracking to capture the complete user journey from first touch to conversion.",
+          "impact": "Complete visibility into user behavior",
+          "link": "/services#server-side-tracking",
+          "category": "coverage"
+        },
+        {
+          "title": "Improve Attribution with Server-Side/CAPI",
+          "description": "Use server-side tracking (and CAPIs) to reduce iOS/Safari loss and improve attribution accuracy.",
+          "impact": "Recover 30-50% of lost conversion data",
+          "link": "/services#meta-capi",
+          "category": "attribution"
+        }
+      ],
+      "improvementEstimation": [
+        "Recover 30-50% of lost conversion data",
+        "Major tracking gaps are hiding funnel drop-offs."
+      ]
+    }
+  }
+]

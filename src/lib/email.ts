@@ -1,3 +1,5 @@
+import type { HealthReport } from "./health-check/domain";
+
 export const FROM_EMAIL = "Upsight Digital <notifications@send.upsight.digital>";
 export const TEAM_EMAIL = "team@upsight.digital";
 
@@ -24,12 +26,13 @@ export async function sendResendEmail(apiKey: string, payload: {
       authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({ from: FROM_EMAIL, ...payload }),
+    signal: AbortSignal.timeout(10_000),
   });
   if (!response.ok) {
-    const detail = await response.text().catch(() => "");
-    throw new Error(`Email provider rejected the request (${response.status}). ${detail}`.trim());
+    await response.body?.cancel();
+    throw new Error(`Email provider rejected the request (${response.status}).`);
   }
-  return response.json().catch(() => ({}));
+  await response.body?.cancel();
 }
 
 export function contactTeamHtml(data: {name:string; email:string; phone?:string; company?:string; message:string}) {
@@ -43,15 +46,15 @@ export function contactConfirmationHtml(name: string) {
 }
 
 function scoreColor(score:number){return score>=70?'#22c55e':score>=40?'#f59e0b':'#ef4444'}
-export function healthTeamHtml(data:any) {
-  const risks=(data.risks||[]).map((r:any)=>`<li><strong>${escapeHtml(r.title)}</strong> — ${escapeHtml(r.description)}</li>`).join('');
-  const recs=(data.recommendations||[]).map((r:any)=>`<li><strong>${escapeHtml(r.title)}</strong> — ${escapeHtml(r.description)}</li>`).join('');
+export function healthTeamHtml(data: HealthReport) {
+  const risks=(data.risks||[]).map((r)=>`<li><strong>${escapeHtml(r.title)}</strong> — ${escapeHtml(r.description)}</li>`).join('');
+  const recs=(data.recommendations||[]).map((r)=>`<li><strong>${escapeHtml(r.title)}</strong> — ${escapeHtml(r.description)}</li>`).join('');
   const answers=Object.entries(data.answers||{}).map(([k,v])=>`<tr><td style="padding:6px;font-weight:bold">${escapeHtml(k)}</td><td style="padding:6px">${escapeHtml(Array.isArray(v)?v.join(', '):v)}</td></tr>`).join('');
   return `<div style="font-family:Arial,sans-serif;max-width:680px;margin:auto"><h2 style="color:#00AD84">New Analytics Health Check</h2><div style="padding:24px;border-radius:12px;background:#111827;color:white;text-align:center"><div style="font-size:46px;font-weight:bold;color:${scoreColor(data.score)}">${data.score}/100</div><div>${escapeHtml(data.maturity)}</div></div><p><strong>Email:</strong> ${escapeHtml(data.email)}</p>${data.websiteUrl?`<p><strong>Website:</strong> ${escapeHtml(data.websiteUrl)}</p>`:""}<h3>Breakdown</h3><table style="width:100%">${Object.entries(data.breakdown||{}).map(([k,v])=>`<tr><td style="padding:6px;text-transform:capitalize">${escapeHtml(k)}</td><td style="padding:6px;font-weight:bold">${escapeHtml(v)}%</td></tr>`).join('')}</table>${risks?`<h3>Top risks</h3><ul>${risks}</ul>`:""}${recs?`<h3>Recommendations</h3><ul>${recs}</ul>`:""}<h3>Answers</h3><table style="width:100%;border-collapse:collapse">${answers}</table></div>`;
 }
 
-export function healthConfirmationHtml(data:any) {
-  const risks=(data.risks||[]).slice(0,4).map((r:any)=>`<li style="margin-bottom:8px"><strong>${escapeHtml(r.title)}</strong><br><span style="color:#4b5563">${escapeHtml(r.description)}</span></li>`).join('');
-  const recs=(data.recommendations||[]).slice(0,4).map((r:any)=>`<li style="margin-bottom:8px"><strong>${escapeHtml(r.title)}</strong><br><span style="color:#4b5563">${escapeHtml(r.description)}</span></li>`).join('');
+export function healthConfirmationHtml(data: HealthReport) {
+  const risks=(data.risks||[]).slice(0,4).map((r)=>`<li style="margin-bottom:8px"><strong>${escapeHtml(r.title)}</strong><br><span style="color:#4b5563">${escapeHtml(r.description)}</span></li>`).join('');
+  const recs=(data.recommendations||[]).slice(0,4).map((r)=>`<li style="margin-bottom:8px"><strong>${escapeHtml(r.title)}</strong><br><span style="color:#4b5563">${escapeHtml(r.description)}</span></li>`).join('');
   return `<div style="font-family:Arial,sans-serif;max-width:640px;margin:auto"><h2>Your Analytics Health Score</h2><p>${data.websiteUrl?`Assessment for <strong>${escapeHtml(data.websiteUrl)}</strong>.`:"Thanks for completing the Upsight Digital assessment."}</p><div style="padding:28px;border-radius:14px;background:#111827;color:white;text-align:center"><div style="font-size:52px;font-weight:bold;color:${scoreColor(data.score)}">${data.score}/100</div><div style="font-size:18px">${escapeHtml(data.maturity)}</div></div>${risks?`<h3 style="color:#ef4444">Priority risks</h3><ul>${risks}</ul>`:""}${recs?`<h3 style="color:#00AD84">Recommended next steps</h3><ul>${recs}</ul>`:""}<p style="margin-top:28px"><a href="https://calendly.com/team-upsight/30min" style="display:inline-block;background:#00AD84;color:white;padding:12px 18px;border-radius:8px;text-decoration:none">Book a free consultation</a></p></div>`;
 }

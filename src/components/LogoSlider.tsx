@@ -28,6 +28,7 @@ export default function LogoSlider({ logos }: LogoSliderProps) {
               <img
                 src={logo.src}
                 alt={index < logos.length ? logo.alt : ""}
+                aria-hidden={index >= logos.length || !logo.alt ? true : undefined}
                 className="h-full w-full object-contain p-1"
                 width="200"
                 height="100"

@@ -1,29 +1,27 @@
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  ArrowRight,
-  ShieldAlert,
-  EyeOff,
   AlertTriangle,
-  Settings,
-  Palette,
-  ToggleRight,
-  Route,
+  ArrowRight,
+  Building2,
+  ClipboardCheck,
+  EyeOff,
   FileText,
   Globe,
-  Search,
-  PenTool,
-  Wrench,
-  ClipboardCheck,
-  ShoppingCart,
   Megaphone,
+  Palette,
+  PenTool,
+  Route,
+  Search,
+  Settings,
+  ShieldAlert,
+  ShoppingCart,
+  ToggleRight,
   Users,
-  Building2,
+  Wrench,
 } from "lucide-react";
-import { Link } from "@/lib/routing";
 
 export default function CookieConsent() {
-  // SEO is handled by the SEO component in the return
 
   const problems = [
     {
@@ -189,22 +187,14 @@ export default function CookieConsent() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
-              <Link href="/contact">
-                <Button size="lg" className="text-base px-8 h-12">
+              <ButtonLink href="/contact" size="lg" className="text-base px-8 h-12">
                   Fix My Tracking Today
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Link href="/health-check">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group"
-                  style={{
+                </ButtonLink>
+              <ButtonLink href="/health-check" size="lg" variant="outline" style={{
                     boxShadow: "0 0 20px rgba(0, 173, 132, 0.2)",
                     animation: "button-glow 2s ease-in-out infinite",
-                  }}
-                >
+                  }} className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group">
                   <span className="relative z-10">
                     ✨ Free Health Check
                   </span>
@@ -215,8 +205,7 @@ export default function CookieConsent() {
                         "linear-gradient(135deg, rgba(0, 173, 132, 0.3) 0%, transparent 50%, rgba(0, 173, 132, 0.3) 100%)",
                     }}
                   />
-                </Button>
-              </Link>
+                </ButtonLink>
             </div>
 
             <p className="text-xs text-muted-foreground">
@@ -355,13 +344,13 @@ export default function CookieConsent() {
                 >
                   <CardContent className="p-6">
                     {/* Step number */}
-                    <span className="text-4xl font-bold text-primary/10 absolute top-4 right-4">
+                    <span aria-hidden="true" className="text-4xl font-bold text-primary/70 absolute top-4 right-4">
                       {step.step}
                     </span>
                     <div className="mb-4 p-3 rounded-lg bg-primary/10 inline-block">
                       <Icon className="h-6 w-6 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
+                    <h3 className="text-xl font-semibold mb-3"><span className="sr-only">Step {step.step}: </span>{step.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {step.description}
                     </p>
@@ -446,21 +435,13 @@ export default function CookieConsent() {
                 your business, and preserves the data your marketing needs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
-                <Link href="/health-check">
-                  <Button size="lg" className="text-base px-8 h-12">
+                <ButtonLink href="/health-check" size="lg" className="text-base px-8 h-12">
                     Audit My Tracking & Compliance
                     <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <Link href="/contact">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="text-base px-8 h-12"
-                  >
+                  </ButtonLink>
+                <ButtonLink href="/contact" size="lg" variant="outline" className="text-base px-8 h-12">
                     Book Free Consultation
-                  </Button>
-                </Link>
+                  </ButtonLink>
               </div>
               <p className="text-xs text-muted-foreground">
                 Book a consultation with a certified implementation expert.

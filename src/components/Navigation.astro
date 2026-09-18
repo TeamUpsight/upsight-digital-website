@@ -26,25 +26,23 @@ const resourcesActive = resourceLinks.some((link) => active(link.href));
           <a href={link.href} aria-current={active(link.href) ? 'page' : undefined} class:list={["text-sm font-medium transition-colors hover:text-primary", active(link.href) ? "text-primary" : "text-foreground/80"]}>{link.label}</a>
         ))}
 
-        <div class="group relative">
-          <button
-            type="button"
-            aria-haspopup="true"
-            class:list={["flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary focus-visible:outline-none focus-visible:text-primary", resourcesActive ? "text-primary" : "text-foreground/80"]}
+        <details id="resources-menu" class="group relative">
+          <summary
+            class:list={["flex cursor-pointer list-none items-center gap-1 text-sm font-medium [&::-webkit-details-marker]:hidden transition-colors hover:text-primary focus-visible:outline-none focus-visible:text-primary", resourcesActive ? "text-primary" : "text-foreground/80"]}
           >
             Resources
-            <svg class="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg class="h-4 w-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="m6 9 6 6 6-6" />
             </svg>
-          </button>
-          <div class="invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-[opacity,visibility] duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+          </summary>
+          <div class=" absolute left-0 top-full z-50 pt-2">
             <div class="min-w-[180px] rounded-lg border border-border bg-card py-2 shadow-xl">
               {resourceLinks.map((link) => (
                 <a href={link.href} aria-current={active(link.href) ? 'page' : undefined} class:list={["block px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary focus-visible:bg-muted focus-visible:text-primary focus-visible:outline-none", active(link.href) ? "bg-muted/50 text-primary" : "text-foreground/80"]}>{link.label}</a>
               ))}
             </div>
           </div>
-        </div>
+        </details>
 
         <a href="/health-check" class="relative overflow-hidden rounded-full px-3 py-1.5 text-sm font-semibold text-primary shadow-[0_0_20px_rgba(0,173,132,0.3),0_0_40px_rgba(0,173,132,0.1),inset_0_0_20px_rgba(0,173,132,0.05)] transition-shadow hover:shadow-[0_0_25px_rgba(0,173,132,0.45),0_0_45px_rgba(0,173,132,0.15)]" style="background:linear-gradient(135deg,rgba(0,173,132,.15) 0%,rgba(0,173,132,.05) 100%)">
           <span class="relative z-10">Free Health Check</span>
@@ -91,4 +89,22 @@ const resourcesActive = resourceLinks.some((link) => active(link.href));
     openIcon?.classList.toggle('hidden', !isOpen);
     closeIcon?.classList.toggle('hidden', isOpen);
   });
+
+  const closeMobile = () => {
+    button?.setAttribute('aria-expanded', 'false');
+    menu?.classList.add('hidden'); openIcon?.classList.remove('hidden'); closeIcon?.classList.add('hidden');
+  };
+  menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMobile));
+  const resources = document.querySelector<HTMLDetailsElement>('#resources-menu');
+  const summary = resources?.querySelector('summary');
+  resources?.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') resources.open = true; });
+  resources?.addEventListener('pointerleave', () => { if (!resources.contains(document.activeElement)) resources.open = false; });
+  resources?.addEventListener('focusout', event => { if (!(event.relatedTarget instanceof Node) || !resources.contains(event.relatedTarget)) resources.open = false; });
+  document.addEventListener('click', event => { if (resources && event.target instanceof Node && !resources.contains(event.target)) resources.open = false; });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    if (resources?.open) { resources.open = false; summary?.focus(); }
+    if (button?.getAttribute('aria-expanded') === 'true') { closeMobile(); button.focus(); }
+  });
+  window.matchMedia('(min-width: 768px)').addEventListener('change', closeMobile);
 </script>

@@ -1,6 +1,5 @@
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { Link } from "@/lib/routing";
 
 export default function AnimatedHero() {
   const stats = [
@@ -87,28 +86,17 @@ export default function AnimatedHero() {
           </p>
 
           <div className="mb-16 flex flex-col justify-center gap-4 sm:flex-row animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
-            <Link href="/contact">
-              <Button
-                size="lg"
-                className="group relative h-12 overflow-hidden px-8 text-base shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30"
-              >
+            <ButtonLink href="/contact" size="lg" className="group relative h-12 overflow-hidden px-8 text-base shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30">
                 <span className="relative z-10 flex items-center">
                   Get Free Consultation
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80 opacity-0 transition-opacity group-hover:opacity-100" />
-              </Button>
-            </Link>
-            <Link href="/health-check">
-              <Button
-                size="lg"
-                variant="outline"
-                className="hero-health-button group relative h-12 overflow-hidden px-8 text-base backdrop-blur-sm transition-all duration-300 hover:bg-primary/10"
-              >
+              </ButtonLink>
+            <ButtonLink href="/health-check" size="lg" variant="outline" className="hero-health-button group relative h-12 overflow-hidden px-8 text-base backdrop-blur-sm transition-all duration-300 hover:bg-primary/10">
                 <span className="relative z-10">✨ Free Health Check</span>
                 <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,173,132,0.3)_0%,transparent_50%,rgba(0,173,132,0.3)_100%)] opacity-20 transition-opacity group-hover:opacity-30" />
-              </Button>
-            </Link>
+              </ButtonLink>
           </div>
 
           <div className="mx-auto grid max-w-2xl grid-cols-3 gap-4 sm:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-400">

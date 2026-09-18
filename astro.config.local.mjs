@@ -8,6 +8,7 @@ import sitemap from '@astrojs/sitemap';
 import { fileURLToPath } from 'node:url';
 
 export default defineConfig({
+  devToolbar: { enabled: process.env.PLAYWRIGHT_TEST !== '1' },
   site: 'https://upsight.digital',
   integrations: [react(), sitemap({ namespaces: { news: false, xhtml: false, video: false } })],
   vite: {

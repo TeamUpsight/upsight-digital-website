@@ -5,7 +5,7 @@ Production website for [upsight.digital](https://upsight.digital), built with As
 ## Quick start
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -23,6 +23,10 @@ Production deployments are handled automatically by Cloudflare from the GitHub `
 
 Copy `.env.example` to `.env` for local development and set `RESEND_API_KEY` locally. Never commit `.env`.
 
-The production `RESEND_API_KEY` is stored as a Cloudflare Worker secret.
+Production requires `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` as Cloudflare Worker secrets, plus `PUBLIC_TURNSTILE_SITE_KEY` in the build environment. Forms fail closed until Turnstile is configured.
+
+Use Node 24 LTS (minimum 22.18). `npm run build` runs type/hook checks and the scoring/security tests before building. `npm run test:browser` runs browser and accessibility checks with mocked delivery; install its browser with `npx playwright install chromium` first.
+
+See [hardening and deployment notes](docs/HARDENING.md) before merging or deploying these changes.
 
 See `docs/DEVELOPMENT.md` and `docs/ARCHITECTURE.md` for details.

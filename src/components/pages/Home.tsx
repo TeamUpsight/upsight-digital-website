@@ -1,38 +1,38 @@
-import { Button } from "@/components/ui/button";
+import AnimatedHero from "@/components/AnimatedHero";
+import LogoSlider from "@/components/LogoSlider";
+import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "@/lib/routing";
 import {
   Activity,
   ArrowRight,
   BarChart3,
   CheckCircle2,
+  Cpu,
   Lock,
+  RefreshCw,
   Server,
   ShoppingCart,
-  TrendingUp,
   Target,
-  Cpu,
-  RefreshCw,
+  TrendingUp,
   Users,
 } from "lucide-react";
-import { Link } from "@/lib/routing";
-import AnimatedHero from "@/components/AnimatedHero";
-import LogoSlider from "@/components/LogoSlider";
 
 export default function Home() {
 
   const clientLogos = [
-    { src: "/images/client-logo-1.webp", alt: "Client 1" },
-    { src: "/images/client-logo-2.webp", alt: "Client 2" },
-    { src: "/images/client-logo-3.webp", alt: "Client 3" },
-    { src: "/images/client-logo-4.webp", alt: "Client 4" },
-    { src: "/images/client-logo-5.webp", alt: "Client 5" },
-    { src: "/images/client-logo-6.webp", alt: "Client 6" },
-    { src: "/images/client-logo-7.webp", alt: "Client 7" },
-    { src: "/images/client-logo-8.webp", alt: "Client 8" },
-    { src: "/images/client-logo-9.webp", alt: "Client 9" },
-    { src: "/images/client-logo-10.webp", alt: "Client 10" },
-    { src: "/images/client-logo-11.webp", alt: "Client 11" },
-    { src: "/images/client-logo-12.webp", alt: "Client 12" },
+    { src: "/images/client-logo-1.webp", alt: "" },
+    { src: "/images/client-logo-2.webp", alt: "" },
+    { src: "/images/client-logo-3.webp", alt: "" },
+    { src: "/images/client-logo-4.webp", alt: "" },
+    { src: "/images/client-logo-5.webp", alt: "" },
+    { src: "/images/client-logo-6.webp", alt: "" },
+    { src: "/images/client-logo-7.webp", alt: "" },
+    { src: "/images/client-logo-8.webp", alt: "" },
+    { src: "/images/client-logo-9.webp", alt: "" },
+    { src: "/images/client-logo-10.webp", alt: "" },
+    { src: "/images/client-logo-11.webp", alt: "" },
+    { src: "/images/client-logo-12.webp", alt: "" },
   ];
 
   const services = [
@@ -265,12 +265,10 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-12">
-            <Link href="/services">
-              <Button size="lg" variant="outline">
+            <ButtonLink href="/services" size="lg" variant="outline">
                 View All Services
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+              </ButtonLink>
           </div>
         </div>
       </section>
@@ -316,9 +314,7 @@ export default function Home() {
                     </span>
                   </li>
                 </ul>
-                <Link href="/who-its-for">
-                  <Button className="w-full">Explore Agency Solutions</Button>
-                </Link>
+                <ButtonLink href="/who-its-for" className="w-full">Explore Agency Solutions</ButtonLink>
               </CardContent>
             </Card>
 
@@ -351,9 +347,7 @@ export default function Home() {
                     </span>
                   </li>
                 </ul>
-                <Link href="/who-its-for">
-                  <Button className="w-full">Explore Ecommerce Solutions</Button>
-                </Link>
+                <ButtonLink href="/who-its-for" className="w-full">Explore Ecommerce Solutions</ButtonLink>
               </CardContent>
             </Card>
           </div>
@@ -435,12 +429,10 @@ export default function Home() {
                     </div>
                   </div>
                   {testimonial.author === "Alyssa Wong" && (
-                    <Link href="/case-studies/slice" className="mt-4">
-                      <Button size="sm" variant="outline" className="w-full">
+                    <ButtonLink href="/case-studies/slice" size="sm" variant="outline" className="mt-4 w-full">
                         Read Slice Case Study
                         <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
+                      </ButtonLink>
                   )}
                 </CardContent>
               </Card>
@@ -458,16 +450,12 @@ export default function Home() {
               Get a free audit of your analytics setup. No credit card required.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/health-check">
-                <Button size="lg" className="bg-[#008466] hover:bg-[#007A5E] text-white">
+              <ButtonLink href="/health-check" size="lg" className="bg-[#008466] hover:bg-[#007A5E] text-white">
                   Start Free Health Check
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button size="lg" variant="outline">
+                </ButtonLink>
+              <ButtonLink href="/contact" size="lg" variant="outline">
                   Schedule Consultation
-                </Button>
-              </Link>
+                </ButtonLink>
             </div>
           </div>
         </div>

@@ -1,85 +1,21 @@
-import { Button } from "@/components/ui/button";
+import DataFlowDiagram from "@/components/DataFlowDiagram";
+import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "@/lib/routing";
 import {
+  AlertTriangle,
   ArrowLeft,
   ArrowRight,
-  Play,
-  AlertTriangle,
-  Layers,
-  ShieldAlert,
-  Server,
-  Database,
-  Shield,
   ChevronDown,
-  RotateCcw,
+  Database,
+  Layers,
+  Server,
+  Shield,
+  ShieldAlert
 } from "lucide-react";
-import DataFlowDiagram from "@/components/DataFlowDiagram";
-import { Link } from "@/lib/routing";
-import { useEffect, useState, useRef, useCallback } from "react";
 
 // CDN URLs for assets
 const SLICE_LOGO_URL = "/images/slice-logo.png";
-const VIDEO_TESTIMONIAL_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663269151870/NKnKdFDxhaRVudBQKnGMGB/AlyssaWong-SliceLife_76a30443.mp4";
-
-/* ─── Animated Counter Hook ─── */
-function useCountUp(target: number, duration = 2000, startOnView = true) {
-  const [count, setCount] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!startOnView) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasStarted) {
-          setHasStarted(true);
-        }
-      },
-      { threshold: 0.3 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [hasStarted, startOnView]);
-
-  useEffect(() => {
-    if (!hasStarted) return;
-    let start = 0;
-    const increment = target / (duration / 16);
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start * 100) / 100);
-      }
-    }, 16);
-    return () => clearInterval(timer);
-  }, [hasStarted, target, duration]);
-
-  return { count, ref };
-}
-
-/* ─── Scroll Reveal Hook ─── */
-function useScrollReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return { ref, isVisible };
-}
 
 /* ─── Horizontal Bar Chart Component ─── */
 function HorizontalBar({ label, value, suffix = "%", maxValue = 140, delay = 0 }: {
@@ -89,11 +25,10 @@ function HorizontalBar({ label, value, suffix = "%", maxValue = 140, delay = 0 }
   maxValue?: number;
   delay?: number;
 }) {
-  const { ref, isVisible } = useScrollReveal();
   const width = Math.min((value / maxValue) * 100, 100);
 
   return (
-    <div ref={ref} className="mb-5">
+    <div data-reveal className="mb-5">
       <div className="flex justify-between items-baseline mb-2">
         <span className="text-sm font-medium text-foreground/80">{label}</span>
         <span className="text-lg font-bold text-primary">
@@ -102,9 +37,10 @@ function HorizontalBar({ label, value, suffix = "%", maxValue = 140, delay = 0 }
       </div>
       <div className="h-3 bg-muted rounded-full overflow-hidden">
         <div
+          data-grow
           className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full transition-all ease-out"
           style={{
-            width: isVisible ? `${width}%` : "0%",
+            width: `${width}%`,
             transitionDuration: "1.5s",
             transitionDelay: `${delay}ms`,
           }}
@@ -121,13 +57,12 @@ function DonutChart({ value, label, size = 120, strokeWidth = 10 }: {
   size?: number;
   strokeWidth?: number;
 }) {
-  const { ref, isVisible } = useScrollReveal();
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (value / 100) * circumference;
 
   return (
-    <div ref={ref} className="flex flex-col items-center">
+    <div data-reveal className="flex flex-col items-center">
       <svg width={size} height={size} className="-rotate-90">
         <circle
           cx={size / 2}
@@ -146,7 +81,7 @@ function DonutChart({ value, label, size = 120, strokeWidth = 10 }: {
           stroke="currentColor"
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
-          strokeDashoffset={isVisible ? offset : circumference}
+          strokeDashoffset={offset} data-donut={circumference}
           strokeLinecap="round"
           className="text-primary transition-all ease-out"
           style={{ transitionDuration: "2s" }}
@@ -164,138 +99,22 @@ function DonutChart({ value, label, size = 120, strokeWidth = 10 }: {
 
 
 /* ─── Flippable Video Card (Vertical Mobile Shape) ─── */
-function FlippableVideoCard() {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const handleFlip = useCallback(() => {
-    if (isFlipped && videoRef.current) {
-      videoRef.current.pause();
-      setIsVideoPlaying(false);
-    }
-    setIsFlipped(!isFlipped);
-  }, [isFlipped]);
-
-  const handlePlayVideo = useCallback(() => {
-    if (videoRef.current) {
-      videoRef.current.play();
-      setIsVideoPlaying(true);
-    }
-  }, []);
-
-  return (
-    <div className="w-full max-w-sm mx-auto" style={{ perspective: "1200px" }}>
-      <div
-        className="relative w-full transition-transform duration-700 cursor-pointer"
-        style={{
-          transformStyle: "preserve-3d",
-          transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
-          aspectRatio: "9/16",
-        }}
-      >
-        {/* Front: Quote Card */}
-        <div
-          className="absolute inset-0 rounded-2xl overflow-hidden"
-          style={{ backfaceVisibility: "hidden" }}
-          onClick={handleFlip}
-        >
-          <Card className="h-full border-primary/20 bg-gradient-to-br from-card via-card to-primary/5">
-            <CardContent className="p-6 md:p-8 h-full flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-3 mb-6">
-                  <img
-                    src="/images/alyssa-wong.webp"
-                    alt="Alyssa Wong"
-                    width="56"
-                    height="56"
-                    className="rounded-full border-2 border-primary/30"
-                  />
-                  <div>
-                    <p className="font-semibold">Alyssa Wong</p>
-                    <p className="text-xs text-muted-foreground">Director of Growth Marketing, Slice</p>
-                  </div>
-                </div>
-                <blockquote className="text-sm md:text-base leading-relaxed text-foreground/90 italic">
-                  "Partnering with Upsight Digital has been transformational for Slice. They quickly
-                  identified and addressed critical tracking issues—from fragmented event structures
-                  and tracking gaps to compliance risks—streamlining our data infrastructure across
-                  web and mobile. We now have significantly cleaner data pipelines, improved
-                  cross-platform visibility, and greater confidence in our analytics."
-                </blockquote>
-              </div>
-              <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/50">
-                <div className="flex items-center gap-2 text-xs text-primary">
-                  <Play className="h-3.5 w-3.5" fill="currentColor" />
-                  <span>Tap to watch video</span>
-                </div>
-                <RotateCcw className="h-3.5 w-3.5 text-muted-foreground" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Back: Video Player */}
-        <div
-          className="absolute inset-0 rounded-2xl overflow-hidden"
-          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-        >
-          <Card className="h-full border-primary/20 bg-black">
-            <div className="relative h-full">
-              <video
-                ref={videoRef}
-                src={VIDEO_TESTIMONIAL_URL}
-                className="w-full h-full object-cover rounded-2xl"
-                controls={isVideoPlaying}
-                onEnded={() => setIsVideoPlaying(false)}
-                playsInline
-              />
-              {!isVideoPlaying && isFlipped && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePlayVideo();
-                  }}
-                  className="absolute inset-0 flex items-center justify-center group"
-                >
-                  <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/50 group-hover:scale-110 transition-transform">
-                    <Play className="h-7 w-7 text-primary-foreground ml-0.5" fill="currentColor" />
-                  </div>
-                </button>
-              )}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleFlip();
-                }}
-                className="absolute top-3 right-3 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white transition-colors z-10"
-              >
-                <RotateCcw className="h-4 w-4" />
-              </button>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ─── Metric Card with animation ─── */
-function MetricCard({ value, suffix, label, prefix = "+", delay = 0 }: {
+function MetricCard({ value, suffix, label, prefix = "+" }: {
   value: number;
   suffix: string;
   label: string;
   prefix?: string;
   delay?: number;
 }) {
-  const { count, ref } = useCountUp(value, 2000);
+  const count = value;
   return (
     <div
-      ref={ref}
+      data-reveal
       className="p-5 md:p-6 bg-card/80 border border-primary/20 rounded-xl hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
     >
       <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-1">
-        {prefix}{count.toFixed(value % 1 === 0 ? 0 : 2)}{suffix}
+        {prefix}<span data-counter={value} data-decimals={value % 1 === 0 ? 0 : 2}>{count.toFixed(value % 1 === 0 ? 0 : 2)}</span>{suffix}
       </div>
       <div className="text-sm text-muted-foreground">{label}</div>
     </div>
@@ -309,11 +128,10 @@ function ProblemCard({ icon: Icon, title, items, delay = 0 }: {
   items: string[];
   delay?: number;
 }) {
-  const { ref, isVisible } = useScrollReveal();
   return (
     <div
-      ref={ref}
-      className={`transition-all ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+      data-reveal
+      className="transition-all ease-out opacity-100 translate-y-0"
       style={{ transitionDelay: `${delay}ms`, transitionDuration: "600ms" }}
     >
       <Card className="h-full border-destructive/20 bg-gradient-to-b from-destructive/5 to-transparent hover:border-destructive/40 transition-all duration-300 group">
@@ -343,11 +161,10 @@ function PillarCard({ icon: Icon, title, items, delay = 0 }: {
   items: string[];
   delay?: number;
 }) {
-  const { ref, isVisible } = useScrollReveal();
   return (
     <div
-      ref={ref}
-      className={`transition-all ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+      data-reveal
+      className="transition-all ease-out opacity-100 translate-y-0"
       style={{ transitionDelay: `${delay}ms`, transitionDuration: "600ms" }}
     >
       <Card className="h-full border-primary/20 bg-gradient-to-b from-primary/5 to-transparent hover:border-primary/40 transition-all duration-300 group">
@@ -374,8 +191,7 @@ function PillarCard({ icon: Icon, title, items, delay = 0 }: {
 /* ═══════════════════════════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════ */
-export default function CaseStudySlice() {
-  // SEO is handled by the SEO component in the return
+export default function CaseStudySlice({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -417,14 +233,9 @@ export default function CaseStudySlice() {
           </div>
 
           {/* Scroll indicator */}
-          <div
-            className="flex justify-center mt-14 animate-bounce cursor-pointer"
-            onClick={() => document.getElementById('client-info')?.scrollIntoView({ behavior: 'smooth' })}
-            role="button"
-            aria-label="Scroll to next section"
-          >
+          <a href="#client-info" className="flex justify-center mt-14 animate-bounce" aria-label="Scroll to next section">
             <ChevronDown className="h-6 w-6 text-muted-foreground/50 hover:text-primary transition-colors" />
-          </div>
+          </a>
         </div>
       </section>
 
@@ -508,7 +319,7 @@ export default function CaseStudySlice() {
       <section id="strategy" className="py-16 md:py-24">
         <div className="container">
           <div className="text-center mb-12">
-            <span className="text-sm font-semibold text-primary/80 uppercase tracking-widest">Our Approach</span>
+            <span className="text-sm font-semibold text-primary/90 uppercase tracking-widest">Our Approach</span>
             <h2 className="text-2xl md:text-4xl font-bold mt-3 mb-4">Strategy & Implementation</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               We designed a unified data architecture that flows from the client's website through server-side processing to clean, actionable analytics.
@@ -561,7 +372,7 @@ export default function CaseStudySlice() {
       <section id="results" className="py-16 md:py-24 bg-muted/30">
         <div className="container">
           <div className="text-center mb-12">
-            <span className="text-sm font-semibold text-primary/80 uppercase tracking-widest">Measurable Outcomes</span>
+            <span className="text-sm font-semibold text-primary/90 uppercase tracking-widest">Measurable Outcomes</span>
             <h2 className="text-2xl md:text-4xl font-bold mt-3 mb-4">Results & Impact</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               The transformation delivered immediate, measurable improvements across every key performance indicator.
@@ -613,14 +424,14 @@ export default function CaseStudySlice() {
       <section id="testimonial" className="py-16 md:py-24">
         <div className="container">
           <div className="text-center mb-12">
-            <span className="text-sm font-semibold text-primary/80 uppercase tracking-widest">Client Testimonial</span>
+            <span className="text-sm font-semibold text-primary/90 uppercase tracking-widest">Client Testimonial</span>
             <h2 className="text-2xl md:text-4xl font-bold mt-3 mb-4">Hear It From Slice</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
               Click the card to watch Alyssa Wong share her experience working with Upsight Digital.
             </p>
           </div>
 
-          <FlippableVideoCard />
+          {children}
         </div>
       </section>
 
@@ -630,7 +441,7 @@ export default function CaseStudySlice() {
           <div className="max-w-5xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <span className="text-sm font-semibold text-primary/80 uppercase tracking-widest">Summary</span>
+                <span className="text-sm font-semibold text-primary/90 uppercase tracking-widest">Summary</span>
                 <h2 className="text-2xl md:text-3xl font-bold mt-3 mb-6">Key Takeaways</h2>
                 <div className="space-y-4">
                   {[
@@ -639,15 +450,14 @@ export default function CaseStudySlice() {
                     { title: "Compliance improves data clarity", desc: "Proper consent management doesn't reduce data — it makes the data you collect more reliable." },
                     { title: "Attribution unlocks smarter spend", desc: "Correctly attributing traffic revealed hidden ROI and enabled better budget allocation." },
                   ].map((item, i) => {
-                    const { ref, isVisible } = useScrollReveal();
                     return (
                       <div
                         key={i}
-                        ref={ref}
-                        className={`p-4 rounded-lg border border-border/50 bg-card transition-all ease-out ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`}
+                        data-reveal
+                        className="p-4 rounded-lg border border-border/50 bg-card transition-all ease-out opacity-100 translate-x-0"
                         style={{ transitionDelay: `${i * 100}ms`, transitionDuration: "500ms" }}
                       >
-                        <h4 className="font-semibold text-sm mb-1">{item.title}</h4>
+                        <h3 className="font-semibold text-sm mb-1">{item.title}</h3>
                         <p className="text-sm text-muted-foreground">{item.desc}</p>
                       </div>
                     );
@@ -665,17 +475,13 @@ export default function CaseStudySlice() {
                     Request a measurement audit or server-side assessment with Upsight Digital. We'll identify exactly where you're losing data and revenue.
                   </p>
                   <div className="space-y-3">
-                    <Link href="/contact">
-                      <Button size="lg" className="w-full bg-[#008466] hover:bg-[#007A5E] text-white shadow-lg shadow-primary/25">
+                    <ButtonLink href="/contact" size="lg" className="w-full bg-[#008466] hover:bg-[#007A5E] text-white shadow-lg shadow-primary/25">
                         Book a Free Consultation
                         <ArrowRight className="ml-2 h-5 w-5" />
-                      </Button>
-                    </Link>
-                    <Link href="/health-check">
-                      <Button size="lg" variant="outline" className="w-full">
+                      </ButtonLink>
+                    <ButtonLink href="/health-check" size="lg" variant="outline" className="w-full">
                         Take Free Health Check
-                      </Button>
-                    </Link>
+                      </ButtonLink>
                   </div>
                 </CardContent>
               </Card>

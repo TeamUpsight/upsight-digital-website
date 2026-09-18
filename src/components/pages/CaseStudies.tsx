@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ButtonLink } from "@/components/ui/button";
 import { Link } from "@/lib/routing";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 const SLICE_LOGO_URL =
   "/images/slice-logo.png";
@@ -159,12 +159,10 @@ export default function CaseStudies() {
                   We will assess your current analytics foundation and show you where data quality, attribution, or platform signals are limiting performance.
                 </p>
               </div>
-              <Link href="/contact">
-                <Button size="lg" className="w-full shadow-lg shadow-primary/20 md:w-auto">
+              <ButtonLink href="/contact" size="lg" className="w-full shadow-lg shadow-primary/20 md:w-auto">
                   Book a Free Consultation
                   <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-                </Button>
-              </Link>
+                </ButtonLink>
             </div>
           </div>
         </section>

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ArrowRight,
@@ -9,10 +9,8 @@ import {
   Settings,
   TrendingUp,
 } from "lucide-react";
-import { Link } from "@/lib/routing";
 
 export default function Process() {
-  // SEO is handled by the SEO component in the return
 
   const steps = [
     {
@@ -146,7 +144,7 @@ export default function Process() {
                     <div className="grid md:grid-cols-12 gap-8">
                       {/* Left: Number and Icon */}
                       <div className="md:col-span-2">
-                        <div className="text-6xl font-bold text-primary/20 mb-4">
+                        <div aria-hidden="true" className="text-6xl font-bold text-primary/70 mb-4">
                           {step.number}
                         </div>
                         <div className="p-3 rounded-lg bg-primary/10 inline-block">
@@ -156,16 +154,17 @@ export default function Process() {
 
                       {/* Middle: Content */}
                       <div className="md:col-span-6">
-                        <h3 className="text-2xl font-semibold mb-3">
+                        <h2 className="text-2xl font-semibold mb-3">
+                          <span className="sr-only">Step {step.number}: </span>
                           {step.title}
-                        </h3>
+                        </h2>
                         <p className="text-muted-foreground mb-6">
                           {step.description}
                         </p>
 
-                        <h4 className="font-semibold mb-3 text-sm uppercase tracking-wide text-muted-foreground">
+                        <h3 className="font-semibold mb-3 text-sm uppercase tracking-wide text-muted-foreground">
                           Key Activities
-                        </h4>
+                        </h3>
                         <ul className="space-y-2">
                           {step.activities.map((activity, activityIndex) => (
                             <li
@@ -183,15 +182,15 @@ export default function Process() {
                       <div className="md:col-span-4">
                         <div className="bg-muted/50 rounded-lg p-6">
                           <div className="mb-4">
-                            <h4 className="font-semibold mb-2 text-sm uppercase tracking-wide text-muted-foreground">
+                            <h3 className="font-semibold mb-2 text-sm uppercase tracking-wide text-muted-foreground">
                               Deliverable
-                            </h4>
+                            </h3>
                             <p className="text-sm">{step.deliverable}</p>
                           </div>
                           <div>
-                            <h4 className="font-semibold mb-2 text-sm uppercase tracking-wide text-muted-foreground">
+                            <h3 className="font-semibold mb-2 text-sm uppercase tracking-wide text-muted-foreground">
                               Timeline
-                            </h4>
+                            </h3>
                             <p className="text-sm font-medium text-primary">
                               {step.timeline}
                             </p>
@@ -322,22 +321,14 @@ export default function Process() {
                 identify gaps, and outline a clear plan to fix your tracking.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/contact">
-                  <Button size="lg" className="text-base px-8 h-12">
+                <ButtonLink href="/contact" size="lg" className="text-base px-8 h-12">
                     Book Free Consultation
                     <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <Link href="/health-check">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group"
-                    style={{
+                  </ButtonLink>
+                <ButtonLink href="/health-check" size="lg" variant="outline" style={{
                       boxShadow: '0 0 20px rgba(0, 173, 132, 0.2)',
                       animation: 'button-glow 2s ease-in-out infinite',
-                    }}
-                  >
+                    }} className="text-base px-8 h-12 border-primary text-primary hover:bg-primary/10 relative overflow-hidden group">
                     <span className="relative z-10">✨ Free Health Check</span>
                     <div 
                       className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity"
@@ -345,8 +336,7 @@ export default function Process() {
                         background: 'linear-gradient(135deg, rgba(0, 173, 132, 0.3) 0%, transparent 50%, rgba(0, 173, 132, 0.3) 100%)',
                       }}
                     />
-                  </Button>
-                </Link>
+                  </ButtonLink>
               </div>
             </CardContent>
           </Card>

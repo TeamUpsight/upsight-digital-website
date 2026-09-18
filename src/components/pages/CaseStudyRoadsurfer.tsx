@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
+import { Link } from "@/lib/routing";
 import {
   ArrowDownRight,
   ArrowLeft,
@@ -14,50 +15,16 @@ import {
   Waypoints,
   Wrench,
 } from "lucide-react";
-import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
-import { Link } from "@/lib/routing";
+import { type ElementType, type ReactNode } from "react";
 
 const ROADSURFER_LOGO_URL = "/images/roadsurfer-logo.png";
 
-function useInView(threshold = 0.12) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-
-    if (typeof IntersectionObserver === "undefined") {
-      setIsVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold },
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, isVisible };
-}
-
 function Reveal({ children, delay = 0, className = "" }: { children: ReactNode; delay?: number; className?: string }) {
-  const { ref, isVisible } = useInView();
 
   return (
     <div
-      ref={ref}
-      className={`transition-[opacity,transform] duration-700 motion-reduce:transition-none ${
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
-      } ${className}`}
+      data-reveal
+      className={`transition-[opacity,transform] duration-700 motion-reduce:transition-none translate-y-0 opacity-100 ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -125,11 +92,11 @@ function RouteStep({
 }) {
   return (
     <article className="relative h-full overflow-hidden rounded-2xl border border-border/60 bg-card/70 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 motion-reduce:transform-none">
-      <span className="absolute right-5 top-3 font-mono text-5xl font-bold text-primary/[0.07]">{number}</span>
+      <span aria-hidden="true" className="absolute right-5 top-3 font-mono text-5xl font-bold text-primary/70">{number}</span>
       <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-primary/25 bg-primary/10 text-primary">
         <Icon className="h-6 w-6" aria-hidden="true" />
       </div>
-      <h3 className="mb-3 text-xl font-semibold">{title}</h3>
+      <h3 className="mb-3 text-xl font-semibold"><span className="sr-only">Step {number}: </span>{title}</h3>
       <p className="mb-5 text-sm leading-6 text-muted-foreground">{description}</p>
       <ul className="space-y-3">
         {items.map((item) => (
@@ -144,10 +111,10 @@ function RouteStep({
 }
 
 function MetricBar({ label, value, detail, delay = 0 }: { label: string; value: number; detail: string; delay?: number }) {
-  const { ref, isVisible } = useInView(0.3);
+
 
   return (
-    <div ref={ref} className="space-y-2">
+    <div data-reveal className="space-y-2">
       <div className="flex items-end justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-foreground">{label}</p>
@@ -158,7 +125,7 @@ function MetricBar({ label, value, detail, delay = 0 }: { label: string; value: 
       <div className="h-2 overflow-hidden rounded-full bg-background">
         <div
           className="h-full rounded-full bg-gradient-to-r from-primary/60 to-primary transition-[width] duration-1000 ease-out motion-reduce:transition-none"
-          style={{ width: isVisible ? `${value}%` : "0%", transitionDelay: `${delay}ms` }}
+          data-grow style={{ width: `${value}%`, transitionDelay: `${delay}ms` }}
         />
       </div>
     </div>
@@ -480,17 +447,13 @@ export default function CaseStudyRoadsurfer() {
                 </p>
               </div>
               <div className="flex flex-col gap-3 md:min-w-[260px]">
-                <Link href="/contact">
-                  <Button size="lg" className="w-full shadow-lg shadow-primary/20">
+                <ButtonLink href="/contact" size="lg" className="w-full shadow-lg shadow-primary/20">
                     Book a Free Consultation
                     <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-                  </Button>
-                </Link>
-                <Link href="/health-check">
-                  <Button size="lg" variant="outline" className="w-full bg-background/20">
+                  </ButtonLink>
+                <ButtonLink href="/health-check" size="lg" variant="outline" className="w-full bg-background/20">
                     Take Free Health Check
-                  </Button>
-                </Link>
+                  </ButtonLink>
               </div>
             </div>
           </div>
