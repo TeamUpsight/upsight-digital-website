@@ -11,7 +11,8 @@
     "build": "npm run check && npm test && astro build",
     "test": "node --test tests/*.test.mjs",
     "preview": "astro preview",
-    "test:browser": "playwright test",
+    "test:browser": "playwright test tests/browser/site.spec.ts",
+    "test:ux": "playwright test --config playwright.ux.config.ts",
     "deploy": "npm run build && wrangler deploy",
     "astro": "astro"
   },

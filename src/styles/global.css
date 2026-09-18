@@ -2,6 +2,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/fonts/dm-sans-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 600; font-display: swap; src: url('/fonts/inter-latin.woff2') format('woff2'); }
+
 /* Swiss Modernism Design System
    - Systematic precision with mathematical spacing
    - Teal (#00AD84) as signal color for CTAs and key information
@@ -135,18 +138,18 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
     line-height: 1.6;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'DM Sans', 'Segoe UI', Arial, sans-serif;
     font-weight: 600;
     line-height: 1.2;
   }
   
   code, pre, .font-mono {
-    font-family: ui-monospace, 'SF Mono', Monaco, 'Cascadia Code', 'Segoe UI Mono', monospace;
+  font-family: ui-monospace, 'SF Mono', Monaco, 'Cascadia Code', 'Segoe UI Mono', monospace;
   }
   
   button:not(:disabled),
@@ -284,17 +287,21 @@
   }
 }
 
-.defer-render {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 700px;
-}
-
 :where(a, button, summary, input, textarea):focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 3px;
 }
 
 section[id], #contact-form { scroll-margin-top: 6rem; }
+.turnstile-slot { min-height: 65px; }
+#resources-menu > div { opacity: 0; transform: translateY(-4px); pointer-events: none; transition: opacity 160ms ease, transform 160ms ease; }
+#resources-menu[open] > div { opacity: 1; transform: translateY(0); pointer-events: auto; }
+#mobile-menu[hidden] { display: none; }
+#mobile-menu:not([hidden]) { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 220ms ease, opacity 160ms ease; pointer-events: none; }
+#mobile-menu[data-open="true"] { max-height: 32rem; opacity: 1; pointer-events: auto; }
+#main-content :target { animation: target-arrival 2.2s ease-out; }
+@keyframes target-arrival { 0%, 52% { border-color: rgba(0, 173, 132, .9); box-shadow: 0 0 0 4px rgba(0, 173, 132, .2), 0 0 36px rgba(0, 173, 132, .24); } 100% { border-color: var(--border); box-shadow: none; } }
+@media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 180ms; animation-timing-function: ease-out; } }
 .diagram-hover-glow { opacity: 0; }
 [data-diagram-node]:hover .diagram-hover-glow { opacity: 1; }
 [data-diagram-node]:hover .diagram-node-card { stroke: rgba(0,173,132,0.7); stroke-width: 2; }

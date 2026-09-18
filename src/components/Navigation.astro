@@ -59,7 +59,7 @@ const resourcesActive = resourceLinks.some((link) => active(link.href));
     </div>
   </div>
 
-  <div id="mobile-menu" class="hidden border-t border-border bg-background md:hidden">
+  <div id="mobile-menu" hidden inert class="border-t border-border bg-background md:hidden">
     <div class="container flex flex-col gap-2 py-4">
       {mainNavLinks.map((link) => <a href={link.href} class:list={["block py-2 text-base font-medium", active(link.href) ? "text-primary" : "text-foreground/80"]}>{link.label}</a>)}
       <details class="group py-2">
@@ -82,18 +82,26 @@ const resourcesActive = resourceLinks.some((link) => active(link.href));
   const menu = document.querySelector<HTMLElement>('#mobile-menu');
   const openIcon = document.querySelector<HTMLElement>('#menu-open-icon');
   const closeIcon = document.querySelector<HTMLElement>('#menu-close-icon');
-  button?.addEventListener('click', () => {
-    const isOpen = button.getAttribute('aria-expanded') === 'true';
-    button.setAttribute('aria-expanded', String(!isOpen));
-    menu?.classList.toggle('hidden', isOpen);
-    openIcon?.classList.toggle('hidden', !isOpen);
-    closeIcon?.classList.toggle('hidden', isOpen);
-  });
-
-  const closeMobile = () => {
-    button?.setAttribute('aria-expanded', 'false');
-    menu?.classList.add('hidden'); openIcon?.classList.remove('hidden'); closeIcon?.classList.add('hidden');
+  const setMobileIcons = (open: boolean) => {
+    openIcon?.classList.toggle('hidden', open);
+    closeIcon?.classList.toggle('hidden', !open);
   };
+  const openMobile = () => {
+    if (!button || !menu) return;
+    window.clearTimeout(Number(menu.dataset.closeTimer));
+    menu.hidden = false; menu.inert = false;
+    requestAnimationFrame(() => menu.dataset.open = 'true');
+    button.setAttribute('aria-expanded', 'true'); setMobileIcons(true);
+  };
+  const closeMobile = () => {
+    if (!button || !menu) return;
+    menu.inert = true; delete menu.dataset.open;
+    button.setAttribute('aria-expanded', 'false'); setMobileIcons(false);
+    const timer = window.setTimeout(() => { if (button.getAttribute('aria-expanded') === 'false') menu.hidden = true; }, 220);
+    menu.dataset.closeTimer = String(timer);
+  };
+  button?.addEventListener('click', () => button.getAttribute('aria-expanded') === 'true' ? closeMobile() : openMobile());
+
   menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMobile));
   const resources = document.querySelector<HTMLDetailsElement>('#resources-menu');
   const summary = resources?.querySelector('summary');

@@ -333,7 +333,7 @@ export default function HealthCheck() {
           )}
 
           {/* Widget Container - Responsive, no internal scroll */}
-          <Card className="border-2">
+          <Card className="border-2 min-h-[440px] transition-[min-height] duration-300 motion-reduce:transition-none">
             <CardContent ref={focusTarget} tabIndex={-1} aria-label={currentStep === "questions" ? currentQuestion.text : currentStep === "results" ? "Your Analytics Health Score" : "Analytics Health Check"} className="p-6 md:p-8">
                 {currentStep !== "intro" && <h1 className="sr-only">Quick Analytics Health Check</h1>}
                 {/* Intro Screen */}

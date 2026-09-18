@@ -53,8 +53,8 @@ export default function Turnstile({ action, resetKey, onToken }: {
     }).catch(() => { if (!disposed) setError('Verification could not load. Please retry.'); });
     return () => { disposed = true; if (widgetId !== undefined) api?.remove(widgetId); };
   }, [sitekey, action, resetKey, attempt, onToken]);
-  return <div>
-    <div ref={container} />
+  return <div className="turnstile-slot">
+    <div ref={container} className="min-h-[65px]" />
     {!sitekey && <p role="status" className="text-sm text-muted-foreground">{import.meta.env.DEV ? 'Local development: verification requires test keys or the documented local bypass.' : 'Verification is temporarily unavailable. Please email team@upsight.digital.'}</p>}
     {error && <p role="alert" className="text-sm text-destructive">{error} <button type="button" className="underline" onClick={() => setAttempt(value => value + 1)}>Retry verification</button></p>}
   </div>;

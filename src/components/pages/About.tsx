@@ -12,6 +12,7 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
+import { technologies } from "@/lib/technologies";
 
 export default function About() {
 
@@ -256,17 +257,10 @@ export default function About() {
             <div>
               <h3 className="font-semibold mb-6 text-center text-muted-foreground">Technologies We Master</h3>
               <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-                {[
-                  { name: "GA4" },
-                  { name: "GTM" },
-                  { name: "Meta CAPI" },
-                  { name: "Segment" },
-                  { name: "Shopify" },
-                  { name: "Looker" },
-                ].map((tech, index) => (
+                {technologies.filter(tech => ['Google Analytics 4', 'Google Tag Manager', 'Meta Conversions API', 'Segment', 'Shopify', 'Looker Studio'].includes(tech.name)).map((tech, index) => (
                   <Card key={index} className="hover:border-primary/50 transition-colors">
                     <CardContent className="p-3 flex flex-col items-center justify-center gap-2 min-h-[80px]">
-                      <span aria-hidden="true" className="h-8 w-8 rounded bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">{tech.name.split(/[ -]/).map(word => word[0]).slice(0, 3).join("")}</span>
+                      {tech.logo ? <img src={tech.logo} alt="" aria-hidden="true" className="h-8 w-8 object-contain" width="32" height="32" loading="lazy" decoding="async" /> : <span aria-hidden="true" className="h-8 w-8 rounded bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">{tech.label}</span>}
                       <span className="text-xs font-medium text-center">{tech.name}</span>
                     </CardContent>
                   </Card>

@@ -14,6 +14,7 @@ import {
   TrendingUp,
   Zap,
 } from "lucide-react";
+import { technologies } from "@/lib/technologies";
 
 interface Service { id: string; icon: typeof Server; title: string; description: string; benefits: string[]; whoNeedsIt: string; link?: string }
 interface ServiceCategory { id: string; category: string; description: string; services: Service[] }
@@ -260,7 +261,7 @@ export default function Services() {
         <section
           key={categoryIndex}
           id={category.id}
-          className={`section-spacing defer-render ${
+          className={`section-spacing ${
             categoryIndex % 2 === 0 ? "bg-muted/30" : ""
           }`}
         >
@@ -338,7 +339,7 @@ export default function Services() {
       ))}
 
       {/* Technologies Section */}
-      <section className="section-spacing defer-render">
+      <section className="section-spacing">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">Technologies We Work With</h2>
@@ -348,26 +349,14 @@ export default function Services() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
-            {[
-              { name: "Google Analytics 4", logo: null },
-              { name: "Google Tag Manager", logo: null },
-              { name: "Server-Side GTM", logo: null },
-              { name: "Meta Conversions API", logo: null },
-              { name: "Segment", logo: null },
-              { name: "Tealium", logo: null },
-              { name: "Shopify", logo: null },
-              { name: "WooCommerce", logo: null },
-              { name: "Consent Mode v2", logo: null },
-              { name: "Looker Studio", logo: null },
-              { name: "BigQuery", logo: null },
-              { name: "Custom Platforms", logo: null },
-            ].map((tech, index) => (
+            {technologies.map((tech, index) => (
               <Card key={index} className="hover:border-primary/50 transition-colors">
                 <CardContent className="p-4 flex flex-col items-center justify-center gap-3 min-h-[100px]">
                   {tech.logo ? (
                     <img 
                       src={tech.logo} 
-                      alt={tech.name} 
+                      alt=""
+                      aria-hidden="true"
                       className="h-8 w-8 object-contain"
                       width="32"
                       height="32"
@@ -376,7 +365,7 @@ export default function Services() {
                     />
                   ) : (
                     <div className="h-8 w-8 rounded bg-primary/10 flex items-center justify-center">
-                      <span aria-hidden="true" className="text-primary font-bold text-xs">{tech.name === "Custom Platforms" ? "API" : tech.name.split(/[ -]/).map(word => word[0]).slice(0, 3).join("")}</span>
+                      <span aria-hidden="true" className="text-primary font-bold text-xs">{tech.label}</span>
                     </div>
                   )}
                   <span className="text-sm font-medium text-center">{tech.name}</span>

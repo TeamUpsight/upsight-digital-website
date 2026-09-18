@@ -223,7 +223,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section className="section-spacing min-h-[500px] md:min-h-[600px] defer-render">
+      <section className="section-spacing min-h-[500px] md:min-h-[600px]">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">
@@ -241,7 +241,7 @@ export default function Home() {
               const cardContent = (
                 <Card
                   key={index}
-                  className="group h-full cursor-pointer hover:border-primary transition-all duration-300"
+                  className="group h-full cursor-pointer border-border transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-[0_10px_28px_rgba(0,173,132,0.12)]"
                 >
                   <CardContent className="p-6">
                     <div className="mb-4 p-3 rounded-lg bg-primary/10 inline-block">
@@ -253,6 +253,10 @@ export default function Home() {
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {service.description}
                     </p>
+                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary">
+                      Explore service
+                      <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-focus-within:translate-x-1" aria-hidden="true" />
+                    </span>
                   </CardContent>
                 </Card>
               );
@@ -274,7 +278,7 @@ export default function Home() {
       </section>
 
       {/* Who We Serve Section */}
-      <section className="section-spacing bg-muted/30 min-h-[500px] md:min-h-[600px] defer-render">
+      <section className="section-spacing bg-muted/30 min-h-[500px] md:min-h-[600px]">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">Who We Serve</h2>
@@ -355,7 +359,7 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="section-spacing min-h-[500px] md:min-h-[600px] defer-render">
+      <section className="section-spacing min-h-[500px] md:min-h-[600px]">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">
@@ -396,7 +400,7 @@ export default function Home() {
       <LogoSlider logos={clientLogos} />
 
       {/* Testimonials Section - Lazy loaded */}
-      <section className="section-spacing bg-muted/30 min-h-[500px] md:min-h-[600px] defer-render">
+      <section className="section-spacing bg-muted/30 min-h-[500px] md:min-h-[600px]">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">What Our Clients Say</h2>
@@ -442,7 +446,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="section-spacing bg-primary/5 border-t min-h-[300px] md:min-h-[400px] defer-render">
+      <section className="section-spacing bg-primary/5 border-t min-h-[300px] md:min-h-[400px]">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="heading-md mb-6">Ready to Fix Your Tracking?</h2>
