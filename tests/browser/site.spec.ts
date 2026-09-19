@@ -228,9 +228,10 @@ test('video card is keyboard operable and returns focus to the front', async ({p
 
 test('About testimonials have independent case-study and accessible video controls', async ({page}) => {
   await page.goto('/about');
-  const island = page.locator('astro-island');
+  const island = page.locator('astro-island[component-url*="VideoTestimonials"]');
   const alyssa = island.getByRole('button', {name:"Watch Alyssa Wong's video testimonial"});
   await alyssa.scrollIntoViewIfNeeded();
+  await expect(island).not.toHaveAttribute('ssr');
   await expect(alyssa).toBeVisible();
   await expect(island.getByRole('link', {name:'Read Slice Case Study'})).toHaveAttribute('href', '/case-studies/slice');
   await alyssa.focus(); await page.keyboard.press('Enter');
