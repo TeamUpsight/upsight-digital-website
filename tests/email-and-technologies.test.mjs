@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
-import { healthConfirmationHtml, healthConfirmationText, contactConfirmationHtml, contactConfirmationText } from '../src/lib/email.ts';
+import { healthConfirmationHtml, healthConfirmationText, healthTeamHtml, contactConfirmationHtml, contactConfirmationText } from '../src/lib/email.ts';
 import { calculateScore } from '../src/lib/health-check/domain.ts';
 import { technologyCatalog } from '../src/lib/technologies.ts';
 
@@ -17,6 +17,7 @@ test('technology catalog uses local, color-preserving assets', () => {
 });
 
 test('customer email templates provide a branded, escaped HTML and plain-text report', () => {
+  assert.ok(existsSync('public/images/logo-health-email.png'));
   const result = calculateScore({ q1: 'Ecommerce', q2: 'Website Only', q3: 'GA4 + GTM', q4: ['Social (Facebook, Snapchat, Tiktok, etc.)'], q5: 'Somewhat confident', q6: ['Missing events'], q7: 'Some tracking', q8: 'https://example.com' });
   const report = { ...result, score: result.total, email: 'person@example.com', answers: { q8: 'https://example.com' }, websiteUrl: '<script>alert(1)</script>' };
   const healthHtml = healthConfirmationHtml(report);
@@ -26,6 +27,11 @@ test('customer email templates provide a branded, escaped HTML and plain-text re
   assert.match(healthHtml, /Book a Free Consultation/);
   assert.match(healthHtml, /background:#ecf8f5/);
   assert.doesNotMatch(healthHtml, /background:#101c2a/);
+  const logoImage = /<img src="https:\/\/upsight\.digital\/images\/logo-health-email\.png" width="172" height="37" alt="Upsight Digital"/;
+  assert.match(healthHtml, logoImage);
+  assert.match(healthTeamHtml(report), logoImage);
+  assert.match(contactConfirmationHtml('Ada Lovelace'), logoImage);
+  assert.doesNotMatch(healthHtml, /Upsight <span style="color:#00AD84">Digital<\/span>/);
   assert.doesNotMatch(healthHtml, /<script>alert/);
   assert.match(healthConfirmationText(report), /Category breakdown[\s\S]*Book a Free Consultation/);
   const contactHtml = contactConfirmationHtml('<img src=x> Ada');
