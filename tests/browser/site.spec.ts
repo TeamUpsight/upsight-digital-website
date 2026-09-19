@@ -247,7 +247,7 @@ test('About testimonials have independent case-study and accessible video contro
   await expect.poll(() => video.evaluate(element => Number(Reflect.get(element, 'pauseCalls')))).toBeGreaterThan(0);
 });
 
-test('Home and About share portrait testimonial video cards with posters', async ({page}) => {
+test('Home and About testimonial cards expand from compact quotes to portrait video cards', async ({page}) => {
   for (const path of ['/', '/about']) {
     await page.goto(path);
     const island = page.locator('astro-island[component-url*="VideoTestimonials"]');
@@ -257,8 +257,26 @@ test('Home and About share portrait testimonial video cards with posters', async
     const alyssaVideo = island.locator('video').first();
     await expect(alyssaVideo).toHaveAttribute('poster', '/images/testimonials/alyssa-wong-testimonial-poster.png');
     await expect(alyssaVideo).toHaveClass(/object-contain/);
-    await expect(island.getByRole('button', { name: "Watch Alyssa Wong's video testimonial" })).toBeVisible();
+    const watchAlyssa = island.getByRole('button', { name: "Watch Alyssa Wong's video testimonial" });
+    await expect(watchAlyssa).toBeVisible();
     await expect(island.getByRole('button', { name: "Watch Alan Waggoner's video testimonial" })).toBeVisible();
     await expect(island.locator('video[src="/videos/testimonials/alan-waggoner-testimonial.mp4"]')).toHaveAttribute('poster', '/images/testimonials/alan-waggoner-testimonial-poster.png');
+    const alyssaCard = island.locator('[data-testimonial-card]').first();
+    const quoteCard = await alyssaCard.boundingBox();
+    expect(quoteCard?.height).toBeLessThan((quoteCard?.width ?? 0) * 1.5);
+    await expect(alyssaCard.locator('article[aria-hidden="true"]')).toHaveAttribute('inert', '');
+    await expect(alyssaCard).toHaveClass(/transition-\[height,transform\]/);
+    await watchAlyssa.click();
+    await expect(alyssaCard).toHaveAttribute('data-state', 'video');
+    await expect(alyssaVideo).toBeVisible();
+    await expect.poll(async () => (await alyssaCard.boundingBox())?.height ?? 0).toBeGreaterThan((quoteCard?.height ?? 0) + 20);
+    const videoCard = await alyssaCard.boundingBox();
+    expect(videoCard?.height).toBeGreaterThan(quoteCard?.height ?? 0);
+    await island.getByRole('button', { name: "Return to Alyssa Wong's testimonial" }).click();
+    await expect(alyssaCard).toHaveAttribute('data-state', 'quote');
+    await expect.poll(async () => {
+      const box = await alyssaCard.boundingBox();
+      return box && videoCard ? box.height < videoCard.height - 20 : false;
+    }).toBe(true);
   }
 });

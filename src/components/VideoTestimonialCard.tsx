@@ -21,9 +21,22 @@ export default function VideoTestimonialCard({
   const [isFlipped, setIsFlipped] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const frontButton = useRef<HTMLButtonElement>(null);
   const playButton = useRef<HTMLButtonElement>(null);
   const hasFlipped = useRef(false);
+  const [videoHeight, setVideoHeight] = useState(0);
+
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const updateVideoHeight = () => setVideoHeight(Math.ceil(card.getBoundingClientRect().width * 16 / 9));
+    updateVideoHeight();
+    const resizeObserver = new ResizeObserver(updateVideoHeight);
+    resizeObserver.observe(card);
+    return () => resizeObserver.disconnect();
+  }, []);
 
   const returnToQuote = useCallback(() => {
     if (videoRef.current) videoRef.current.pause();
@@ -51,7 +64,17 @@ export default function VideoTestimonialCard({
     <div className={`w-full ${className}`} style={{ perspective: '1200px' }} onKeyDown={(event) => {
       if (event.key === 'Escape' && isFlipped) { event.preventDefault(); returnToQuote(); }
     }}>
-      <div className={`relative w-full ${videoSrc ? 'aspect-[9/16]' : 'min-h-[380px]'} transition-transform duration-700 motion-reduce:transition-none`} style={{ transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
+      <div
+        ref={cardRef}
+        data-testimonial-card
+        data-state={isFlipped ? 'video' : 'quote'}
+        className="relative w-full transition-[height,transform] duration-700 motion-reduce:transition-none"
+        style={{
+          height: isFlipped && videoHeight ? `${videoHeight}px` : '380px',
+          transformStyle: 'preserve-3d',
+          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+        }}
+      >
         <article className="absolute inset-0" style={{ backfaceVisibility: 'hidden' }} inert={isFlipped} aria-hidden={isFlipped}>
           <Card className="h-full border-primary/20 bg-gradient-to-br from-card via-card to-primary/5">
             <CardContent className="p-6 flex h-full flex-col">
