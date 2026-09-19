@@ -72,7 +72,7 @@ export default function VideoTestimonialCard({
 
         {videoSrc && <article className="absolute inset-0 overflow-hidden rounded-xl" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }} inert={!isFlipped} aria-hidden={!isFlipped}>
           <Card className="h-full border-primary/20 bg-[#0b1218]"><div className="relative h-full">
-            <video ref={videoRef} src={videoSrc} poster={posterSrc} className="h-full w-full rounded-xl object-contain" controls={isVideoPlaying} preload="metadata" aria-label={videoLabel} onEnded={() => setIsVideoPlaying(false)} playsInline />
+            <video ref={videoRef} src={videoSrc} poster={posterSrc} className="h-full w-full rounded-xl object-contain" controls={isVideoPlaying} preload="metadata" aria-label={videoLabel} onEnded={() => setIsVideoPlaying(false)} playsInline suppressHydrationWarning />
             {!isVideoPlaying && isFlipped && <button ref={playButton} type="button" aria-label={`Play ${videoLabel}`} onClick={playVideo} className="absolute inset-0 flex items-center justify-center group">
               <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary shadow-lg shadow-primary/50 transition-transform group-hover:scale-110"><Play className="ml-0.5 h-7 w-7 text-primary-foreground" fill="currentColor" aria-hidden="true" /></span>
             </button>}
