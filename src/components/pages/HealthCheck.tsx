@@ -35,7 +35,7 @@ declare global {
   }
 }
 
-import { calculateScore, categoryMaxValues, questions, type HealthCheckAnswers } from "@/lib/health-check/domain";
+import { calculateScore, categoryMaxValues, getQuestionProgress, questions, type HealthCheckAnswers } from "@/lib/health-check/domain";
 
 // Push dataLayer event helper
 function pushDataLayerEvent(eventName: string, data: Record<string, unknown> = {}) {
@@ -85,7 +85,7 @@ export default function HealthCheck() {
 
   const currentQuestion = activeQuestions[currentQuestionIndex];
   const progress = currentStep === "questions" 
-    ? ((currentQuestionIndex + 1) / activeQuestions.length) * 100 
+    ? getQuestionProgress(currentQuestion?.id)
     : (currentStep === "results" || currentStep === "analyzing") ? 100 : 0;
 
   // Reset function

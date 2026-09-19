@@ -6,6 +6,7 @@ import {
   ArrowRight,
   BarChart3,
   Check,
+  ChevronDown,
   CircleAlert,
   Database,
   Gauge,
@@ -32,10 +33,10 @@ function Reveal({ children, delay = 0, className = "" }: { children: ReactNode; 
   );
 }
 
-function ToplineMetric({ value, label }: { value: string; label: string }) {
+function ToplineMetric({ value, label, counter }: { value: string; label: string; counter?: { value: number; prefix?: string; suffix?: string } }) {
   return (
-    <div className="rounded-xl border border-primary/20 bg-card/80 p-5 transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 md:p-6">
-      <p className="font-mono text-3xl font-bold text-primary md:text-4xl">{value}</p>
+    <div data-reveal className="rounded-xl border border-primary/20 bg-card/80 p-5 transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 md:p-6">
+      <p className="font-mono text-3xl font-bold text-primary md:text-4xl">{counter ? <>{counter.prefix}<span data-counter={counter.value} data-decimals="0">{counter.value}</span>{counter.suffix}</> : value}</p>
       <p className="mt-1 text-sm text-muted-foreground">{label}</p>
     </div>
   );
@@ -236,15 +237,18 @@ export default function CaseStudyRoadsurfer() {
               </div>
 
               <div className="flex flex-col gap-4">
-                <ToplineMetric value="+12%" label="More website conversions reported" />
-                <ToplineMetric value="120+" label="GTM tags removed" />
+                <ToplineMetric value="+12%" counter={{ value: 12, prefix: '+', suffix: '%' }} label="More website conversions reported" />
+                <ToplineMetric value="120+" counter={{ value: 120, suffix: '+' }} label="GTM tags removed" />
                 <ToplineMetric value="5 → 1" label="GA4 properties merged" />
               </div>
             </div>
+            <a href="#client-info" data-scroll-target="client-info" className="mt-14 flex justify-center animate-bounce motion-reduce:animate-none" aria-label="Scroll to client information">
+              <ChevronDown className="h-6 w-6 text-muted-foreground/50 transition-colors hover:text-primary" />
+            </a>
           </div>
         </section>
 
-        <section className="border-b border-border/40 bg-muted/20 py-8">
+        <section id="client-info" tabIndex={-1} className="border-b border-border/40 bg-muted/20 py-8">
           <div className="container">
             <div className="flex flex-wrap items-center justify-center gap-8 md:gap-14 lg:gap-16">
               <div className="flex items-center gap-3">

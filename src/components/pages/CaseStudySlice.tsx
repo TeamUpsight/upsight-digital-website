@@ -233,14 +233,14 @@ export default function CaseStudySlice({ children }: { children: React.ReactNode
           </div>
 
           {/* Scroll indicator */}
-          <a href="#client-info" className="flex justify-center mt-14 animate-bounce" aria-label="Scroll to next section">
+          <a href="#client-info" data-scroll-target="client-info" className="flex justify-center mt-14 animate-bounce motion-reduce:animate-none" aria-label="Scroll to next section">
             <ChevronDown className="h-6 w-6 text-muted-foreground/50 hover:text-primary transition-colors" />
           </a>
         </div>
       </section>
 
       {/* ─── CLIENT INFO SECTION ─── */}
-      <section id="client-info" className="py-8 border-y border-border/30 bg-muted/20">
+      <section id="client-info" tabIndex={-1} className="py-8 border-y border-border/30 bg-muted/20">
         <div className="container">
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
             <div className="flex items-center gap-3">

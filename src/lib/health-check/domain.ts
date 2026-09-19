@@ -497,9 +497,15 @@ export function calculateScore(answers: HealthCheckAnswers): {
 
 
 export type HealthCheckResult = ReturnType<typeof calculateScore>;
-export interface HealthReport extends Omit<HealthCheckResult, "total" | "percentages"> {
+export interface HealthReport extends Omit<HealthCheckResult, "total"> {
   score: number;
   email: string;
   answers: HealthCheckAnswers;
   websiteUrl?: string;
+}
+
+/** Uses the fixed canonical questionnaire order so conditional paths cannot regress. */
+export function getQuestionProgress(questionId: string | undefined): number {
+  const index = questions.findIndex((question) => question.id === questionId);
+  return index < 0 ? 0 : ((index + 1) / questions.length) * 100;
 }

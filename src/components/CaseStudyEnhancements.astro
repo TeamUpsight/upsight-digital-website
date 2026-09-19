@@ -1,6 +1,16 @@
 <script>
   // Server HTML always contains the complete article and final chart values.
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  document.querySelectorAll<HTMLAnchorElement>('a[data-scroll-target]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const target = document.getElementById(link.dataset.scrollTarget ?? '');
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: motion.matches ? 'auto' : 'smooth', block: 'start' });
+      target.focus({ preventScroll: true });
+      history.replaceState(null, '', `#${target.id}`);
+    });
+  });
   if (!motion.matches && 'IntersectionObserver' in window) {
     const animations = new Set<Animation>();
     const frames = new Map<HTMLElement, { id: number; final: string }>();

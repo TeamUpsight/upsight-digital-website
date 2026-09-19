@@ -24,8 +24,12 @@ test('contact sends both emails, escapes HTML and preserves reply-to', async t =
   const result = await contact.POST({ request: request('contact', contactInput) });
   assert.equal(result.status, 200);
   assert.equal(messages.length, 2);
+  for (const message of messages) assert.equal(message.from, 'Upsight Digital <notifications@send.upsight.digital>');
   assert.equal(messages[0].reply_to, contactInput.email);
   assert.equal(messages[1].to, contactInput.email);
+  assert.match(messages[1].html, /Thanks, Test\. We received your message\./);
+  assert.match(messages[1].html, /Book a Free Consultation/);
+  assert.match(messages[1].text, /Book a Free Consultation/);
   assert.match(messages[0].html, /&lt;script&gt;/);
   assert.doesNotMatch(messages[0].html, /<script>/);
 });
@@ -38,9 +42,13 @@ test('health report is recomputed from answers; both emails use original score',
   });
   assert.equal((await health.POST({ request: request('health-check', healthInput) })).status, 200);
   assert.equal(messages.length, 2);
+  for (const message of messages) assert.equal(message.from, 'Upsight Digital <notifications@send.upsight.digital>');
   assert.equal(messages[0].reply_to, healthInput.email);
   const score = calculateScore(fixture.answers).total;
   for (const message of messages) assert.ok(message.subject.includes(`${score}/100`));
+  const customer = messages.find(message => message.to === healthInput.email);
+  for (const expected of ['Your Analytics Health Score', 'Category breakdown', 'Tracking Coverage', 'Priority Risks', 'Recommended Next Steps', 'Book a Free Consultation']) assert.match(customer.html, new RegExp(expected));
+  assert.match(customer.text, /Category breakdown[\s\S]*Tracking Coverage[\s\S]*Book a Free Consultation/);
 });
 
 for (const [label, patch] of [

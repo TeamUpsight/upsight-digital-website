@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { getSecret } from "astro:env/server";
 import { z } from "zod";
-import { contactConfirmationHtml, contactTeamHtml, sendResendEmail, TEAM_EMAIL } from "../../lib/email";
+import { contactConfirmationHtml, contactConfirmationText, contactTeamHtml, sendResendEmail, TEAM_EMAIL } from "../../lib/email";
 import { protectionFields, readSubmission, submissionFailure, verifySubmission } from "../../lib/submission-security";
 
 export const prerender = false;
@@ -32,6 +32,7 @@ export const POST: APIRoute = async ({ request }) => {
       to: input.email,
       subject: "We received your message - Upsight Digital",
       html: contactConfirmationHtml(input.name),
+      text: contactConfirmationText(input.name),
     });
     await Promise.all([team, confirmation]);
     return Response.json({ success: true, message: "Thank you for your message! We'll get back to you shortly." });
