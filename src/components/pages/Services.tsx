@@ -14,7 +14,7 @@ import {
   TrendingUp,
   Zap,
 } from "lucide-react";
-import { technologies } from "@/lib/technologies";
+import TechnologyGrid from "@/components/TechnologyGrid";
 
 interface Service { id: string; icon: typeof Server; title: string; description: string; benefits: string[]; whoNeedsIt: string; link?: string }
 interface ServiceCategory { id: string; category: string; description: string; services: Service[] }
@@ -348,31 +348,7 @@ export default function Services() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
-            {technologies.map((tech, index) => (
-              <Card key={index} className="hover:border-primary/50 transition-colors">
-                <CardContent className="p-4 flex flex-col items-center justify-center gap-3 min-h-[100px]">
-                  {tech.logo ? (
-                    <img 
-                      src={tech.logo} 
-                      alt=""
-                      aria-hidden="true"
-                      className="h-8 w-8 object-contain"
-                      width="32"
-                      height="32"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  ) : (
-                    <div className="h-8 w-8 rounded bg-primary/10 flex items-center justify-center">
-                      <span aria-hidden="true" className="text-primary font-bold text-xs">{tech.label}</span>
-                    </div>
-                  )}
-                  <span className="text-sm font-medium text-center">{tech.name}</span>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <TechnologyGrid keys={['googleAnalytics', 'googleTagManager', 'serverSideGtm', 'metaCapi', 'segment', 'tealium', 'shopify', 'woocommerce', 'consentMode', 'lookerStudio', 'bigQuery', 'customPlatform']} />
         </div>
       </section>
 

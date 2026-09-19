@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import About from '../components/pages/About';
+import VideoTestimonials from '../components/VideoTestimonials';
 ---
 <BaseLayout title="About Us - Analytics Experts Since 2019 | Upsight Digital" description="Meet the team behind 120+ successful analytics projects across 10+ countries. 7+ years of expertise in GA4, server-side tracking, and privacy compliance." canonical="https://upsight.digital/about">
-  <About />
+  <About><VideoTestimonials client:visible /></About>
 </BaseLayout>

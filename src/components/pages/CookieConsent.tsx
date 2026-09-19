@@ -20,6 +20,7 @@ import {
   Users,
   Wrench,
 } from "lucide-react";
+import TechnologyGrid from "@/components/TechnologyGrid";
 
 export default function CookieConsent() {
 
@@ -139,21 +140,6 @@ export default function CookieConsent() {
       description:
         "Manage different consent rules across countries, languages, brands, and domains.",
     },
-  ];
-
-  const technologies = [
-    "Usercentrics Cookiebot",
-    "Google Consent Mode v2",
-    "Google Tag Manager",
-    "GA4",
-    "Meta Pixel / CAPI",
-    "TikTok Pixel",
-    "Snapchat Pixel",
-    "LinkedIn Insight Tag",
-    "Shopify",
-    "WordPress",
-    "WooCommerce",
-    "Custom Websites",
   ];
 
   return (
@@ -404,20 +390,7 @@ export default function CookieConsent() {
             <h2 className="heading-md mb-6">Tools We Work With</h2>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
-            {technologies.map((tech, index) => (
-              <Card
-                key={index}
-                className="hover:border-primary/50 transition-colors"
-              >
-                <CardContent className="p-4 flex items-center justify-center min-h-[72px]">
-                  <span className="text-sm font-medium text-center">
-                    {tech}
-                  </span>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <TechnologyGrid className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-5xl mx-auto" keys={['cookiebot', 'consentMode', 'googleTagManager', 'googleAnalytics', 'metaCapi', 'tiktok', 'snapchat', 'linkedin', 'shopify', 'wordpress', 'woocommerce', 'customPlatform']} />
         </div>
       </section>
 

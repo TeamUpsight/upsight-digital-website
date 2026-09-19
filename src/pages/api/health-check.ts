@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { getSecret } from "astro:env/server";
-import { healthConfirmationHtml, healthTeamHtml, sendResendEmail, TEAM_EMAIL } from "../../lib/email";
+import { healthConfirmationHtml, healthConfirmationText, healthTeamHtml, sendResendEmail, TEAM_EMAIL } from "../../lib/email";
 import { calculateScore, type HealthReport } from "../../lib/health-check/domain";
 import { healthSubmissionSchema } from "../../lib/health-check/schema";
 import { readSubmission, submissionFailure, verifySubmission } from "../../lib/submission-security";
@@ -27,6 +27,7 @@ export const POST: APIRoute = async ({ request }) => {
         to: input.email,
         subject: `Your Analytics Health Score: ${input.score}/100`,
         html: healthConfirmationHtml(input),
+        text: healthConfirmationText(input),
       }),
     ]);
     return Response.json({ success: true, message: "Your assessment has been sent." });

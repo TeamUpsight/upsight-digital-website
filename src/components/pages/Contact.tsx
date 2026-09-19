@@ -98,39 +98,41 @@ export default function Contact({ children }: { children: React.ReactNode }) {
             {/* Left: Consultation Info */}
             <div>
               <Card className="border-2 border-primary">
-                <CardContent className="p-8">
-                  <div className="mb-6 p-3 rounded-lg bg-primary/10 inline-block">
-                    <Calendar className="h-8 w-8 text-primary" />
+                <CardContent className="p-7 md:p-8 lg:p-9">
+                  <div className="mb-5 inline-flex rounded-lg bg-primary/10 p-3">
+                    <Calendar className="h-7 w-7 text-primary" />
                   </div>
-                  <h2 className="text-3xl font-semibold mb-4">
+                  <h2 className="text-2xl font-semibold leading-tight mb-3">
                     Book Your Free Consultation
                   </h2>
-                  <p className="text-muted-foreground mb-6">
+                  <p className="text-muted-foreground leading-7 mb-7">
                     In this 30-minute call, we'll discuss your analytics
                     challenges, review your current setup, and provide
                     actionable recommendations—no commitment required.
                   </p>
 
-                  <h3 className="font-semibold mb-4">
+                  <h3 className="font-semibold mb-3">
                     What You'll Get From This Call:
                   </h3>
-                  <ul className="space-y-3 mb-8">
+                  <ul className="space-y-2.5 mb-7">
                     {consultationBenefits.map((benefit, index) => (
                       <li key={index} className="flex items-start gap-2">
-                        <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">{benefit}</span>
+                        <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                        <span className="text-sm leading-6">{benefit}</span>
                       </li>
                     ))}
                   </ul>
 
-                  <ButtonLink href="https://calendly.com/team-upsight/30min" target="_blank" rel="noopener noreferrer" size="lg" className="block w-full text-base h-12">
-                      <Calendar className="mr-2 h-5 w-5" />
+                  <div className="border-t border-border/60 pt-6">
+                  <ButtonLink href="https://calendly.com/team-upsight/30min" target="_blank" rel="noopener noreferrer" size="lg" className="block w-full text-sm h-11">
+                      <Calendar className="mr-2 h-4 w-4" />
                       Schedule Free Consultation
                     </ButtonLink>
 
-                  <div className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
+                  <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="h-4 w-4" />
                     <span>30 minutes • No commitment required</span>
+                  </div>
                   </div>
                 </CardContent>
               </Card>

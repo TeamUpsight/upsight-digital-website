@@ -155,6 +155,31 @@ test('Health Check completes, emails only answers, and resets', async ({page}) =
   await expect(page.getByRole('button',{name:'Start Health Check'})).toBeVisible();
 });
 
+for (const platform of ['Website Only', 'Mobile app', 'Both']) test(`Health Check progress never regresses for ${platform}`, async ({page}) => {
+  await page.goto('/health-check');
+  await expect(page.locator('astro-island')).not.toHaveAttribute('ssr');
+  await page.getByRole('button',{name:'Start Health Check'}).click();
+  const answers: Record<string,string|string[]>={};
+  const progress: number[]=[];
+  for (const question of questions) {
+    if(question.condition&&!question.condition(answers)) continue;
+    await expect(page.locator('#health-question')).toHaveText(question.text);
+    progress.push(Number(await page.getByRole('progressbar',{name:'Assessment progress'}).getAttribute('aria-valuenow')));
+    if(question.type==='input') {
+      await page.getByRole('textbox',{name:question.text}).fill('https://example.com');
+      answers[question.id]='https://example.com';
+      await page.getByRole('button',{name:'Continue',exact:true}).click();
+    } else {
+      const option=question.id==='q2' ? question.options!.find(item => item.value===platform)! : question.options![0];
+      await page.getByRole('button',{name:option.label,exact:true}).click();
+      answers[question.id]=question.type==='multi'?[option.value]:option.value;
+      if(question.type==='multi') await page.getByRole('button',{name:'Continue',exact:true}).click();
+    }
+  }
+  progress.push(Number(await page.getByRole('progressbar',{name:'Assessment progress'}).getAttribute('aria-valuenow')));
+  for(let index=1;index<progress.length;index++) expect(progress[index]).toBeGreaterThanOrEqual(progress[index-1]);
+});
+
 test('case-study content is visible without JavaScript', async ({browser}) => {
   const context=await browser.newContext({javaScriptEnabled:false});
   const page=await context.newPage();
@@ -192,11 +217,32 @@ test('hero pauses offscreen and for reduced motion, and resumes in view', async 
 
 test('video card is keyboard operable and returns focus to the front', async ({page}) => {
   await page.goto('/case-studies/slice');
-  const front=page.getByRole('button',{name:'Watch Alyssa Wong’s video testimonial'});
+  const front=page.getByRole('button',{name:"Watch Alyssa Wong's video testimonial"});
   await front.scrollIntoViewIfNeeded();
   await expect(page.locator('astro-island')).not.toHaveAttribute('ssr');
   await front.focus(); await page.keyboard.press('Enter');
-  await expect(page.getByRole('button',{name:'Play video',exact:true})).toBeFocused();
-  await page.getByRole('button',{name:'Return to testimonial'}).click();
+  await expect(page.getByRole('button',{name:"Play Alyssa Wong's video testimonial",exact:true})).toBeFocused();
+  await page.getByRole('button',{name:"Return to Alyssa Wong's testimonial"}).click();
   await expect(front).toBeFocused();
+});
+
+test('About testimonials have independent case-study and accessible video controls', async ({page}) => {
+  await page.goto('/about');
+  const island = page.locator('astro-island[component-url*="VideoTestimonials"]');
+  const alyssa = island.getByRole('button', {name:"Watch Alyssa Wong's video testimonial"});
+  await alyssa.scrollIntoViewIfNeeded();
+  await expect(island).not.toHaveAttribute('ssr');
+  await expect(alyssa).toBeVisible();
+  await expect(island.getByRole('link', {name:'Read Slice Case Study'})).toHaveAttribute('href', '/case-studies/slice');
+  await alyssa.focus(); await page.keyboard.press('Enter');
+  await expect(island.getByRole('button', {name:"Play Alyssa Wong's video testimonial"})).toBeFocused();
+  await expect(island.locator('article[aria-hidden="true"]').first()).toHaveAttribute('inert', '');
+  await page.keyboard.press('Escape');
+  await expect(alyssa).toBeFocused();
+  const ashley = island.getByRole('button', {name:"Watch Ashley Stanford's video testimonial"});
+  await ashley.click();
+  const video = island.locator('video[src="/videos/testimonials/ashley-stanford-testimonial.mp4"]');
+  await video.evaluate(element => { const media = element as HTMLVideoElement; let calls = 0; const pause = HTMLMediaElement.prototype.pause; media.pause = () => { calls++; Reflect.set(media, 'pauseCalls', calls); pause.call(media); }; });
+  await island.getByRole('button', {name:"Return to Ashley Stanford's testimonial"}).click();
+  await expect.poll(() => video.evaluate(element => Number(Reflect.get(element, 'pauseCalls')))).toBeGreaterThan(0);
 });
