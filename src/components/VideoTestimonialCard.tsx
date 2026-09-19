@@ -8,6 +8,7 @@ export interface VideoTestimonialCardProps {
   portrait: string;
   quote: string;
   videoSrc?: string;
+  posterSrc?: string;
   videoLabel: string;
   caseStudyHref?: string;
   caseStudyLabel?: string;
@@ -15,7 +16,7 @@ export interface VideoTestimonialCardProps {
 }
 
 export default function VideoTestimonialCard({
-  name, role, portrait, quote, videoSrc, videoLabel, caseStudyHref, caseStudyLabel, className = '',
+  name, role, portrait, quote, videoSrc, posterSrc, videoLabel, caseStudyHref, caseStudyLabel, className = '',
 }: VideoTestimonialCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -50,7 +51,7 @@ export default function VideoTestimonialCard({
     <div className={`w-full ${className}`} style={{ perspective: '1200px' }} onKeyDown={(event) => {
       if (event.key === 'Escape' && isFlipped) { event.preventDefault(); returnToQuote(); }
     }}>
-      <div className="relative w-full min-h-[380px] transition-transform duration-700 motion-reduce:transition-none" style={{ transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
+      <div className={`relative w-full ${videoSrc ? 'aspect-[9/16]' : 'min-h-[380px]'} transition-transform duration-700 motion-reduce:transition-none`} style={{ transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
         <article className="absolute inset-0" style={{ backfaceVisibility: 'hidden' }} inert={isFlipped} aria-hidden={isFlipped}>
           <Card className="h-full border-primary/20 bg-gradient-to-br from-card via-card to-primary/5">
             <CardContent className="p-6 flex h-full flex-col">
@@ -70,8 +71,8 @@ export default function VideoTestimonialCard({
         </article>
 
         {videoSrc && <article className="absolute inset-0 overflow-hidden rounded-xl" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }} inert={!isFlipped} aria-hidden={!isFlipped}>
-          <Card className="h-full border-primary/20 bg-black"><div className="relative h-full">
-            <video ref={videoRef} src={videoSrc} className="h-full w-full rounded-xl object-cover" controls={isVideoPlaying} preload="none" aria-label={videoLabel} onEnded={() => setIsVideoPlaying(false)} playsInline />
+          <Card className="h-full border-primary/20 bg-[#0b1218]"><div className="relative h-full">
+            <video ref={videoRef} src={videoSrc} poster={posterSrc} className="h-full w-full rounded-xl object-contain" controls={isVideoPlaying} preload="metadata" aria-label={videoLabel} onEnded={() => setIsVideoPlaying(false)} playsInline suppressHydrationWarning />
             {!isVideoPlaying && isFlipped && <button ref={playButton} type="button" aria-label={`Play ${videoLabel}`} onClick={playVideo} className="absolute inset-0 flex items-center justify-center group">
               <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary shadow-lg shadow-primary/50 transition-transform group-hover:scale-110"><Play className="ml-0.5 h-7 w-7 text-primary-foreground" fill="currentColor" aria-hidden="true" /></span>
             </button>}

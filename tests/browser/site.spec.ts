@@ -246,3 +246,19 @@ test('About testimonials have independent case-study and accessible video contro
   await island.getByRole('button', {name:"Return to Ashley Stanford's testimonial"}).click();
   await expect.poll(() => video.evaluate(element => Number(Reflect.get(element, 'pauseCalls')))).toBeGreaterThan(0);
 });
+
+test('Home and About share portrait testimonial video cards with posters', async ({page}) => {
+  for (const path of ['/', '/about']) {
+    await page.goto(path);
+    const island = page.locator('astro-island[component-url*="VideoTestimonials"]');
+    await island.scrollIntoViewIfNeeded();
+    await expect(island).not.toHaveAttribute('ssr');
+    await expect(island.getByText('Alan Waggoner', { exact: true })).toBeVisible();
+    const alyssaVideo = island.locator('video').first();
+    await expect(alyssaVideo).toHaveAttribute('poster', '/images/testimonials/alyssa-wong-testimonial-poster.png');
+    await expect(alyssaVideo).toHaveClass(/object-contain/);
+    await expect(island.getByRole('button', { name: "Watch Alyssa Wong's video testimonial" })).toBeVisible();
+    await expect(island.getByRole('button', { name: "Watch Alan Waggoner's video testimonial" })).toBeVisible();
+    await expect(island.locator('video[src="/videos/testimonials/alan-waggoner-testimonial.mp4"]')).toHaveAttribute('poster', '/images/testimonials/alan-waggoner-testimonial-poster.png');
+  }
+});

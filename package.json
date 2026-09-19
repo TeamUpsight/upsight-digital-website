@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev --config astro.config.local.mjs",
-    "check": "astro check && eslint src",
+    "check": "npm run check:assets && astro check && eslint src",
+    "check:assets": "node scripts/check-static-asset-sizes.mjs",
     "build": "npm run check && npm test && astro build",
     "test": "node --test tests/*.test.mjs",
     "preview": "astro preview",
