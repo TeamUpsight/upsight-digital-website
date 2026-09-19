@@ -17,8 +17,9 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
+import type { ReactNode } from 'react';
 
-export default function Home() {
+export default function Home({ children }: { children?: ReactNode }) {
 
   const clientLogos = [
     { src: "/images/client-logo-1.webp", alt: "" },
@@ -77,30 +78,6 @@ export default function Home() {
       description:
         "Track the full customer journey from product view to purchase. Enhanced ecommerce for Shopify, WooCommerce, and custom platforms.",
       link: "/services#ecommerce-tracking",
-    },
-  ];
-
-  const testimonials = [
-    {
-      quote:
-        "Partnering with Upsight Digital has been transformational for Slice. They quickly addressed tracking gaps, streamlined our data infrastructure, and implemented server-side tracking and compliance—giving us cleaner data, better visibility, and confidence in our analytics.",
-      author: "Alyssa Wong",
-      role: "Director of Growth Marketing at Slice",
-      image: "/images/alyssa-wong.webp",
-    },
-    {
-      quote:
-        "Upsight Digital is simply amazing. Their team solves tracking and analytics challenges that no one else can. Fast, reliable, and brilliant. Working with them has made me look like a rock star for years.",
-      author: "Alan Waggoner",
-      role: "Paid Media Manager at Shift",
-      image: "/images/alan-waggoner.webp",
-    },
-    {
-      quote:
-        "Upsight Digital has been an incredible resource for our team. They support our devs with Google Suite, Analytics, and e-commerce tracking—always prompt, thorough, and extremely helpful. We continue to work with them and gladly refer them to others.",
-      author: "Ashley Stanford",
-      role: "Head of Marketing at TicketSocket",
-      image: "/images/ashley-stanford.webp",
     },
   ];
 
@@ -409,39 +386,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="flex flex-col">
-                <CardContent className="p-6 flex-1 flex flex-col">
-                  <p className="text-sm text-muted-foreground mb-6 flex-1 italic">
-                    "{testimonial.quote}"
-                  </p>
-                  <div className="flex items-center gap-3">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.author}
-                    className="w-10 h-10 rounded-full object-cover"
-                    width="40"
-                    height="40"
-                    loading="lazy"
-                  />
-                    <div>
-                      <p className="font-semibold text-sm">{testimonial.author}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {testimonial.role}
-                      </p>
-                    </div>
-                  </div>
-                  {testimonial.author === "Alyssa Wong" && (
-                    <ButtonLink href="/case-studies/slice" size="sm" variant="outline" className="mt-4 w-full">
-                        Read Slice Case Study
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </ButtonLink>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {children}
         </div>
       </section>
 

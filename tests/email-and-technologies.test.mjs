@@ -24,6 +24,8 @@ test('customer email templates provide a branded, escaped HTML and plain-text re
   assert.match(healthHtml, /Tracking Coverage/);
   assert.match(healthHtml, /Privacy & Compliance/);
   assert.match(healthHtml, /Book a Free Consultation/);
+  assert.match(healthHtml, /background:#ecf8f5/);
+  assert.doesNotMatch(healthHtml, /background:#101c2a/);
   assert.doesNotMatch(healthHtml, /<script>alert/);
   assert.match(healthConfirmationText(report), /Category breakdown[\s\S]*Book a Free Consultation/);
   const contactHtml = contactConfirmationHtml('<img src=x> Ada');
