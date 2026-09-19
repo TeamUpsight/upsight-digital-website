@@ -33,15 +33,16 @@ export default function Services() {
           icon: Server,
           title: "Server-Side Tracking (sGTM)",
           description:
-            "Google Tag Manager Server-Side container setup that bypasses browser restrictions, improves data accuracy, and reduces page load times.",
+            "Google Tag Manager Server-Side container setup that gives teams more control over event forwarding and measurement architecture.",
           benefits: [
-            "Bypass iOS 14+ and browser tracking restrictions",
-            "Improve data accuracy by 30-50%",
+            "Reduce measurement gaps caused by browser-side collection limitations",
+            "Create a controlled server-side event path",
             "Reduce client-side page load impact",
             "Enhanced data security and control",
           ],
           whoNeedsIt:
             "Brands losing conversions to iOS 14+, agencies managing multiple clients",
+          link: "/services/server-side-tracking/",
         },
         {
           id: "ga4-gtm-web",
@@ -57,6 +58,7 @@ export default function Services() {
           ],
           whoNeedsIt:
             "Businesses needing comprehensive web tracking and marketing team autonomy",
+          link: "/services/ga4-gtm-setup/",
         },
         {
           id: "ga4-gtm-mobile",
@@ -79,37 +81,38 @@ export default function Services() {
       id: "attribution-compliance",
       category: "Attribution & Compliance",
       description:
-        "Accurate conversion tracking and privacy-compliant measurement for modern marketing.",
+        "Consent-aware conversion tracking and measurement implementation for modern marketing.",
       services: [
         {
           id: "meta-capi",
           icon: Activity,
           title: "Meta Conversions API (CAPI)",
           description:
-            "Server-side conversion tracking for Facebook and Instagram ads that recovers lost conversions and improves attribution.",
+            "Server-side conversion tracking for Facebook and Instagram ads with event mapping, diagnostics, and browser/server deduplication.",
           benefits: [
-            "Recover 20-40% of lost conversions",
-            "Improve ad delivery optimization",
+            "Strengthen conversion signal coverage with server-side event delivery and deduplication",
+            "Review ad-platform diagnostics",
             "Better attribution accuracy",
             "Event deduplication with pixel data",
           ],
           whoNeedsIt: "Brands running Meta ads with declining ROAS",
+          link: "/services/meta-conversions-api/",
         },
         {
           id: "consent-compliance",
           icon: Lock,
           title: "Cookie Consent & CMP Setup",
           description:
-            "Consent Management Platform integration and Google Consent Mode v2 implementation for GDPR/CCPA compliance.",
+            "Consent Management Platform integration, Google Consent Mode v2, and GTM consent routing for consent-aware measurement.",
           benefits: [
-            "GDPR and CCPA compliance",
+            "Support technical privacy requirements",
             "Consent Mode v2 implementation",
             "Maintain tracking while respecting privacy",
-            "Reduced legal risk",
+            "Consent-aware tag behaviour",
           ],
           whoNeedsIt:
             "EU/CA businesses, brands concerned about privacy regulations",
-          link: "/services/cookie-consent",
+          link: "/services/cookie-consent/",
         },
         {
           id: "attribution",
@@ -146,6 +149,7 @@ export default function Services() {
             "Revenue attribution",
           ],
           whoNeedsIt: "Online stores, subscription businesses",
+          link: "/services/ecommerce-tracking/",
         },
         {
           id: "funnel-tracking",
@@ -183,6 +187,7 @@ export default function Services() {
           ],
           whoNeedsIt:
             "Brands with unreliable data, agencies onboarding new clients",
+          link: "/services/tracking-audit/",
         },
         {
           id: "dashboards-reports",
@@ -198,6 +203,7 @@ export default function Services() {
           ],
           whoNeedsIt:
             "Marketing teams, executives needing clear performance visibility",
+          link: "/services/analytics-dashboards/",
         },
         {
           id: "measurement-planning",
@@ -226,12 +232,12 @@ export default function Services() {
         <div className="container">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="heading-xl mb-6">
-              Data-Driven Solutions That Drive{" "}
-              <span className="text-primary">Real Results</span>
+              Analytics, Tracking &amp; Measurement{" "}
+              <span className="text-primary">Implementation Services</span>
             </h1>
             <p className="body-lg text-muted-foreground mb-8">
-              From server-side tracking to privacy compliance, we build
-              analytics infrastructure that's accurate, scalable, and aligned
+              From server-side tracking to consent-aware measurement, we build
+              analytics infrastructure that's documented, scalable, and aligned
               with your business goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

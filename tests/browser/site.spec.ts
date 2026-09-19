@@ -13,7 +13,10 @@ async function mockVerification(page: Page) {
 
 test.beforeEach(async ({page}) => { await mockVerification(page); });
 
-for (const path of ['/', '/services', '/services/cookie-consent', '/who-its-for', '/process', '/about', '/case-studies', '/case-studies/slice', '/case-studies/roadsurfer', '/contact', '/health-check', '/404']) {
+const canonicalUrl = (path: string) => path === '/' ? 'https://upsight.digital/' : `https://upsight.digital${path.endsWith('/') ? path : `${path}/`}`;
+const publicRoutes = ['/', '/services/', '/services/tracking-audit/', '/services/server-side-tracking/', '/services/ga4-gtm-setup/', '/services/meta-conversions-api/', '/services/ecommerce-tracking/', '/services/analytics-dashboards/', '/services/cookie-consent/', '/who-its-for/', '/process/', '/about/', '/case-studies/', '/case-studies/slice/', '/case-studies/roadsurfer/', '/contact/', '/health-check/', '/404/'];
+
+for (const path of publicRoutes) {
   test(`semantic HTML, assets and accessibility: ${path}`, async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
@@ -21,13 +24,15 @@ for (const path of ['/', '/services', '/services/cookie-consent', '/who-its-for'
     await expect(page.locator('astro-island[client="load"][ssr]')).toHaveCount(0);
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('a button, button a, a a, button button')).toHaveCount(0);
-    await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href', `https://upsight.digital${path}`);
+    await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href', canonicalUrl(path));
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', canonicalUrl(path));
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /.+/);
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /hero_analytics_abstract\.webp$/);
     const audit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice']).analyze();
     expect(audit.violations).toEqual([]);
     expect(errors).toEqual([]);
-    if (path === '/case-studies/roadsurfer') await expect(page.locator('astro-island')).toHaveCount(0);
-    if (path === '/case-studies/slice') {
+    if (path === '/case-studies/roadsurfer/') await expect(page.locator('astro-island')).toHaveCount(0);
+    if (path === '/case-studies/slice/') {
       await expect(page.locator('astro-island')).toHaveCount(1);
       await expect(page.locator('astro-island')).toHaveAttribute('component-url', /SliceVideo/);
     }
@@ -50,7 +55,7 @@ test('keyboard navigation, Resources, skip link and mobile menu', async ({page})
   await expect(page.locator('#resources-menu')).not.toHaveAttribute('open');
   await page.setViewportSize({width:390,height:844});
   const mobileMenu = page.locator('#mobile-menu');
-  const mobileServices = page.locator('#mobile-menu a[href="/services"]');
+  const mobileServices = page.locator('#mobile-menu a[href="/services/"]');
   await expect(mobileServices).toHaveCount(1);
   await expect(mobileMenu).toHaveAttribute('inert','');
   await expect(mobileServices).toBeHidden();
@@ -70,27 +75,17 @@ test('keyboard navigation, Resources, skip link and mobile menu', async ({page})
   await expect(mobileServices).toBeHidden();
   await page.getByRole('button',{name:'Toggle menu'}).click();
   await page.locator('#mobile-menu').getByRole('link',{name:'Services',exact:true}).click();
-  await expect(page).toHaveURL(/\/services$/);
+  await expect(page).toHaveURL(/\/services\/$/);
 });
 
-test('service cards, hash anchors and case-study back links', async ({page}) => {
+test('service cards use detailed pages and case-study back links use final URLs', async ({page}) => {
   await page.goto('/');
-  const serviceLink=page.locator('main a[href^="/services#"]').first();
-  const href=await serviceLink.getAttribute('href');
-  await serviceLink.click();
-  expect(new URL(page.url()).pathname+new URL(page.url()).hash).toBe(href);
-  await expect(page.locator(new URL(page.url()).hash)).toBeInViewport();
-  const target = page.locator(new URL(page.url()).hash);
-  await expect(target).toHaveCSS('animation-name', 'target-arrival');
-  await page.waitForTimeout(2300);
-  await expect(target).not.toHaveCSS('box-shadow', /0, 173, 132/);
-  const settledBorder = await target.evaluate(element => getComputedStyle(element).borderColor);
-  await target.hover();
-  await expect.poll(() => target.evaluate(element => getComputedStyle(element).borderColor)).not.toBe(settledBorder);
+  const expectedServices = ['/services/server-side-tracking/', '/services/meta-conversions-api/', '/services/cookie-consent/', '/services/tracking-audit/', '/services/analytics-dashboards/', '/services/ecommerce-tracking/'];
+  for (const href of expectedServices) await expect(page.locator(`main a[href="${href}"]`).first()).toBeVisible();
   for (const slug of ['slice','roadsurfer']) {
-    await page.goto(`/case-studies/${slug}`);
-    await page.locator('main a[href="/case-studies"]').click();
-    await expect(page).toHaveURL(/\/case-studies$/);
+    await page.goto(`/case-studies/${slug}/`);
+    await page.locator('main a[href="/case-studies/"]').click();
+    await expect(page).toHaveURL(/\/case-studies\/$/);
   }
 });
 
@@ -127,8 +122,9 @@ test('Health Check completes, emails only answers, and resets', async ({page}) =
     expect(Object.keys(input).sort()).toEqual(['answers','email','honeypot','turnstileToken']);
     await route.fulfill({json:{success:true}});
   });
-  await page.goto('/health-check');
+  await page.goto('/health-check/');
   await expect(page.locator('astro-island[ssr]')).toHaveCount(0);
+  await expect(page.getByRole('heading',{name:'Free Digital Analytics Health Check',exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Start Health Check'}).click();
   const answers: Record<string,string|string[]>={};
   for (const question of questions) {
@@ -183,13 +179,29 @@ for (const platform of ['Website Only', 'Mobile app', 'Both']) test(`Health Chec
 test('case-study content is visible without JavaScript', async ({browser}) => {
   const context=await browser.newContext({javaScriptEnabled:false});
   const page=await context.newPage();
-  for(const path of ['/case-studies/slice','/case-studies/roadsurfer']) {
+  for(const path of ['/case-studies/slice/','/case-studies/roadsurfer/']) {
     await page.goto(`http://127.0.0.1:4322${path}`);
     const headings=page.locator('main h2');
     for(const heading of await headings.all()) await expect(heading).toBeVisible();
     await expect(page.locator('main a[href="/contact"]').first()).toBeVisible();
   }
   await context.close();
+});
+
+test('SEO structured data is valid and Slice metrics remain non-zero', async ({page}) => {
+  for (const path of ['/services/tracking-audit/', '/services/server-side-tracking/', '/services/ga4-gtm-setup/', '/services/meta-conversions-api/', '/services/ecommerce-tracking/', '/services/analytics-dashboards/', '/services/cookie-consent/']) {
+    await page.goto(path);
+    const schemas = await page.locator('script[type="application/ld+json"]').allTextContents();
+    const parsed = schemas.map(schema => JSON.parse(schema));
+    expect(parsed.some(schema => schema['@type'] === 'Service')).toBe(true);
+    expect(parsed.some(schema => schema['@type'] === 'BreadcrumbList' && schema.itemListElement.every((item: { item: string }) => item.item.endsWith('/')))).toBe(true);
+  }
+  await page.goto('/case-studies/slice/');
+  await expect(page.locator('main')).toContainText('57.91');
+  await expect(page.locator('main')).toContainText('130.43');
+  await expect(page.locator('main')).toContainText('99');
+  await page.goto('/contact/');
+  await expect(page.locator('main')).not.toContainText('EST');
 });
 
 test('hero pauses offscreen and for reduced motion, and resumes in view', async ({page}) => {
@@ -233,7 +245,7 @@ test('About testimonials have independent case-study and accessible video contro
   await alyssa.scrollIntoViewIfNeeded();
   await expect(island).not.toHaveAttribute('ssr');
   await expect(alyssa).toBeVisible();
-  await expect(island.getByRole('link', {name:'Read Slice Case Study'})).toHaveAttribute('href', '/case-studies/slice');
+  await expect(island.getByRole('link', {name:'Read Slice Case Study'})).toHaveAttribute('href', '/case-studies/slice/');
   await alyssa.focus(); await page.keyboard.press('Enter');
   await expect(island.getByRole('button', {name:"Play Alyssa Wong's video testimonial"})).toBeFocused();
   await expect(island.locator('article[aria-hidden="true"]').first()).toHaveAttribute('inert', '');

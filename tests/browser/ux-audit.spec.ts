@@ -62,7 +62,7 @@ test('capture representative interaction states', async ({ browser }) => {
   await page.goto('/'); await settle(page);
   await page.locator('#resources-menu').hover();
   await page.screenshot({ path: `test-results/ux-audit/${label}-resources-open.png` });
-  const card = page.locator('main a[href^="/services#"]').first();
+  const card = page.locator('main a[href^="/services/"]').first();
   await card.hover(); await page.screenshot({ path: `test-results/ux-audit/${label}-service-card-hover.png` });
 
   await page.setViewportSize({ width: 390, height: 844 });

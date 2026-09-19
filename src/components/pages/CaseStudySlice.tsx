@@ -201,7 +201,7 @@ export default function CaseStudySlice({ children }: { children: React.ReactNode
       <section id="overview" className="relative pt-28 pb-16 md:pt-36 md:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-background" />
         <div className="container relative z-10">
-          <Link href="/case-studies" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+          <Link href="/case-studies/" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
             <ArrowLeft className="h-4 w-4" />
             Back to Case Studies
           </Link>

@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServicePage from '../../components/seo/ServicePage.astro';
+import { serviceSchema } from '../../lib/seo';
+import { servicePages } from '../../lib/service-pages';
+const page = servicePages['tracking-audit'];
+---
+<BaseLayout title={page.title + ' | Upsight Digital'} description={page.description} jsonLd={serviceSchema(page.title, page.schemaDescription, '/services/tracking-audit/')}><ServicePage {...page} /></BaseLayout>

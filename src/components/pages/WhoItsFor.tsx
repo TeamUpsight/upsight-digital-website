@@ -62,15 +62,15 @@ export default function WhoItsFor() {
     },
     {
       icon: DollarSign,
-      title: "Maximize ROI",
+      title: "Clearer Measurement",
       description:
-        "Recover lost conversions and optimize ad spend effectively.",
+        "Improve the measurement foundation behind marketing and product decisions.",
     },
     {
       icon: Shield,
-      title: "Stay Compliant",
+      title: "Consent-Aware Tracking",
       description:
-        "Privacy-first tracking that meets GDPR and CCPA requirements.",
+        "Technical consent implementation with CMPs, Consent Mode v2, and GTM routing.",
     },
     {
       icon: Building2,
@@ -91,7 +91,7 @@ export default function WhoItsFor() {
   const businessPainPoints = [
     "Can't trust your analytics data for decision-making",
     "Losing conversions to iOS 14+ and cookie restrictions",
-    "Concerned about GDPR/CCPA compliance risks",
+    "Need clearer consent-state behaviour and privacy requirements",
     "Don't have in-house analytics expertise",
     "Need clear reporting that drives action",
   ];
@@ -265,7 +265,7 @@ export default function WhoItsFor() {
               </h2>
               <p className="body-md text-muted-foreground mb-6">
                 Stop losing revenue to broken tracking. Get complete,
-                privacy-compliant analytics that help you make confident
+                consent-aware analytics that help you make confident
                 decisions and optimize your marketing spend.
               </p>
 
@@ -309,9 +309,9 @@ export default function WhoItsFor() {
               <Card>
                 <CardContent className="p-6">
                   <Shield className="h-8 w-8 text-primary mb-4" />
-                  <h3 className="font-semibold mb-3">Privacy Compliance</h3>
+                  <h3 className="font-semibold mb-3">Consent-Aware Measurement</h3>
                   <p className="text-sm text-muted-foreground">
-                    GDPR and CCPA compliant tracking with consent management
+                    CMP, Consent Mode v2, and GTM consent routing implementation
                     and privacy-first measurement.
                   </p>
                 </CardContent>

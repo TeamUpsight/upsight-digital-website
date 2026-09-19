@@ -41,43 +41,43 @@ export default function Home({ children }: { children?: ReactNode }) {
       icon: Server,
       title: "Server-Side Tracking",
       description:
-        "Bypass browser restrictions with sGTM. Improve data accuracy, reduce page load, and recover lost conversions from iOS 14+ restrictions.",
-      link: "/services#server-side-tracking",
+        "Build a controlled server-side event path with sGTM, consent-aware routing, and validation for key conversions.",
+      link: "/services/server-side-tracking/",
     },
     {
       icon: Activity,
       title: "Meta Conversions API",
       description:
-        "Implement CAPI for Facebook and Instagram ads. Recover lost conversions, improve attribution accuracy, and optimize ad delivery.",
-      link: "/services#meta-capi",
+        "Implement CAPI event mapping, diagnostics, and browser/server deduplication for Meta advertising.",
+      link: "/services/meta-conversions-api/",
     },
     {
       icon: Lock,
-      title: "Consent & Compliance",
+      title: "Cookie Consent & CMP",
       description:
-        "Stay compliant with GDPR, CCPA, and privacy regulations. Integrate CMPs and Consent Mode v2 for privacy-first tracking.",
-      link: "/services#consent-compliance",
+        "Implement CMPs, Consent Mode v2, and GTM consent routing for consent-aware measurement.",
+      link: "/services/cookie-consent/",
     },
     {
       icon: BarChart3,
       title: "Tracking Audits",
       description:
         "Comprehensive audit of your analytics setup. Identify gaps, fix errors, and ensure data accuracy across all platforms.",
-      link: "/services#tracking-audits",
+      link: "/services/tracking-audit/",
     },
     {
       icon: TrendingUp,
       title: "Custom Dashboards",
       description:
         "Looker Studio dashboards with decision-focused insights. Automated reporting that saves time and aligns teams.",
-      link: "/services#dashboards-reports",
+      link: "/services/analytics-dashboards/",
     },
     {
       icon: ShoppingCart,
       title: "Ecommerce Tracking",
       description:
         "Track the full customer journey from product view to purchase. Enhanced ecommerce for Shopify, WooCommerce, and custom platforms.",
-      link: "/services#ecommerce-tracking",
+      link: "/services/ecommerce-tracking/",
     },
   ];
 
@@ -137,7 +137,7 @@ export default function Home({ children }: { children?: ReactNode }) {
                   <li className="flex items-start gap-2">
                     <span className="text-destructive mt-1">✗</span>
                     <span className="text-sm text-muted-foreground">
-                      Losing 30-50% of conversion data to iOS restrictions
+                      Working with incomplete or inconsistent browser-side measurement
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
@@ -155,7 +155,7 @@ export default function Home({ children }: { children?: ReactNode }) {
                   <li className="flex items-start gap-2">
                     <span className="text-destructive mt-1">✗</span>
                     <span className="text-sm text-muted-foreground">
-                      Risking GDPR/CCPA fines from non-compliant tracking
+                      Unclear consent behaviour and privacy requirements
                     </span>
                   </li>
                 </ul>
@@ -171,7 +171,7 @@ export default function Home({ children }: { children?: ReactNode }) {
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <span className="text-sm text-muted-foreground">
-                      Server-side tracking that bypasses browser restrictions
+                      Server-side tracking with a controlled event path
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
@@ -183,7 +183,7 @@ export default function Home({ children }: { children?: ReactNode }) {
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <span className="text-sm text-muted-foreground">
-                      Privacy-compliant tracking with consent management
+                      Consent-aware measurement with technical consent management
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
@@ -207,7 +207,7 @@ export default function Home({ children }: { children?: ReactNode }) {
               Data-Driven Solutions That Drive Real Results
             </h2>
             <p className="body-md text-muted-foreground">
-              From server-side tracking to privacy compliance, we build
+              From server-side tracking to consent-aware measurement, we build
               analytics infrastructure that scales with your business.
             </p>
           </div>
@@ -306,7 +306,7 @@ export default function Home({ children }: { children?: ReactNode }) {
                 </h3>
                 <p className="text-muted-foreground mb-6">
                   Get accurate data for smarter growth decisions. Track every
-                  customer touchpoint with privacy-compliant, reliable analytics.
+                  customer touchpoint with consent-aware, reliable analytics.
                 </p>
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start gap-2">
@@ -318,7 +318,7 @@ export default function Home({ children }: { children?: ReactNode }) {
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <span className="text-sm">
-                      Privacy-compliant implementation
+                      Consent-aware implementation
                     </span>
                   </li>
                   <li className="flex items-start gap-2">

@@ -221,7 +221,7 @@ export default function CaseStudyRoadsurfer() {
           <div className="absolute -right-24 top-20 h-80 w-80 rounded-full bg-primary/10 blur-[100px]" />
 
           <div className="container relative z-10">
-            <Link href="/case-studies" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+            <Link href="/case-studies/" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
               <ArrowLeft className="h-4 w-4" />
               Back to Case Studies
             </Link>

@@ -23,7 +23,7 @@ export default function Contact({ children }: { children: React.ReactNode }) {
       title: "Call Us",
       value: "+971-56-8525950",
       link: "tel:+971568525950",
-      description: "Mon-Fri, 9 AM - 6 PM EST",
+      description: "Meetings available by appointment for clients worldwide",
     },
     {
       icon: MapPin,
