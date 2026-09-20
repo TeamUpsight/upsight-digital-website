@@ -2,16 +2,16 @@
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const mainNavLinks = [
   { href: '/', label: 'Home' },
-  { href: '/services', label: 'Services' },
-  { href: '/case-studies', label: 'Case Studies' },
+  { href: '/services/', label: 'Services' },
+  { href: '/case-studies/', label: 'Case Studies' },
 ];
 const resourceLinks = [
-  { href: '/who-its-for', label: "Who It's For" },
-  { href: '/process', label: 'Process' },
-  { href: '/about', label: 'About' },
-  { href: '/services/cookie-consent', label: 'Cookie Consent' },
+  { href: '/who-its-for/', label: "Who It's For" },
+  { href: '/process/', label: 'Process' },
+  { href: '/about/', label: 'About' },
+  { href: '/services/cookie-consent/', label: 'Cookie Consent' },
 ];
-const active = (href: string) => path === href || (href === '/case-studies' && path.startsWith('/case-studies/'));
+const active = (href: string) => path === href.replace(/\/$/, '') || (href === '/case-studies/' && path.startsWith('/case-studies/'));
 const resourcesActive = resourceLinks.some((link) => active(link.href));
 ---
 <nav class="fixed top-0 left-0 right-0 z-50 min-h-16 border-b border-border bg-background/95 backdrop-blur-sm md:min-h-20" aria-label="Primary navigation">
@@ -44,13 +44,13 @@ const resourcesActive = resourceLinks.some((link) => active(link.href));
           </div>
         </details>
 
-        <a href="/health-check" class="relative overflow-hidden rounded-full px-3 py-1.5 text-sm font-semibold text-primary shadow-[0_0_20px_rgba(0,173,132,0.3),0_0_40px_rgba(0,173,132,0.1),inset_0_0_20px_rgba(0,173,132,0.05)] transition-shadow hover:shadow-[0_0_25px_rgba(0,173,132,0.45),0_0_45px_rgba(0,173,132,0.15)]" style="background:linear-gradient(135deg,rgba(0,173,132,.15) 0%,rgba(0,173,132,.05) 100%)">
+        <a href="/health-check/" class="relative overflow-hidden rounded-full px-3 py-1.5 text-sm font-semibold text-primary shadow-[0_0_20px_rgba(0,173,132,0.3),0_0_40px_rgba(0,173,132,0.1),inset_0_0_20px_rgba(0,173,132,0.05)] transition-shadow hover:shadow-[0_0_25px_rgba(0,173,132,0.45),0_0_45px_rgba(0,173,132,0.15)]" style="background:linear-gradient(135deg,rgba(0,173,132,.15) 0%,rgba(0,173,132,0.05) 100%)">
           <span class="relative z-10">Free Health Check</span>
           <span class="absolute inset-0 rounded-full opacity-50" style="background:linear-gradient(135deg,rgba(0,173,132,.2) 0%,transparent 50%)" aria-hidden="true"></span>
         </a>
       </div>
 
-      <a href="/contact" class="hidden h-10 items-center justify-center rounded-md bg-[#008466] px-6 text-sm font-medium text-white transition-colors hover:bg-[#007A5E] md:inline-flex">Get Free Consultation</a>
+      <a href="/contact/" class="hidden h-10 items-center justify-center rounded-md bg-[#008466] px-6 text-sm font-medium text-white transition-colors hover:bg-[#007A5E] md:inline-flex">Get Free Consultation</a>
 
       <button id="mobile-menu-button" class="rounded-md p-2 md:hidden" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu">
         <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
@@ -71,8 +71,8 @@ const resourcesActive = resourceLinks.some((link) => active(link.href));
           {resourceLinks.map((link) => <a href={link.href} class:list={["block py-1.5 text-sm font-medium", active(link.href) ? "text-primary" : "text-foreground/70"]}>{link.label}</a>)}
         </div>
       </details>
-      <a href="/health-check" class="rounded-lg bg-primary/10 px-4 py-2 text-base font-semibold text-primary shadow-[0_0_15px_rgba(0,173,132,0.2)]">✨ Free Health Check</a>
-      <a href="/contact" class="mt-2 inline-flex h-10 items-center justify-center rounded-md bg-[#008466] px-6 text-sm font-medium text-white hover:bg-[#007A5E]">Get Free Consultation</a>
+      <a href="/health-check/" class="rounded-lg bg-primary/10 px-4 py-2 text-base font-semibold text-primary shadow-[0_0_15px_rgba(0,173,132,0.2)]">✨ Free Health Check</a>
+      <a href="/contact/" class="mt-2 inline-flex h-10 items-center justify-center rounded-md bg-[#008466] px-6 text-sm font-medium text-white hover:bg-[#007A5E]">Get Free Consultation</a>
     </div>
   </div>
 </nav>

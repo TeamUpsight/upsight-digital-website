@@ -5,8 +5,14 @@ import { calculateScore, getQuestionProgress, questions } from '../src/lib/healt
 
 const fixtures = JSON.parse(readFileSync(new URL('./fixtures/health-check.json', import.meta.url)));
 for (const fixture of fixtures) {
-  test(`scoring matches pre-refactor output: ${fixture.name}`, () => {
-    assert.deepEqual(calculateScore(fixture.answers), fixture.expected);
+  test(`scoring totals remain stable when recommendation wording changes: ${fixture.name}`, () => {
+    const result = calculateScore(fixture.answers);
+    assert.equal(result.total, fixture.expected.total);
+    assert.deepEqual(result.breakdown, fixture.expected.breakdown);
+    assert.deepEqual(result.percentages, fixture.expected.percentages);
+    assert.equal(result.maturity, fixture.expected.maturity);
+    assert.deepEqual(result.risks.map(risk => risk.category), fixture.expected.risks.map(risk => risk.category));
+    assert.deepEqual(result.recommendations.map(recommendation => recommendation.category), fixture.expected.recommendations.map(recommendation => recommendation.category));
   });
 }
 

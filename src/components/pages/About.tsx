@@ -45,9 +45,9 @@ export default function About({ children }: { children?: ReactNode }) {
     },
     {
       icon: Award,
-      title: "Consent Management & Privacy Compliance",
+      title: "Consent Management & Privacy Architecture",
       description:
-        "GDPR and CCPA compliant tracking with CMP integration, Consent Mode v2, and privacy-first measurement.",
+        "CMP integration, Consent Mode v2, GTM consent routing, and privacy-conscious measurement architecture.",
     },
     {
       icon: Users,
@@ -74,7 +74,7 @@ export default function About({ children }: { children?: ReactNode }) {
       icon: Shield,
       title: "Privacy-First Approach",
       description:
-        "We build compliant tracking that respects user privacy while delivering the insights you need.",
+        "We build consent-aware tracking that respects user choices and supports the measurement your team needs.",
     },
     {
       icon: Handshake,

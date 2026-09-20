@@ -304,35 +304,35 @@ const categoryRecommendations: Record<string, Recommendation> = {
     title: "Track Key Events and Full Funnel Steps",
     description: "Implement comprehensive event tracking to capture the complete user journey from first touch to conversion.",
     impact: "Complete visibility into user behavior",
-    link: "/services#server-side-tracking",
+    link: "/services/server-side-tracking/",
     category: "coverage",
   },
   reliability: {
     title: "Audit and Validate Tracking Accuracy",
     description: "Conduct a thorough audit of your current tracking setup to identify and fix data quality issues.",
     impact: "Trustworthy data for confident decisions",
-    link: "/services#tracking-audits",
+    link: "/services/tracking-audit/",
     category: "reliability",
   },
   attribution: {
     title: "Improve Attribution with Server-Side/CAPI",
-    description: "Use server-side tracking (and CAPIs) to reduce iOS/Safari loss and improve attribution accuracy.",
-    impact: "Recover 30-50% of lost conversion data",
-    link: "/services#meta-capi",
+    description: "Review server-side tracking and CAPI options to strengthen conversion signal coverage and attribution diagnostics.",
+    impact: "A clearer path for validating conversion signals",
+    link: "/services/meta-conversions-api/",
     category: "attribution",
   },
   privacy: {
     title: "Implement a CMP with Consent Mode v2",
-    description: "Set up a proper Consent Management Platform with Google Consent Mode v2 for GDPR/CCPA compliance.",
-    impact: "Ensure compliance and improve data modeling",
-    link: "/services#consent-compliance",
+    description: "Implement a Consent Management Platform, Google Consent Mode v2, and GTM consent routing for consent-aware measurement.",
+    impact: "Clearer consent-state behaviour and measurement governance",
+    link: "/services/cookie-consent/",
     category: "privacy",
   },
   ownership: {
     title: "Define Clear Ownership and Monitoring",
     description: "Establish clear ownership of analytics with documented processes and regular monitoring workflows.",
     impact: "Proactive issue detection and resolution",
-    link: "/services#reporting-optimization",
+    link: "/services/analytics-dashboards/",
     category: "ownership",
   },
 };
@@ -358,8 +358,8 @@ const categoryRisks: Record<string, Risk> = {
     category: "attribution",
   },
   privacy: {
-    title: "Compliance Risk",
-    description: "Inadequate consent management exposes you to GDPR/CCPA penalties and data loss.",
+    title: "Consent Management Gap",
+    description: "Unclear consent management can make it difficult to understand which tags should run and what reporting represents.",
     severity: "high",
     category: "privacy",
   },
@@ -469,11 +469,11 @@ export function calculateScore(answers: HealthCheckAnswers): {
   const improvementEstimation: string[] = [];
 
   if (percentages.attribution < 0.5) {
-    improvementEstimation.push("Recover 30-50% of lost conversion data");
+    improvementEstimation.push("Prioritise the conversion paths that need stronger signal coverage.");
   } else if (percentages.attribution < 0.75) {
-    improvementEstimation.push("Recover 20-30% of lost conversion data");
+    improvementEstimation.push("Review remaining attribution blind spots before changing the implementation.");
   } else {
-    improvementEstimation.push("Recover 10-20% of lost conversion data");
+    improvementEstimation.push("Keep monitoring attribution as platforms and consent choices change.");
   }
 
   if (percentages.coverage < 0.5) {

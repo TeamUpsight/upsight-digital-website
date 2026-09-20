@@ -335,16 +335,15 @@ export default function HealthCheck() {
           {/* Widget Container - Responsive, no internal scroll */}
           <Card className="border-2 min-h-[440px] transition-[min-height] duration-300 motion-reduce:transition-none">
             <CardContent ref={focusTarget} tabIndex={-1} aria-label={currentStep === "questions" ? currentQuestion.text : currentStep === "results" ? "Your Analytics Health Score" : "Analytics Health Check"} className="p-6 md:p-8">
-                {currentStep !== "intro" && <h1 className="sr-only">Quick Analytics Health Check</h1>}
                 {/* Intro Screen */}
                 {currentStep === "intro" && (
                   <div key="intro" className="health-step text-center py-8">
                     <div className="mb-6 p-4 rounded-full bg-primary/10 inline-block">
                       <Activity className="h-12 w-12 text-primary" />
                     </div>
-                    <h1 className="text-3xl font-bold mb-4">
+                    <h2 className="text-3xl font-bold mb-4">
                       Quick Analytics Health Check
-                    </h1>
+                    </h2>
                     <h2 className="text-lg text-muted-foreground mb-2">Assess Your Tracking Setup in 3 Minutes</h2>
                     <p className="text-lg text-muted-foreground mb-6 max-w-xl mx-auto">
                       Get a personalized assessment of your analytics setup in just 3 minutes. 
