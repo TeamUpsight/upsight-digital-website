@@ -1,0 +1,27 @@
+<section class="service-panel" data-architecture data-testid="server-architecture">
+  <div class="flex flex-col justify-between gap-5 md:flex-row md:items-start"><div><p class="service-kicker">INTERACTIVE EXPLORER</p><h2 class="service-heading mt-3">Follow an event through the architecture</h2></div><p class="max-w-md text-sm leading-6 text-muted-foreground">Illustrative architecture. Actual consent behavior depends on your CMP, jurisdiction, configuration, and destination requirements.</p></div>
+  <div class="mt-7 flex flex-wrap gap-2" role="group" aria-label="Choose a data source"><button class="service-toggle is-active" data-source="website" aria-pressed="true">Website</button><button class="service-toggle" data-source="mobile" aria-pressed="false">Mobile App</button><button class="service-toggle" data-source="backend" aria-pressed="false">Backend</button></div>
+  <div class="mt-4 flex flex-wrap gap-5"><fieldset class="flex items-center gap-2"><legend class="sr-only">Architecture mode</legend><button class="service-toggle is-active" data-mode="server" aria-pressed="true">Server-side</button><button class="service-toggle" data-mode="browser" aria-pressed="false">Browser-only</button></fieldset><fieldset class="flex items-center gap-2"><legend class="sr-only">Consent state</legend><button class="service-toggle is-active" data-consent="granted" aria-pressed="true">Consent granted</button><button class="service-toggle" data-consent="restricted" aria-pressed="false">Consent restricted</button></fieldset></div>
+  <div class="architecture-flow mt-8" aria-live="polite"><div class="architecture-node" data-architecture-source><span class="font-mono text-xs text-primary">SOURCE</span><strong>Website</strong><small>Browser events</small></div><div class="architecture-arrow" aria-hidden="true">↓</div><div class="architecture-node" data-architecture-collection><span class="font-mono text-xs text-primary">COLLECTION</span><strong>Web GTM</strong><small>Event preparation</small></div><div class="architecture-arrow" aria-hidden="true">↓</div><div class="architecture-node architecture-node--accent"><span class="font-mono text-xs text-primary">FIRST PARTY</span><strong>metrics.yourdomain.com</strong><small>Collection endpoint</small></div><div class="architecture-arrow" aria-hidden="true">↓</div><div class="architecture-node architecture-node--accent"><span class="font-mono text-xs text-primary">SERVER LAYER</span><strong>GTM Server-Side</strong><small>Routing and transformations</small></div><div class="architecture-arrow" aria-hidden="true">↓</div><div class="architecture-node" data-destinations><span class="font-mono text-xs text-primary">DESTINATIONS</span><strong>GA4 · Google Ads · Meta</strong><small>TikTok, Snapchat, other APIs</small></div></div>
+  <p class="mt-6 rounded-lg border border-border bg-background/70 p-4 text-sm leading-6 text-muted-foreground" data-architecture-explanation>A server-side layer centralizes parts of event processing and routing while keeping destination-specific requirements explicit.</p>
+</section>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-architecture]');
+  if (root) {
+    const labels = { website: ['Website', 'Web GTM', 'Browser events'], mobile: ['Mobile App', 'SDK / API', 'App events'], backend: ['Backend / CRM', 'API', 'Server-originated events'] };
+    let source: keyof typeof labels = 'website', mode = 'server', consent = 'granted';
+    const render = () => {
+      const [sourceName, collection, detail] = labels[source];
+      root.querySelector('[data-architecture-source] strong')!.textContent = sourceName;
+      root.querySelector('[data-architecture-source] small')!.textContent = detail;
+      root.querySelector('[data-architecture-collection] strong')!.textContent = mode === 'browser' ? `${sourceName} browser` : collection;
+      root.querySelector('[data-architecture-collection] small')!.textContent = mode === 'browser' ? 'Direct vendor requests' : 'Event preparation';
+      root.querySelector('[data-destinations] strong')!.textContent = mode === 'browser' ? 'GA4 · Google Ads · Meta · TikTok' : 'GA4 · Google Ads · Meta';
+      root.querySelector('[data-destinations] small')!.textContent = consent === 'restricted' ? 'Illustrative blocked or limited paths' : 'TikTok, Snapchat, other APIs';
+      root.querySelector('[data-architecture-explanation]')!.textContent = mode === 'browser' ? 'More vendor logic runs directly in the client and each destination can depend on its own browser request.' : 'A server-side layer centralizes parts of event processing and routing while keeping destination-specific requirements explicit.';
+      root.classList.toggle('is-browser', mode === 'browser'); root.classList.toggle('is-restricted', consent === 'restricted');
+      root.querySelectorAll<HTMLButtonElement>('[data-source],[data-mode],[data-consent]').forEach(button => { const active = button.dataset.source === source || button.dataset.mode === mode || button.dataset.consent === consent; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); });
+    };
+    root.addEventListener('click', event => { const button = (event.target as Element).closest<HTMLButtonElement>('[data-source],[data-mode],[data-consent]'); if (!button) return; if (button.dataset.source) source = button.dataset.source as keyof typeof labels; if (button.dataset.mode) mode = button.dataset.mode; if (button.dataset.consent) consent = button.dataset.consent; render(); });
+  }
+</script>

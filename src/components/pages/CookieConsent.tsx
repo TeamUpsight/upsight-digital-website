@@ -41,7 +41,7 @@ export default function CookieConsent() {
       icon: AlertTriangle,
       title: "Compliance Risk",
       description:
-        "Tags firing without intended consent controls can create an unclear measurement and privacy posture.",
+        "Tags firing before consent can expose your business to privacy and legal issues.",
     },
   ];
 
@@ -54,9 +54,9 @@ export default function CookieConsent() {
     },
     {
       icon: Palette,
-      title: "Clear Banner UX",
+      title: "High-Acceptance Banner UX",
       description:
-        "We configure clear consent experiences around your approved categories, regions, and technical requirements.",
+        "We design consent experiences that stay compliant while reducing unnecessary opt-outs.",
     },
     {
       icon: ToggleRight,
@@ -74,7 +74,7 @@ export default function CookieConsent() {
       icon: FileText,
       title: "Policy & Vendor Sync",
       description:
-        "We document vendor and tag behaviour so technical implementation can stay aligned as your marketing stack changes.",
+        "Your vendors, scripts, and privacy documentation stay aligned as your marketing stack changes.",
     },
     {
       icon: Globe,
@@ -132,7 +132,7 @@ export default function CookieConsent() {
       icon: Users,
       title: "Marketing Agencies",
       description:
-        "Deliver consent-aware tracking setups for clients without creating messy tag logic.",
+        "Deliver compliant tracking setups for clients without creating messy tag logic.",
     },
     {
       icon: Building2,
@@ -163,13 +163,13 @@ export default function CookieConsent() {
         <div className="container relative">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="heading-xl mb-6">
-              Cookie Consent &amp; CMP{" "}
-              <span className="text-primary">Implementation</span>
+              Stop Losing Ad Data to{" "}
+              <span className="text-primary">Bad Cookie Banners</span>
             </h1>
             <p className="body-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
               We implement CMPs, Google Consent Mode v2, and consent-based GTM
-              routing so approved analytics and advertising tags behave according
-              to the consent state your team has defined.
+              routing so your tracking stays compliant, your ad platforms stay
+              fed, and your team stops guessing.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
@@ -201,16 +201,35 @@ export default function CookieConsent() {
         </div>
       </section>
 
-      {/* Technical scope */}
+      {/* Proof Strip */}
       <section className="py-8 border-y border-border/50 bg-muted/20">
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center items-center">
+            {/* Cookiebot Certified Partner Badge */}
+            <div className="flex flex-col items-center">
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663269151870/NKnKdFDxhaRVudBQKnGMGB/cookiebot-certified-partner_f709749f.png"
+                alt="Cookiebot by Usercentrics - Certified Partner"
+                className="h-16 md:h-20 w-auto object-contain"
+                width="120"
+                height="80"
+              />
+            </div>
             {[
-              { value: "CMP", label: "selection and configuration" },
-              { value: "Consent Mode", label: "v2 implementation" },
-              { value: "GTM", label: "consent routing" },
-              { value: "QA", label: "accept, reject, and partial-consent testing" },
-            ].map((stat, index) => <div key={index} className="flex flex-col items-center"><span className="text-lg md:text-xl font-bold text-primary">{stat.value}</span><span className="text-xs text-muted-foreground mt-1">{stat.label}</span></div>)}
+              { value: "Top 50", label: "Reseller in North America" },
+              { value: "165+", label: "Brands Secured" },
+              { value: "8.8M+", label: "Monthly Consents" },
+              { value: "10+", label: "Languages Localized" },
+            ].map((stat, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <span className="text-lg md:text-xl font-bold text-primary">
+                  {stat.value}
+                </span>
+                <span className="text-xs text-muted-foreground mt-1">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -220,12 +239,12 @@ export default function CookieConsent() {
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="heading-md mb-6">
-              Consent Needs More Than a Banner
+              Generic Cookie Banners Kill ROI
             </h2>
             <p className="body-md text-muted-foreground">
-              A banner needs to be connected properly to GTM, GA4, and advertising
-              tags. Without an agreed consent-state design, teams can struggle to
-              understand which tags run and what their reporting represents.
+              Most websites add a cookie banner to avoid fines. But if it is not
+              connected properly to GTM, GA4, and ad pixels, it creates a new
+              problem: lost data, broken attribution, and compliance risk.
             </p>
           </div>
 
@@ -381,16 +400,16 @@ export default function CookieConsent() {
           <Card className="border-2 border-primary">
             <CardContent className="p-8 md:p-12 text-center">
               <h2 className="heading-md mb-6">
-                Build Consent-Aware Measurement.
+                Stop Guessing. Start Tracking Legally.
               </h2>
               <p className="body-md text-muted-foreground mb-8 max-w-2xl mx-auto">
-                We help you build a consent system with clear category choices,
-                routing rules, and QA for the measurement your team is permitted
-                to collect. This is technical implementation support, not legal advice.
+                A poor cookie setup can hurt both compliance and performance. We
+                help you build a consent system that protects users, protects
+                your business, and preserves the data your marketing needs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
                 <ButtonLink href="/health-check" size="lg" className="text-base px-8 h-12">
-                    Take the Health Check
+                    Audit My Tracking & Compliance
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </ButtonLink>
                 <ButtonLink href="/contact" size="lg" variant="outline" className="text-base px-8 h-12">
@@ -398,7 +417,7 @@ export default function CookieConsent() {
                   </ButtonLink>
               </div>
               <p className="text-xs text-muted-foreground">
-                Discuss your technical consent implementation with our team.
+                Book a consultation with a certified implementation expert.
               </p>
             </CardContent>
           </Card>

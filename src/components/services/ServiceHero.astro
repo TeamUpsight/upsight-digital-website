@@ -1,0 +1,19 @@
+---
+interface Props { eyebrow: string; title: string; lead: string; detail: string; primaryLabel: string; primaryHref?: string; secondaryLabel: string; secondaryHref?: string; }
+const { eyebrow, title, lead, detail, primaryLabel, primaryHref = '/contact/', secondaryLabel, secondaryHref = '#service-detail' } = Astro.props;
+---
+<section class="service-hero">
+  <div class="container grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
+    <div>
+      <p class="service-kicker">{eyebrow}</p>
+      <h1 class="service-title mt-4">{title}</h1>
+      <p class="service-lead mt-6">{lead}</p>
+      <p class="mt-4 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg">{detail}</p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a class="service-primary-cta" href={primaryHref}>{primaryLabel}</a>
+        <a class="service-secondary-cta" href={secondaryHref}>{secondaryLabel}</a>
+      </div>
+    </div>
+    <div class="service-hero-visual"><slot name="visual" /></div>
+  </div>
+</section>

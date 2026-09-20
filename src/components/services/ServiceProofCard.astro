@@ -1,0 +1,10 @@
+---
+interface Props { title: string; detail: string; href: string; metric?: string; label?: string; }
+const { title, detail, href, metric, label = 'View case study' } = Astro.props;
+---
+<article class="service-proof-card">
+  {metric && <p class="font-mono text-2xl font-bold text-primary">{metric}</p>}
+  <h3 class="mt-2 text-xl font-semibold">{title}</h3>
+  <p class="mt-3 text-sm leading-6 text-muted-foreground">{detail}</p>
+  <a href={href} class="mt-5 inline-flex font-semibold text-primary underline underline-offset-4">{label} <span aria-hidden="true">→</span></a>
+</article>
