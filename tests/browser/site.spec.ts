@@ -9,6 +9,7 @@ async function mockVerification(page: Page) {
     body: `window.turnstile = { render(el, options) { el.textContent = 'Verification complete'; queueMicrotask(() => options.callback('browser-test-token')); return 'widget'; }, remove() {} };`,
   }));
   await page.route('**/www.googletagmanager.com/**', route => route.fulfill({ contentType: 'application/javascript', body: '' }));
+  await page.route('**/r2.leadsy.ai/**', route => route.fulfill({ contentType: 'application/javascript', body: '' }));
 }
 
 test.beforeEach(async ({page}) => { await mockVerification(page); });
@@ -28,6 +29,12 @@ for (const path of publicRoutes) {
     await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', canonicalUrl(path));
     await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /.+/);
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /hero_analytics_abstract\.webp$/);
+    const leadsy = page.locator('head script#vtag-ai-js');
+    await expect(leadsy).toHaveCount(1);
+    await expect(leadsy).toHaveAttribute('src', 'https://r2.leadsy.ai/tag.js');
+    await expect(leadsy).toHaveAttribute('data-pid', 'LnE2P4juFc7jvRJV');
+    await expect(leadsy).toHaveAttribute('data-version', '062024');
+    await expect(leadsy).toHaveAttribute('async', '');
     const audit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice']).analyze();
     expect(audit.violations).toEqual([]);
     expect(errors).toEqual([]);
@@ -39,13 +46,36 @@ for (const path of publicRoutes) {
   });
 }
 
-test('keyboard navigation, Resources, skip link and mobile menu', async ({page}) => {
+test('keyboard navigation, dropdowns, skip link and mobile menu', async ({page}) => {
   await page.goto('/');
+  const desktopNavigation = page.locator('#desktop-navigation-links');
+  await expect(desktopNavigation.locator(':scope > a, :scope > details > summary')).toHaveText([
+    'Home',
+    'Services',
+    'Case Studies',
+    'Resources',
+    'Free Health Check',
+  ]);
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', {name:'Skip to main content'})).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.locator('#main-content')).toBeFocused();
+  const services = page.locator('#services-menu summary');
   const resources=page.locator('#resources-menu summary');
+  await services.click();
+  await expect(page.locator('#services-menu')).toHaveAttribute('open', '');
+  await resources.click();
+  await expect(page.locator('#resources-menu')).toHaveAttribute('open', '');
+  await expect(page.locator('#services-menu')).not.toHaveAttribute('open');
+  await services.hover();
+  await expect(page.locator('#services-menu')).toHaveAttribute('open', '');
+  await page.locator('h1').hover();
+  await expect(page.locator('#services-menu')).not.toHaveAttribute('open');
+  await services.focus(); await page.keyboard.press('Enter');
+  await expect(page.locator('#services-menu')).toHaveAttribute('open', '');
+  await page.keyboard.press('Escape');
+  await expect(services).toBeFocused();
+  await expect(page.locator('#services-menu')).not.toHaveAttribute('open');
   await resources.focus(); await page.keyboard.press('Enter');
   await expect(page.locator('#resources-menu')).toHaveAttribute('open', '');
   await page.keyboard.press('Tab');
@@ -57,6 +87,8 @@ test('keyboard navigation, Resources, skip link and mobile menu', async ({page})
   const mobileMenu = page.locator('#mobile-menu');
   const mobileServicesMenu = page.locator('#mobile-services-menu');
   const mobileServicesSummary = mobileServicesMenu.locator('summary');
+  const mobileResourcesMenu = page.locator('#mobile-resources-menu');
+  const mobileResourcesSummary = mobileResourcesMenu.locator('summary');
   const viewAllServices = mobileServicesMenu.getByRole('link', {name:'View all services'});
   await expect(mobileMenu).toHaveAttribute('inert','');
   await expect(mobileServicesSummary).toBeHidden();
@@ -71,12 +103,15 @@ test('keyboard navigation, Resources, skip link and mobile menu', async ({page})
   await mobileServicesSummary.focus(); await page.keyboard.press('Enter');
   await expect(mobileServicesMenu).toHaveAttribute('open','');
   await expect(viewAllServices).toBeVisible();
+  await mobileResourcesSummary.click();
+  await expect(mobileResourcesMenu).toHaveAttribute('open', '');
   await mobileServicesMenu.getByRole('link',{name:'Server-Side Tracking'}).focus();
   await expect(mobileServicesMenu.getByRole('link',{name:'Server-Side Tracking'})).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(page.locator('#mobile-menu-button')).toHaveAttribute('aria-expanded','false');
   await expect(mobileMenu).toHaveAttribute('inert','');
   await expect(mobileServicesMenu).not.toHaveAttribute('open');
+  await expect(mobileResourcesMenu).not.toHaveAttribute('open');
   await expect(page.locator('#mobile-menu-button')).toBeFocused();
   await expect(mobileServicesSummary).toBeHidden();
   await page.getByRole('button',{name:'Toggle menu'}).click();

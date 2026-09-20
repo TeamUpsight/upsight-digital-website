@@ -1,9 +1,7 @@
 ---
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const mainNavLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/case-studies/', label: 'Case Studies' },
-];
+const homeLink = { href: '/', label: 'Home' };
+const caseStudiesLink = { href: '/case-studies/', label: 'Case Studies' };
 const serviceLinks = [
   { href: '/services/ga4-gtm-setup/', label: 'GA4 & GTM Setup', detail: 'Measurement planning, data layers and implementation' },
   { href: '/services/server-side-tracking/', label: 'Server-Side Tracking', detail: 'sGTM, first-party collection and server routing' },
@@ -29,14 +27,19 @@ const servicesActive = path === '/services' || path.startsWith('/services/');
         <img src="/images/logo-nav.webp" alt="Upsight Digital" class="h-8 w-[151px] object-contain" width="151" height="32" loading="eager" fetchpriority="high" decoding="async" />
       </a>
 
-      <div class="hidden items-center gap-8 md:flex">
-        {mainNavLinks.map((link) => (
-          <a href={link.href} aria-current={active(link.href) ? 'page' : undefined} class:list={["text-sm font-medium transition-colors hover:text-primary", active(link.href) ? "text-primary" : "text-foreground/80"]}>{link.label}</a>
-        ))}
+      <div id="desktop-navigation-links" class="hidden items-center gap-8 md:flex">
+        <a href={homeLink.href} aria-current={active(homeLink.href) ? 'page' : undefined} class:list={["text-sm font-medium transition-colors hover:text-primary", active(homeLink.href) ? "text-primary" : "text-foreground/80"]}>{homeLink.label}</a>
         <details id="services-menu" class="group relative">
-          <summary class:list={["flex cursor-pointer list-none items-center gap-1 text-sm font-medium [&::-webkit-details-marker]:hidden transition-colors hover:text-primary focus-visible:outline-none focus-visible:text-primary", servicesActive ? "text-primary" : "text-foreground/80"]}>Services <span aria-hidden="true">⌄</span></summary>
+          <summary class:list={["flex cursor-pointer list-none items-center gap-1 text-sm font-medium [&::-webkit-details-marker]:hidden transition-colors hover:text-primary focus-visible:outline-none focus-visible:text-primary", servicesActive ? "text-primary" : "text-foreground/80"]}>
+            Services
+            <svg class="h-4 w-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </summary>
           <div class="absolute left-0 top-full z-50 pt-2"><div class="w-[440px] rounded-lg border border-border bg-card p-4 shadow-xl"><p class="service-kicker">MEASUREMENT &amp; TRACKING</p><div class="mt-2 grid grid-cols-2 gap-1">{serviceLinks.map((link) => <a href={link.href} class="rounded p-2 hover:bg-muted"><span class="block text-sm font-semibold">{link.label}</span><span class="mt-1 block text-xs text-muted-foreground">{link.detail}</span></a>)}</div><a href="/services/" class="mt-3 inline-block text-sm font-semibold text-primary">View all services →</a></div></div>
         </details>
+
+        <a href={caseStudiesLink.href} aria-current={active(caseStudiesLink.href) ? 'page' : undefined} class:list={["text-sm font-medium transition-colors hover:text-primary", active(caseStudiesLink.href) ? "text-primary" : "text-foreground/80"]}>{caseStudiesLink.label}</a>
 
         <details id="resources-menu" class="group relative">
           <summary
@@ -73,9 +76,10 @@ const servicesActive = path === '/services' || path.startsWith('/services/');
 
   <div id="mobile-menu" hidden inert class="border-t border-border bg-background md:hidden">
     <div class="container flex flex-col gap-2 py-4">
-      {mainNavLinks.map((link) => <a href={link.href} class:list={["block py-2 text-base font-medium", active(link.href) ? "text-primary" : "text-foreground/80"]}>{link.label}</a>)}
-      <details class="group py-2" id="mobile-services-menu"><summary class:list={["flex list-none items-center justify-between text-base font-medium [&::-webkit-details-marker]:hidden", servicesActive ? "text-primary" : "text-foreground/80"]}>Services <span aria-hidden="true">⌄</span></summary><div class="mt-2 ml-4 flex flex-col gap-2 border-l-2 border-border pl-4">{serviceLinks.map((link) => <a href={link.href} class="block py-1.5 text-sm font-medium text-foreground/70">{link.label}</a>)}<a href="/services/" class="block py-1.5 text-sm font-semibold text-primary">View all services →</a></div></details>
-      <details class="group py-2">
+      <a href={homeLink.href} class:list={["block py-2 text-base font-medium", active(homeLink.href) ? "text-primary" : "text-foreground/80"]}>{homeLink.label}</a>
+      <details class="group py-2" id="mobile-services-menu"><summary class:list={["flex list-none items-center justify-between text-base font-medium [&::-webkit-details-marker]:hidden", servicesActive ? "text-primary" : "text-foreground/80"]}>Services <svg class="h-5 w-5 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></summary><div class="mt-2 ml-4 flex flex-col gap-2 border-l-2 border-border pl-4">{serviceLinks.map((link) => <a href={link.href} class="block py-1.5 text-sm font-medium text-foreground/70">{link.label}</a>)}<a href="/services/" class="block py-1.5 text-sm font-semibold text-primary">View all services →</a></div></details>
+      <a href={caseStudiesLink.href} class:list={["block py-2 text-base font-medium", active(caseStudiesLink.href) ? "text-primary" : "text-foreground/80"]}>{caseStudiesLink.label}</a>
+      <details class="group py-2" id="mobile-resources-menu">
         <summary class:list={["flex list-none items-center justify-between text-base font-medium [&::-webkit-details-marker]:hidden", resourcesActive ? "text-primary" : "text-foreground/80"]}>
           Resources
           <svg class="h-5 w-5 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
