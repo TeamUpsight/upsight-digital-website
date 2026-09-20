@@ -55,26 +55,37 @@ test('keyboard navigation, Resources, skip link and mobile menu', async ({page})
   await expect(page.locator('#resources-menu')).not.toHaveAttribute('open');
   await page.setViewportSize({width:390,height:844});
   const mobileMenu = page.locator('#mobile-menu');
-  const mobileServices = page.locator('#mobile-menu a[href="/services/"]');
-  await expect(mobileServices).toHaveCount(1);
+  const mobileServicesMenu = page.locator('#mobile-services-menu');
+  const mobileServicesSummary = mobileServicesMenu.locator('summary');
+  const viewAllServices = mobileServicesMenu.getByRole('link', {name:'View all services'});
   await expect(mobileMenu).toHaveAttribute('inert','');
-  await expect(mobileServices).toBeHidden();
+  await expect(mobileServicesSummary).toBeHidden();
   await page.getByRole('button',{name:'Toggle menu'}).focus();
   await page.keyboard.press('Tab');
   await expect(mobileMenu.locator(':focus')).toHaveCount(0);
   await page.getByRole('button',{name:'Toggle menu'}).click();
   await expect(page.locator('#mobile-menu-button')).toHaveAttribute('aria-expanded','true');
   await expect(mobileMenu).not.toHaveAttribute('inert');
-  await expect(mobileServices).toBeVisible();
-  await mobileServices.focus();
-  await expect(mobileServices).toBeFocused();
+  await expect(mobileServicesSummary).toBeVisible();
+  await expect(viewAllServices).toBeHidden();
+  await mobileServicesSummary.focus(); await page.keyboard.press('Enter');
+  await expect(mobileServicesMenu).toHaveAttribute('open','');
+  await expect(viewAllServices).toBeVisible();
+  await mobileServicesMenu.getByRole('link',{name:'Server-Side Tracking'}).focus();
+  await expect(mobileServicesMenu.getByRole('link',{name:'Server-Side Tracking'})).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(page.locator('#mobile-menu-button')).toHaveAttribute('aria-expanded','false');
   await expect(mobileMenu).toHaveAttribute('inert','');
+  await expect(mobileServicesMenu).not.toHaveAttribute('open');
   await expect(page.locator('#mobile-menu-button')).toBeFocused();
-  await expect(mobileServices).toBeHidden();
+  await expect(mobileServicesSummary).toBeHidden();
   await page.getByRole('button',{name:'Toggle menu'}).click();
-  await page.locator('#mobile-menu').getByRole('link',{name:'Services',exact:true}).click();
+  await expect(mobileServicesSummary).toBeVisible();
+  await expect(viewAllServices).toBeHidden();
+  await mobileServicesSummary.click();
+  await expect(mobileServicesMenu).toHaveAttribute('open','');
+  await expect(viewAllServices).toBeVisible();
+  await viewAllServices.click();
   await expect(page).toHaveURL(/\/services\/$/);
 });
 
@@ -87,6 +98,38 @@ test('service cards use detailed pages and case-study back links use final URLs'
     await page.locator('main a[href="/case-studies/"]').click();
     await expect(page).toHaveURL(/\/case-studies\/$/);
   }
+});
+
+test('service detail explorers and Services navigation progressively enhance', async ({page}) => {
+  await page.goto('/services/server-side-tracking/');
+  const architecture = page.getByTestId('server-architecture');
+  await expect(architecture).toBeVisible();
+  await architecture.getByRole('button',{name:'Mobile App'}).click();
+  await expect(architecture).toContainText('Mobile App');
+  await architecture.getByRole('button',{name:'Browser-only'}).click();
+  await expect(architecture).toContainText('Direct vendor requests');
+  await architecture.getByRole('button',{name:'Consent restricted'}).click();
+  await expect(architecture).toContainText('Illustrative blocked or limited paths');
+  await page.goto('/services/tracking-audit/');
+  const workspace=page.getByTestId('audit-workspace'); await workspace.getByRole('button',{name:'Filter severity: High'}).click();
+  await workspace.getByRole('button',{name:/transaction_id is missing/}).click();
+  await expect(workspace).toContainText('Expose the order identifier');
+  await page.goto('/services/ga4-gtm-setup/');
+  const inspector=page.getByTestId('event-journey-inspector');
+  await expect(inspector).toContainText('Checkout completed');
+  await inspector.getByRole('tab',{name:'Lead Submitted'}).click();
+  await expect(inspector).toContainText('generate_lead');
+  await inspector.getByRole('button',{name:'Show broken example'}).click();
+  await expect(inspector).toContainText('missing');
+  await page.goto('/');
+  const services=page.locator('#services-menu summary'); await services.focus(); await page.keyboard.press('Enter');
+  await expect(page.locator('#services-menu')).toHaveAttribute('open',''); await page.keyboard.press('Escape'); await expect(page.locator('#services-menu')).not.toHaveAttribute('open');
+  await page.setViewportSize({width:390,height:844}); await page.getByRole('button',{name:'Toggle menu'}).click();
+  await page.locator('#mobile-services-menu summary').click(); await expect(page.locator('#mobile-services-menu a[href="/services/server-side-tracking/"]')).toBeVisible();
+  await expect(page.locator('#mobile-menu a[href="/services/cookie-consent/"]')).toHaveCount(1);
+  await page.goto('/services/cookie-consent/');
+  for (const value of ['Top 50','165+','8.8M+','10+']) await expect(page.locator('main')).toContainText(value);
+  await expect(page.locator('main img[alt*="Cookiebot"]')).toBeVisible();
 });
 
 test('Contact query opens form; errors, success and repeat submission work', async ({page}) => {

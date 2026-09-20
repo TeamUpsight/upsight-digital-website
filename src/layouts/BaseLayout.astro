@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
-import { organizationSchema, publicUrl, websiteSchema } from '../lib/seo';
+import { organizationSchema, publicPageUrl, websiteSchema } from '../lib/seo';
 
 interface Props {
   title: string;
@@ -26,7 +26,7 @@ const {
   hideShell = false,
 } = Astro.props;
 
-const canonical = publicUrl(canonicalProp ?? Astro.url.pathname);
+const canonical = publicPageUrl(canonicalProp ?? Astro.url.pathname);
 
 const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
 const breadcrumbLabels: Record<string, string> = {
@@ -47,12 +47,12 @@ const breadcrumbSchema = pathSegments.length > 0
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: publicUrl() },
+        { '@type': 'ListItem', position: 1, name: 'Home', item: publicPageUrl() },
         ...pathSegments.map((segment, index) => ({
           '@type': 'ListItem',
           position: index + 2,
           name: breadcrumbLabels[segment] ?? segment.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
-          item: publicUrl(`/${pathSegments.slice(0, index + 1).join('/')}/`),
+          item: publicPageUrl(`/${pathSegments.slice(0, index + 1).join('/')}/`),
         })),
       ],
     }
