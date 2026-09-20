@@ -108,6 +108,7 @@ const servicesActive = path === '/services' || path.startsWith('/services/');
   };
   const closeMobile = () => {
     if (!button || !menu) return;
+    menu.querySelectorAll<HTMLDetailsElement>('details[open]').forEach((details) => { details.open = false; });
     menu.inert = true; delete menu.dataset.open;
     button.setAttribute('aria-expanded', 'false'); setMobileIcons(false);
     const timer = window.setTimeout(() => { if (button.getAttribute('aria-expanded') === 'false') menu.hidden = true; }, 220);

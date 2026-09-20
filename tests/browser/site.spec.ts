@@ -76,10 +76,15 @@ test('keyboard navigation, Resources, skip link and mobile menu', async ({page})
   await page.keyboard.press('Escape');
   await expect(page.locator('#mobile-menu-button')).toHaveAttribute('aria-expanded','false');
   await expect(mobileMenu).toHaveAttribute('inert','');
+  await expect(mobileServicesMenu).not.toHaveAttribute('open');
   await expect(page.locator('#mobile-menu-button')).toBeFocused();
   await expect(mobileServicesSummary).toBeHidden();
   await page.getByRole('button',{name:'Toggle menu'}).click();
+  await expect(mobileServicesSummary).toBeVisible();
+  await expect(viewAllServices).toBeHidden();
   await mobileServicesSummary.click();
+  await expect(mobileServicesMenu).toHaveAttribute('open','');
+  await expect(viewAllServices).toBeVisible();
   await viewAllServices.click();
   await expect(page).toHaveURL(/\/services\/$/);
 });
