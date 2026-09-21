@@ -68,22 +68,22 @@ export default function VideoTestimonialCard({
         ref={cardRef}
         data-testimonial-card
         data-state={isFlipped ? 'video' : 'quote'}
-        className="relative w-full transition-[height,transform] duration-700 motion-reduce:transition-none"
+        className="relative h-[500px] w-full transition-[height,transform] duration-700 motion-reduce:transition-none sm:h-[470px] lg:h-[450px]"
         style={{
-          height: isFlipped && videoHeight ? `${videoHeight}px` : '380px',
+          height: isFlipped && videoHeight ? `${videoHeight}px` : undefined,
           transformStyle: 'preserve-3d',
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
         }}
       >
         <article className="absolute inset-0" style={{ backfaceVisibility: 'hidden' }} inert={isFlipped} aria-hidden={isFlipped}>
-          <Card className="h-full border-primary/20 bg-gradient-to-br from-card via-card to-primary/5">
-            <CardContent className="grid h-full grid-rows-[auto_1fr_auto] p-6">
+          <Card className="h-full gap-0 border-primary/20 bg-gradient-to-br from-card via-card to-primary/5 py-0">
+            <CardContent className="grid h-full grid-rows-[auto_minmax(0,1fr)_auto] p-6">
               <div className="flex min-h-14 items-center gap-3">
                 <img src={portrait} alt={name} width="56" height="56" loading="lazy" className="h-14 w-14 rounded-full border-2 border-primary/30 object-cover" />
                 <div><p className="font-semibold">{name}</p><p className="text-xs text-muted-foreground">{role}</p></div>
               </div>
               <blockquote className="mt-6 self-start text-sm leading-relaxed text-foreground/90 italic">{quote}</blockquote>
-              <div className="mt-6 border-t border-border/50 pt-4 space-y-3">
+              <div className="mt-6 min-h-[8.25rem] space-y-3 border-t border-border/50 pt-4">
                 {videoSrc && <button ref={frontButton} type="button" aria-label={`Watch ${name}'s video testimonial`} onClick={flipToVideo} className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
                   <Play className="h-4 w-4" fill="currentColor" aria-hidden="true" /> Watch testimonial
                 </button>}
@@ -94,7 +94,7 @@ export default function VideoTestimonialCard({
         </article>
 
         {videoSrc && <article className="absolute inset-0 overflow-hidden rounded-xl" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }} inert={!isFlipped} aria-hidden={!isFlipped}>
-          <Card className="h-full border-primary/20 bg-[#0b1218]"><div className="relative h-full">
+          <Card className="h-full gap-0 border-primary/20 bg-[#0b1218] py-0"><div className="relative h-full">
             <video ref={videoRef} src={videoSrc} poster={posterSrc} className="h-full w-full rounded-xl object-contain" controls={isVideoPlaying} preload="metadata" aria-label={videoLabel} onEnded={() => setIsVideoPlaying(false)} playsInline suppressHydrationWarning />
             {!isVideoPlaying && isFlipped && <button ref={playButton} type="button" aria-label={`Play ${videoLabel}`} onClick={playVideo} className="absolute inset-0 flex items-center justify-center group">
               <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary shadow-lg shadow-primary/50 transition-transform group-hover:scale-110"><Play className="ml-0.5 h-7 w-7 text-primary-foreground" fill="currentColor" aria-hidden="true" /></span>

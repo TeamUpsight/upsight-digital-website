@@ -47,6 +47,9 @@ for (const path of publicRoutes) {
 }
 
 test('keyboard navigation, dropdowns, skip link and mobile menu', async ({page}) => {
+  const movePointerAwayFromNavigation = async () => {
+    await page.mouse.move(10, 250);
+  };
   await page.goto('/');
   const desktopNavigation = page.locator('#desktop-navigation-links');
   await expect(desktopNavigation.locator(':scope > a, :scope > details > summary')).toHaveText([
@@ -64,10 +67,10 @@ test('keyboard navigation, dropdowns, skip link and mobile menu', async ({page})
   const services = servicesMenu.locator('summary');
   const resourcesMenu = page.locator('#resources-menu');
   const resources = resourcesMenu.locator('summary');
-  await page.locator('h1').hover();
+  await movePointerAwayFromNavigation();
   await services.hover();
   await expect(servicesMenu).toHaveAttribute('open', '');
-  await page.locator('h1').hover();
+  await movePointerAwayFromNavigation();
   await expect(servicesMenu).not.toHaveAttribute('open');
   await services.click();
   await expect(servicesMenu).toHaveAttribute('open', '');
@@ -83,7 +86,7 @@ test('keyboard navigation, dropdowns, skip link and mobile menu', async ({page})
   await expect(resourcesMenu).not.toHaveAttribute('open');
   await services.click();
   await expect(servicesMenu).not.toHaveAttribute('open');
-  await page.locator('h1').hover();
+  await movePointerAwayFromNavigation();
   await services.focus(); await page.keyboard.press('Enter');
   await expect(servicesMenu).toHaveAttribute('open', '');
   await page.keyboard.press('Escape');
@@ -162,11 +165,16 @@ test('service detail explorers and Services navigation progressively enhance', a
   const workspace=page.getByTestId('audit-workspace'); await workspace.getByRole('button',{name:'Filter severity: High'}).click();
   await workspace.getByRole('button',{name:/transaction_id is missing/}).click();
   await expect(workspace).toContainText('Expose the order identifier');
+  await expect(workspace.locator('.audit-status')).toHaveCount(0);
   await page.goto('/services/ga4-gtm-setup/');
   const inspector=page.getByTestId('event-journey-inspector');
   await expect(inspector).toContainText('Checkout completed');
   await inspector.getByRole('tab',{name:'Lead Submitted'}).click();
   await expect(inspector).toContainText('generate_lead');
+  await inspector.locator('details summary').click();
+  await expect(inspector.locator('[data-payload]')).toContainText('"event": "generate_lead"');
+  await inspector.getByRole('tab',{name:'Purchase'}).click();
+  await expect(inspector.locator('[data-payload]')).toContainText('"Analytics Cap"');
   await inspector.getByRole('button',{name:'Show broken example'}).click();
   await expect(inspector).toContainText('missing');
   await page.goto('/');
