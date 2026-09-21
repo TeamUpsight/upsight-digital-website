@@ -51,6 +51,7 @@ test('keyboard navigation, dropdowns, skip link and mobile menu', async ({page})
     await page.mouse.move(10, 250);
   };
   await page.goto('/');
+  await expect(page.getByText('Digital analytics, tracking & measurement implementation', {exact:true})).toHaveCount(0);
   const desktopNavigation = page.locator('#desktop-navigation-links');
   await expect(desktopNavigation.locator(':scope > a, :scope > details > summary')).toHaveText([
     'Home',
@@ -155,10 +156,15 @@ test('service detail explorers and Services navigation progressively enhance', a
   await page.goto('/services/server-side-tracking/');
   const architecture = page.getByTestId('server-architecture');
   await expect(architecture).toBeVisible();
-  await architecture.getByRole('button',{name:'Mobile App'}).click();
-  await expect(architecture).toContainText('Mobile App');
+  await expect(architecture).toContainText('Web GTM');
+  await expect(architecture).toContainText('GA4 · Google Ads · Meta');
+  await expect(architecture).toContainText('TikTok, Snapchat, other APIs');
   await architecture.getByRole('button',{name:'Browser-only'}).click();
-  await expect(architecture).toContainText('Direct vendor requests');
+  await expect(architecture).toHaveClass(/is-browser/);
+  await expect(architecture).toContainText('Web GTM');
+  await expect(architecture).toContainText('Event preparation');
+  await expect(architecture).toContainText('GA4 · Google Ads · Meta');
+  await expect(architecture).toContainText('TikTok, Snapchat, other APIs');
   await architecture.getByRole('button',{name:'Consent restricted'}).click();
   await expect(architecture).toContainText('Illustrative blocked or limited paths');
   await page.goto('/services/tracking-audit/');
@@ -176,7 +182,13 @@ test('service detail explorers and Services navigation progressively enhance', a
   await inspector.getByRole('tab',{name:'Purchase'}).click();
   await expect(inspector.locator('[data-payload]')).toContainText('"Analytics Cap"');
   await inspector.getByRole('button',{name:'Show broken example'}).click();
-  await expect(inspector).toContainText('missing');
+  await expect(inspector.locator('[data-qa-value="transaction"]')).toHaveText('missing ✕');
+  await expect(inspector.locator('[data-qa-value="transaction"]')).toHaveClass(/text-destructive/);
+  await expect(inspector.locator('[data-qa-value="value"]')).toHaveClass(/text-destructive/);
+  await expect(inspector.locator('[data-qa-value="items"]')).toHaveClass(/text-destructive/);
+  await expect(inspector.locator('[data-qa-value="event"]')).not.toHaveClass(/text-destructive/);
+  await inspector.getByRole('button',{name:'Show valid example'}).click();
+  await expect(inspector.locator('[data-qa-value="transaction"]')).not.toHaveClass(/text-destructive/);
   await page.goto('/');
   const services=page.locator('#services-menu summary'); await services.focus(); await page.keyboard.press('Enter');
   await expect(page.locator('#services-menu')).toHaveAttribute('open',''); await page.keyboard.press('Escape'); await expect(page.locator('#services-menu')).not.toHaveAttribute('open');
@@ -223,7 +235,10 @@ test('Health Check completes, emails only answers, and resets', async ({page}) =
   });
   await page.goto('/health-check/');
   await expect(page.locator('astro-island[ssr]')).toHaveCount(0);
-  await expect(page.getByRole('heading',{name:'Free Digital Analytics Health Check',exact:true})).toBeVisible();
+  await expect(page.getByRole('heading',{level:1,name:'Quick Analytics Health Check',exact:true})).toBeVisible();
+  for (const heading of ['What the Health Check evaluates', 'Privacy and limitations', 'Common questions']) {
+    await expect(page.getByRole('heading', {name: heading, exact: true})).toHaveCount(0);
+  }
   await page.getByRole('button',{name:'Start Health Check'}).click();
   const answers: Record<string,string|string[]>={};
   for (const question of questions) {

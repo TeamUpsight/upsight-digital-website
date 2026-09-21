@@ -1,4 +1,5 @@
 ---
+import { buttonClasses } from '../../lib/button-styles';
 interface Props { eyebrow: string; title: string; lead: string; detail: string; primaryLabel: string; primaryHref?: string; }
 const { eyebrow, title, lead, detail, primaryLabel, primaryHref = '/contact/' } = Astro.props;
 ---
@@ -10,7 +11,7 @@ const { eyebrow, title, lead, detail, primaryLabel, primaryHref = '/contact/' } 
       <p class="service-lead mt-6">{lead}</p>
       <p class="mt-4 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg">{detail}</p>
       <div class="mt-8">
-        <a class="service-primary-cta" href={primaryHref}>{primaryLabel}</a>
+        <a class={buttonClasses({ size: 'lg', className: 'h-12 px-8 text-base' })} href={primaryHref}>{primaryLabel}</a>
       </div>
     </div>
     <div class="service-hero-visual"><slot name="visual" /></div>

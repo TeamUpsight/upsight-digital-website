@@ -3,11 +3,7 @@
   <div class="mt-6 flex flex-wrap gap-2" role="tablist" aria-label="Choose an example event"><button class="service-toggle" data-event="view_item" role="tab" aria-selected="false">Product View</button><button class="service-toggle" data-event="add_to_cart" role="tab" aria-selected="false">Add to Cart</button><button class="service-toggle" data-event="lead" role="tab" aria-selected="false">Lead Submitted</button><button class="service-toggle is-active" data-event="purchase" role="tab" aria-selected="true">Purchase</button></div>
   <div class="journey-flow mt-7" role="tabpanel" tabindex="0"><div><small>USER ACTION</small><strong data-action>Checkout completed</strong></div><span aria-hidden="true">↓</span><div><small>DATA LAYER</small><code data-layer>event: purchase<br />transaction_id: 102847<br />value: 249.00<br />currency: AED</code></div><span aria-hidden="true">↓</span><div><small>GOOGLE TAG MANAGER</small><strong data-gtm>Trigger: purchase<br />Tags: GA4 Event, Google Ads</strong></div><span aria-hidden="true">↓</span><div><small>GA4</small><strong data-ga4>Event: purchase<br />Parameters: transaction_id, value, currency, items</strong></div><span aria-hidden="true">↓</span><div><small>REPORTING</small><strong data-reporting>Revenue · Transactions · Products</strong></div></div>
   <details class="mt-6 rounded-xl border border-border bg-background/60 p-4"><summary class="cursor-pointer font-semibold">Inspect event payload</summary><div class="event-payload mt-4"><p class="service-kicker">EVENT PAYLOAD</p><pre><code data-payload></code></pre></div></details>
-  <div class="mt-6 rounded-xl border border-border bg-background/60 p-4"><div class="flex flex-wrap items-center justify-between gap-3"><div><p class="font-semibold">QA check: purchase journey</p><p class="text-sm text-muted-foreground">Product → Cart → Checkout → Purchase</p></div><button class="service-toggle" data-broken aria-pressed="false">Show broken example</button></div><pre class="mt-4 font-mono text-sm" data-qa>event name  purchase ✓
-transaction_id  #102847 ✓
-value  249.00 ✓
-items  3 products ✓
-duplicate check  passed ✓</pre></div>
+  <div class="mt-6 rounded-xl border border-border bg-background/60 p-4"><div class="flex flex-wrap items-center justify-between gap-3"><div><p class="font-semibold">QA check: purchase journey</p><p class="text-sm text-muted-foreground">Product → Cart → Checkout → Purchase</p></div><button class="service-toggle" data-broken aria-pressed="false">Show broken example</button></div><div class="mt-4 grid gap-2 font-mono text-sm" data-qa><div class="grid grid-cols-[8rem_minmax(0,1fr)] gap-3"><span>event name</span><strong data-qa-value="event">purchase ✓</strong></div><div class="grid grid-cols-[8rem_minmax(0,1fr)] gap-3"><span>transaction_id</span><strong data-qa-value="transaction">#102847 ✓</strong></div><div class="grid grid-cols-[8rem_minmax(0,1fr)] gap-3"><span>value</span><strong data-qa-value="value">249.00 ✓</strong></div><div class="grid grid-cols-[8rem_minmax(0,1fr)] gap-3"><span>items</span><strong data-qa-value="items">3 products ✓</strong></div><div class="grid grid-cols-[8rem_minmax(0,1fr)] gap-3" data-qa-duplicate><span>duplicate check</span><strong>passed ✓</strong></div></div></div>
 </section>
 <script>
   const root = document.querySelector<HTMLElement>('[data-event-inspector]');
@@ -25,7 +21,15 @@ duplicate check  passed ✓</pre></div>
       (['action','layer','gtm','ga4','reporting'] as const).forEach(key => root.querySelector(`[data-${key}]`)!.textContent = data[key]);
       root.querySelector('[data-payload]')!.textContent = JSON.stringify(data.payload, null, 2);
       root.querySelectorAll<HTMLButtonElement>('[data-event]').forEach(button => { const active = button.dataset.event === current; button.classList.toggle('is-active', active); button.setAttribute('aria-selected', String(active)); });
-      root.querySelector('[data-qa]')!.textContent = broken ? 'event name  purchase ✓\ntransaction_id  missing ✕\nvalue  "249 AED" ✕\nitems  empty ✕' : 'event name  purchase ✓\ntransaction_id  #102847 ✓\nvalue  249.00 ✓\nitems  3 products ✓\nduplicate check  passed ✓';
+      const qa = broken
+        ? { event: 'purchase ✓', transaction: 'missing ✕', value: '"249 AED" ✕', items: 'empty ✕' }
+        : { event: 'purchase ✓', transaction: '#102847 ✓', value: '249.00 ✓', items: '3 products ✓' };
+      (Object.keys(qa) as Array<keyof typeof qa>).forEach(key => {
+        const value = root.querySelector<HTMLElement>(`[data-qa-value="${key}"]`)!;
+        value.textContent = qa[key];
+        value.classList.toggle('text-destructive', broken && key !== 'event');
+      });
+      root.querySelector<HTMLElement>('[data-qa-duplicate]')!.hidden = broken;
     };
     render();
     root.addEventListener('click', event => { const eventButton = (event.target as Element).closest<HTMLButtonElement>('[data-event]'); const brokenButton = (event.target as Element).closest<HTMLButtonElement>('[data-broken]'); if (eventButton) { current = eventButton.dataset.event as keyof typeof events; render(); } if (brokenButton) { broken = !broken; brokenButton.setAttribute('aria-pressed', String(broken)); brokenButton.textContent = broken ? 'Show valid example' : 'Show broken example'; render(); } });
