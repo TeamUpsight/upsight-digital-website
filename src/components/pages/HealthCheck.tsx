@@ -341,9 +341,9 @@ export default function HealthCheck() {
                     <div className="mb-6 p-4 rounded-full bg-primary/10 inline-block">
                       <Activity className="h-12 w-12 text-primary" />
                     </div>
-                    <h2 className="text-3xl font-bold mb-4">
+                    <h1 className="text-3xl font-bold mb-4">
                       Quick Analytics Health Check
-                    </h2>
+                    </h1>
                     <h2 className="text-lg text-muted-foreground mb-2">Assess Your Tracking Setup in 3 Minutes</h2>
                     <p className="text-lg text-muted-foreground mb-6 max-w-xl mx-auto">
                       Get a personalized assessment of your analytics setup in just 3 minutes. 

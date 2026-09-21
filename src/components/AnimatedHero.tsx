@@ -82,8 +82,7 @@ export default function AnimatedHero() {
           </h1>
 
           <p className="body-lg mx-auto mb-8 max-w-3xl text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
-            <span className="block text-sm font-semibold uppercase tracking-[0.16em] text-primary">Digital analytics, tracking &amp; measurement implementation</span>
-            <span className="mt-3 block">We fix tracking gaps, implement server-side solutions, and build consent-aware measurement for clearer decision-making.</span>
+            We fix tracking gaps, implement server-side solutions, and build consent-aware measurement for clearer decision-making.
           </p>
 
           <div className="mb-16 flex flex-col justify-center gap-4 sm:flex-row animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">

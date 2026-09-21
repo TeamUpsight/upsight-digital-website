@@ -14,11 +14,11 @@
       const [sourceName, collection, detail] = labels[source];
       root.querySelector('[data-architecture-source] strong')!.textContent = sourceName;
       root.querySelector('[data-architecture-source] small')!.textContent = detail;
-      root.querySelector('[data-architecture-collection] strong')!.textContent = mode === 'browser' ? `${sourceName} browser` : collection;
-      root.querySelector('[data-architecture-collection] small')!.textContent = mode === 'browser' ? 'Direct vendor requests' : 'Event preparation';
-      root.querySelector('[data-destinations] strong')!.textContent = mode === 'browser' ? 'GA4 · Google Ads · Meta · TikTok' : 'GA4 · Google Ads · Meta';
+      root.querySelector('[data-architecture-collection] strong')!.textContent = collection;
+      root.querySelector('[data-architecture-collection] small')!.textContent = 'Event preparation';
+      root.querySelector('[data-destinations] strong')!.textContent = 'GA4 · Google Ads · Meta';
       root.querySelector('[data-destinations] small')!.textContent = consent === 'restricted' ? 'Illustrative blocked or limited paths' : 'TikTok, Snapchat, other APIs';
-      root.querySelector('[data-architecture-explanation]')!.textContent = mode === 'browser' ? 'More vendor logic runs directly in the client and each destination can depend on its own browser request.' : 'A server-side layer centralizes parts of event processing and routing while keeping destination-specific requirements explicit.';
+      root.querySelector('[data-architecture-explanation]')!.textContent = mode === 'browser' ? 'Measurement is sent directly from the client-side collection layer to destination platforms, without passing through the server-side layer.' : 'A server-side layer centralizes parts of event processing and routing while keeping destination-specific requirements explicit.';
       root.classList.toggle('is-browser', mode === 'browser'); root.classList.toggle('is-restricted', consent === 'restricted');
       root.querySelectorAll<HTMLButtonElement>('[data-source],[data-mode],[data-consent]').forEach(button => { const active = button.dataset.source === source || button.dataset.mode === mode || button.dataset.consent === consent; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); });
     };
