@@ -188,6 +188,54 @@ test('service detail explorers and Services navigation progressively enhance', a
   await expect(page.locator('main img[alt*="Cookiebot"]')).toBeVisible();
 });
 
+test('Phase 2 service learning tools update accessible, illustrative states', async ({page}) => {
+  await page.goto('/services/meta-conversions-api/');
+  const capi = page.getByTestId('meta-capi-flow');
+  await expect(capi).toContainText('Deduplication: MATCHED');
+  await expect(capi.locator('[data-browser-id]')).toHaveText('ORD-8472');
+  await expect(capi.locator('[data-server-id]')).toHaveText('ORD-8472');
+  await capi.getByRole('button', {name:'Mismatched event IDs'}).click();
+  await expect(capi).toContainText('Deduplication: REVIEW');
+  await expect(capi.locator('[data-server-id]')).toHaveText('SERVER-2194');
+  await capi.locator('[data-event-select]').selectOption('Lead');
+  await expect(capi).toContainText('event_name: Lead');
+  await capi.getByText('Inspect server event', {exact:true}).click();
+  await expect(capi.locator('[data-server-payload]')).toContainText('"event_name": "Lead"');
+  await capi.getByRole('button', {name:'Matched event IDs', exact:true}).focus(); await page.keyboard.press('Enter');
+  await expect(capi).toContainText('Deduplication: MATCHED');
+
+  await page.goto('/services/ecommerce-tracking/');
+  const ecommerce = page.getByTestId('ecommerce-journey');
+  await expect(ecommerce).toContainText('transaction_id: ORD-102847');
+  await ecommerce.getByRole('tab', {name:/PURCHASE/}).click();
+  await ecommerce.getByText('Inspect event payload', {exact:true}).click();
+  await expect(ecommerce.locator('[data-commerce-payload]')).toContainText('"transaction_id": "ORD-102847"');
+  await expect(ecommerce.locator('[data-commerce-payload]')).toContainText('"items"');
+  await ecommerce.getByRole('button', {name:'Show common tracking issues'}).click();
+  await expect(ecommerce).toContainText('item_id missing');
+  await ecommerce.getByRole('tab', {name:/VIEW PRODUCT/}).focus(); await page.keyboard.press('Enter');
+  await expect(ecommerce).toContainText('product detail viewed');
+
+  await page.goto('/services/analytics-dashboards/');
+  const dashboard = page.getByTestId('dashboard-demo');
+  await expect(dashboard).toContainText(/Interactive demo using illustrative data/i);
+  const initialRevenue = await dashboard.locator('[data-kpi="revenue"]').textContent();
+  await dashboard.locator('[data-filter="period"]').selectOption('7');
+  await dashboard.locator('[data-filter="channel"]').selectOption('Meta');
+  await expect(dashboard.locator('[data-kpi="revenue"]')).not.toHaveText(initialRevenue ?? '');
+  await expect(dashboard.locator('svg[role="img"]')).toHaveAttribute('aria-label', /Illustrative revenue trend/);
+
+  await page.goto('/services/cookie-consent/');
+  const consent = page.getByTestId('consent-routing-simulator');
+  expect(await consent.locator('[data-consent-signals] dd').allTextContents()).toEqual(['granted','denied','denied','denied']);
+  await consent.getByRole('button', {name:'Accept All'}).click();
+  expect(await consent.locator('[data-consent-signals] dd').allTextContents()).toEqual(['granted','granted','granted','granted']);
+  await expect(consent.locator('[data-tag-routing] dd').nth(2)).toHaveText('Allowed by configured consent rule');
+  await consent.getByRole('button', {name:'Reject Non-Essential'}).focus(); await page.keyboard.press('Enter');
+  expect(await consent.locator('[data-consent-signals] dd').allTextContents()).toEqual(['denied','denied','denied','denied']);
+  await expect(consent.locator('[data-tag-routing] dd').nth(2)).toHaveText('Blocked by configured consent rule');
+});
+
 test('Contact query opens form; errors, success and repeat submission work', async ({page}) => {
   let count=0;
   await page.route('**/api/contact', async route => {

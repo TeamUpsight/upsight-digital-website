@@ -1,0 +1,29 @@
+<section class="service-panel capi-lab" data-capi-flow data-testid="meta-capi-flow">
+  <div class="flex flex-col justify-between gap-4 md:flex-row"><div><p class="service-kicker">PIXEL + CAPI DEDUPLICATION LAB</p><h2 class="service-heading mt-3">Pair the same conversion across two paths</h2></div><p class="max-w-md text-sm leading-6 text-muted-foreground">Illustrative technical example. Browser and server delivery need a shared definition of the business action, not simply two requests with similar names.</p></div>
+  <div class="mt-6 flex flex-wrap items-center gap-3"><div class="flex flex-wrap gap-2" aria-label="Choose event ID relationship"><button class="service-toggle is-active" data-id-mode="matched" aria-pressed="true">Matched event IDs</button><button class="service-toggle" data-id-mode="mismatched" aria-pressed="false">Mismatched event IDs</button></div><label class="ml-auto text-sm font-semibold">Event <select class="ml-2 rounded border border-border bg-background px-2 py-1" data-event-select><option>Purchase</option><option>Lead</option><option>Add to Cart</option></select></label></div>
+  <div class="capi-flow-grid mt-6"><article class="capi-node"><p class="service-kicker">BROWSER</p><h3 class="mt-2 font-semibold">Meta Pixel</h3><pre>event_name: <span data-browser-event>Purchase</span>
+event_id: <span data-browser-id>ORD-8472</span></pre></article><span class="capi-arrow" aria-hidden="true">→</span><article class="capi-result"><p class="service-kicker">META</p><h3 class="mt-2 font-semibold" data-result-event>Purchase</h3><p class="mt-3 text-sm" data-result-copy>Same conversion represented on two delivery paths.</p><p class="mt-4 font-mono text-sm">Deduplication: <strong class="text-primary" data-dedup-state>MATCHED</strong></p><p class="mt-4 text-xs text-muted-foreground">Diagnostics can help review delivery, pairing, and available matching signals.</p></article><span class="capi-arrow capi-server-arrow" aria-hidden="true">→</span><article class="capi-node"><p class="service-kicker">SERVER</p><h3 class="mt-2 font-semibold">Server CAPI</h3><pre>event_name: <span data-server-event>Purchase</span>
+event_id: <span data-server-id>ORD-8472</span></pre></article></div>
+  <p class="mt-4 text-sm text-muted-foreground" data-capi-note>Matching IDs support the intended browser/server deduplication design.</p>
+  <div class="mt-6 grid gap-4 lg:grid-cols-2"><details class="rounded-xl border border-border bg-background/50 p-4"><summary class="cursor-pointer font-semibold">Inspect matching inputs</summary><dl class="mt-4 grid gap-2 text-sm sm:grid-cols-2"><div><dt>email</dt><dd>hashed before delivery</dd></div><div><dt>phone</dt><dd>hashed before delivery</dd></div><div><dt>external_id</dt><dd>available</dd></div><div><dt>fbp / fbc</dt><dd>browser / click identifiers</dd></div><div><dt>client IP</dt><dd>where applicable</dd></div><div><dt>user agent</dt><dd>where applicable</dd></div></dl><p class="mt-4 text-xs leading-5 text-muted-foreground">Meta can use eligible customer and browser information to match server events to people. Appropriate signals depend on available data, consent, and implementation.</p></details><details class="rounded-xl border border-border bg-background/50 p-4"><summary class="cursor-pointer font-semibold">Inspect server event</summary><p class="mt-3 text-xs text-muted-foreground">Illustrative payload. Fields vary by event, source, consent state, and implementation.</p><pre class="event-payload"><code data-server-payload></code></pre></details></div>
+</section>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-capi-flow]');
+  if (root) {
+    let mode = 'matched'; let eventName = 'Purchase';
+    const ids: Record<string, [string, string]> = { matched:['ORD-8472','ORD-8472'], mismatched:['BROWSER-8472','SERVER-2194'] };
+    const render = () => {
+      const [browserId, serverId] = ids[mode]; const action = eventName === 'Add to Cart' ? 'AddToCart' : eventName;
+      root.querySelectorAll('[data-browser-event],[data-server-event],[data-result-event]').forEach(el => el.textContent = action);
+      root.querySelector('[data-browser-id]')!.textContent = browserId; root.querySelector('[data-server-id]')!.textContent = serverId;
+      const matched = mode === 'matched'; root.querySelector('[data-dedup-state]')!.textContent = matched ? 'MATCHED' : 'REVIEW';
+      root.querySelector('[data-dedup-state]')!.className = matched ? 'text-primary' : 'text-destructive';
+      root.querySelector('[data-result-copy]')!.textContent = matched ? 'Same conversion represented on two delivery paths.' : 'Events cannot be confidently paired as the same conversion.';
+      root.querySelector('[data-capi-note]')!.textContent = matched ? 'Matching IDs support the intended browser/server deduplication design.' : 'Inconsistent IDs can prevent browser/server events from being deduplicated as intended.';
+      root.querySelector('[data-server-payload]')!.textContent = JSON.stringify({ event_name:action, event_time:1770000000, event_id:serverId, action_source:'website', event_source_url:'https://example.com/order-confirmation', user_data:{em:'[hashed]',ph:'[hashed]',fbp:'fb.1....',fbc:'fb.1....'}, custom_data:{currency:'AED',value:349,order_id:serverId} }, null, 2);
+      root.querySelectorAll<HTMLButtonElement>('[data-id-mode]').forEach(button => { const active = button.dataset.idMode === mode; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); });
+    };
+    root.addEventListener('click', event => { const button = (event.target as Element).closest<HTMLButtonElement>('[data-id-mode]'); if (button) { mode = button.dataset.idMode!; render(); } });
+    root.querySelector<HTMLSelectElement>('[data-event-select]')!.addEventListener('change', event => { eventName = (event.target as HTMLSelectElement).value; render(); }); render();
+  }
+</script>
