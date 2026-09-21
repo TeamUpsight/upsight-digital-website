@@ -17,7 +17,7 @@ export const technologyCatalog = {
   shopify: { key: 'shopify', name: 'Shopify', logo: '/images/tech/shopify.svg' },
   woocommerce: { key: 'woocommerce', name: 'WooCommerce', logo: '/images/tech/woocommerce.svg' },
   consentMode: { key: 'consentMode', name: 'Google Consent Mode v2', logo: '/images/tech/google-consent-mode.svg' },
-  lookerStudio: { key: 'lookerStudio', name: 'Looker Studio', logo: '/images/tech/looker-studio.svg' },
+  lookerStudio: { key: 'lookerStudio', name: 'Google Data Studio', logo: '/images/tech/looker-studio.svg' },
   bigQuery: { key: 'bigQuery', name: 'BigQuery', logo: '/images/tech/bigquery.svg' },
   cookiebot: { key: 'cookiebot', name: 'Usercentrics Cookiebot', logo: '/images/tech/cookiebot.svg' },
   tiktok: { key: 'tiktok', name: 'TikTok', logo: '/images/tech/tiktok.svg' },

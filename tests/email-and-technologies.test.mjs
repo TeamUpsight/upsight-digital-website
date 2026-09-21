@@ -10,9 +10,9 @@ test('technology catalog uses local, color-preserving assets', () => {
     assert.match(technology.logo, /^\/images\/tech\//);
     assert.ok(existsSync(`public${technology.logo}`), `${technology.name} logo exists locally`);
   }
-  const cookieConsent = readFileSync('src/components/pages/CookieConsent.tsx', 'utf8');
+  const cookieConsent = readFileSync('src/pages/services/cookie-consent.astro', 'utf8');
   const about = readFileSync('src/components/pages/About.tsx', 'utf8');
-  assert.match(cookieConsent, /<TechnologyGrid/);
+  assert.match(cookieConsent, /Usercentrics Cookiebot/);
   assert.match(about, /<TechnologyGrid/);
 });
 
