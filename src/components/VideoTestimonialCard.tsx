@@ -77,13 +77,13 @@ export default function VideoTestimonialCard({
       >
         <article className="absolute inset-0" style={{ backfaceVisibility: 'hidden' }} inert={isFlipped} aria-hidden={isFlipped}>
           <Card className="h-full gap-0 border-primary/20 bg-gradient-to-br from-card via-card to-primary/5 py-0">
-            <CardContent className="grid h-full grid-rows-[auto_minmax(0,1fr)_auto] p-6">
+            <CardContent className="grid h-full grid-rows-[auto_minmax(min-content,1fr)_auto] p-6">
               <div className="flex min-h-14 items-center gap-3">
                 <img src={portrait} alt={name} width="56" height="56" loading="lazy" className="h-14 w-14 rounded-full border-2 border-primary/30 object-cover" />
                 <div><p className="font-semibold">{name}</p><p className="text-xs text-muted-foreground">{role}</p></div>
               </div>
               <blockquote className="mt-6 self-start text-sm leading-relaxed text-foreground/90 italic">{quote}</blockquote>
-              <div className="mt-6 min-h-[8.25rem] space-y-3 border-t border-border/50 pt-4">
+              <div data-testimonial-actions className="mt-6 min-h-[8.25rem] space-y-3 border-t border-border/50 pt-4">
                 {videoSrc && <button ref={frontButton} type="button" aria-label={`Watch ${name}'s video testimonial`} onClick={flipToVideo} className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
                   <Play className="h-4 w-4" fill="currentColor" aria-hidden="true" /> Watch testimonial
                 </button>}
