@@ -9,6 +9,7 @@ async function mockVerification(page: Page) {
     body: `window.turnstile = { render(el, options) { el.textContent = 'Verification complete'; queueMicrotask(() => options.callback('browser-test-token')); return 'widget'; }, remove() {} };`,
   }));
   await page.route('**/www.googletagmanager.com/**', route => route.fulfill({ contentType: 'application/javascript', body: '' }));
+  await page.route('**/r2.leadsy.ai/**', route => route.fulfill({ contentType: 'application/javascript', body: '' }));
 }
 
 test.beforeEach(async ({page}) => { await mockVerification(page); });
@@ -28,6 +29,12 @@ for (const path of publicRoutes) {
     await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', canonicalUrl(path));
     await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /.+/);
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /hero_analytics_abstract\.webp$/);
+    const leadsy = page.locator('head script#vtag-ai-js');
+    await expect(leadsy).toHaveCount(1);
+    await expect(leadsy).toHaveAttribute('src', 'https://r2.leadsy.ai/tag.js');
+    await expect(leadsy).toHaveAttribute('data-pid', 'LnE2P4juFc7jvRJV');
+    await expect(leadsy).toHaveAttribute('data-version', '062024');
+    await expect(leadsy).toHaveAttribute('async', '');
     const audit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice']).analyze();
     expect(audit.violations).toEqual([]);
     expect(errors).toEqual([]);
@@ -39,24 +46,65 @@ for (const path of publicRoutes) {
   });
 }
 
-test('keyboard navigation, Resources, skip link and mobile menu', async ({page}) => {
+test('keyboard navigation, dropdowns, skip link and mobile menu', async ({page}) => {
+  const movePointerAwayFromNavigation = async () => {
+    await page.mouse.move(10, 250);
+  };
   await page.goto('/');
+  const desktopNavigation = page.locator('#desktop-navigation-links');
+  await expect(desktopNavigation.locator(':scope > a, :scope > details > summary')).toHaveText([
+    'Home',
+    'Services',
+    'Case Studies',
+    'Resources',
+    'Free Health Check',
+  ]);
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', {name:'Skip to main content'})).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.locator('#main-content')).toBeFocused();
-  const resources=page.locator('#resources-menu summary');
+  const servicesMenu = page.locator('#services-menu');
+  const services = servicesMenu.locator('summary');
+  const resourcesMenu = page.locator('#resources-menu');
+  const resources = resourcesMenu.locator('summary');
+  await movePointerAwayFromNavigation();
+  await services.hover();
+  await expect(servicesMenu).toHaveAttribute('open', '');
+  await movePointerAwayFromNavigation();
+  await expect(servicesMenu).not.toHaveAttribute('open');
+  await services.click();
+  await expect(servicesMenu).toHaveAttribute('open', '');
+  await services.click();
+  await expect(servicesMenu).not.toHaveAttribute('open');
+  await services.click();
+  await expect(servicesMenu).toHaveAttribute('open', '');
+  await resources.click();
+  await expect(resourcesMenu).toHaveAttribute('open', '');
+  await expect(servicesMenu).not.toHaveAttribute('open');
+  await services.click();
+  await expect(servicesMenu).toHaveAttribute('open', '');
+  await expect(resourcesMenu).not.toHaveAttribute('open');
+  await services.click();
+  await expect(servicesMenu).not.toHaveAttribute('open');
+  await movePointerAwayFromNavigation();
+  await services.focus(); await page.keyboard.press('Enter');
+  await expect(servicesMenu).toHaveAttribute('open', '');
+  await page.keyboard.press('Escape');
+  await expect(services).toBeFocused();
+  await expect(servicesMenu).not.toHaveAttribute('open');
   await resources.focus(); await page.keyboard.press('Enter');
-  await expect(page.locator('#resources-menu')).toHaveAttribute('open', '');
+  await expect(resourcesMenu).toHaveAttribute('open', '');
   await page.keyboard.press('Tab');
-  await expect(page.locator('#resources-menu a').first()).toBeFocused();
+  await expect(resourcesMenu.locator('a').first()).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(resources).toBeFocused();
-  await expect(page.locator('#resources-menu')).not.toHaveAttribute('open');
+  await expect(resourcesMenu).not.toHaveAttribute('open');
   await page.setViewportSize({width:390,height:844});
   const mobileMenu = page.locator('#mobile-menu');
   const mobileServicesMenu = page.locator('#mobile-services-menu');
   const mobileServicesSummary = mobileServicesMenu.locator('summary');
+  const mobileResourcesMenu = page.locator('#mobile-resources-menu');
+  const mobileResourcesSummary = mobileResourcesMenu.locator('summary');
   const viewAllServices = mobileServicesMenu.getByRole('link', {name:'View all services'});
   await expect(mobileMenu).toHaveAttribute('inert','');
   await expect(mobileServicesSummary).toBeHidden();
@@ -71,12 +119,15 @@ test('keyboard navigation, Resources, skip link and mobile menu', async ({page})
   await mobileServicesSummary.focus(); await page.keyboard.press('Enter');
   await expect(mobileServicesMenu).toHaveAttribute('open','');
   await expect(viewAllServices).toBeVisible();
+  await mobileResourcesSummary.click();
+  await expect(mobileResourcesMenu).toHaveAttribute('open', '');
   await mobileServicesMenu.getByRole('link',{name:'Server-Side Tracking'}).focus();
   await expect(mobileServicesMenu.getByRole('link',{name:'Server-Side Tracking'})).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(page.locator('#mobile-menu-button')).toHaveAttribute('aria-expanded','false');
   await expect(mobileMenu).toHaveAttribute('inert','');
   await expect(mobileServicesMenu).not.toHaveAttribute('open');
+  await expect(mobileResourcesMenu).not.toHaveAttribute('open');
   await expect(page.locator('#mobile-menu-button')).toBeFocused();
   await expect(mobileServicesSummary).toBeHidden();
   await page.getByRole('button',{name:'Toggle menu'}).click();
@@ -114,11 +165,16 @@ test('service detail explorers and Services navigation progressively enhance', a
   const workspace=page.getByTestId('audit-workspace'); await workspace.getByRole('button',{name:'Filter severity: High'}).click();
   await workspace.getByRole('button',{name:/transaction_id is missing/}).click();
   await expect(workspace).toContainText('Expose the order identifier');
+  await expect(workspace.locator('.audit-status')).toHaveCount(0);
   await page.goto('/services/ga4-gtm-setup/');
   const inspector=page.getByTestId('event-journey-inspector');
   await expect(inspector).toContainText('Checkout completed');
   await inspector.getByRole('tab',{name:'Lead Submitted'}).click();
   await expect(inspector).toContainText('generate_lead');
+  await inspector.locator('details summary').click();
+  await expect(inspector.locator('[data-payload]')).toContainText('"event": "generate_lead"');
+  await inspector.getByRole('tab',{name:'Purchase'}).click();
+  await expect(inspector.locator('[data-payload]')).toContainText('"Analytics Cap"');
   await inspector.getByRole('button',{name:'Show broken example'}).click();
   await expect(inspector).toContainText('missing');
   await page.goto('/');
