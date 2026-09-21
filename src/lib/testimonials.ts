@@ -14,7 +14,7 @@ export const testimonials: readonly Testimonial[] = [
     name: 'Alyssa Wong',
     role: 'Director of Growth Marketing at Slice',
     portrait: '/images/alyssa-wong.webp',
-    quote: '“Partnering with Upsight Digital has been transformational for Slice. They quickly addressed tracking gaps, streamlined our data infrastructure, and implemented server-side tracking and compliance—giving us cleaner data, better visibility, and confidence in our analytics.”',
+    quote: '“Partnering with Upsight has been transformational for Slice. They quickly identified tracking gaps, streamlined our data infrastructure, and implemented server-side tracking and compliance, giving us cleaner data, better visibility, and confidence in our analytics.”',
     videoSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663269151870/NKnKdFDxhaRVudBQKnGMGB/AlyssaWong-SliceLife_76a30443.mp4',
     posterSrc: '/images/testimonials/alyssa-wong-testimonial-poster.png',
     caseStudyHref: '/case-studies/slice/',

@@ -438,6 +438,9 @@ test('Home and About testimonial cards expand from compact quotes to portrait vi
     const alyssaCard = island.locator('[data-testimonial-card]').first();
     const quoteCard = await alyssaCard.boundingBox();
     expect(quoteCard?.height).toBeLessThan((quoteCard?.width ?? 0) * 1.5);
+    await expect(island.getByText('Partnering with Upsight has been transformational for Slice.', { exact: false })).toBeVisible();
+    const watchButtonPositions = await island.getByRole('button', { name: /Watch .* video testimonial/ }).evaluateAll((buttons) => buttons.map((button) => button.getBoundingClientRect().top));
+    expect(Math.max(...watchButtonPositions) - Math.min(...watchButtonPositions)).toBeLessThan(2);
     const quoteBox = await alyssaCard.locator('blockquote').boundingBox();
     const actionsBox = await alyssaCard.locator('[data-testimonial-actions]').boundingBox();
     expect((actionsBox?.y ?? 0) - ((quoteBox?.y ?? 0) + (quoteBox?.height ?? 0))).toBeGreaterThan(20);
