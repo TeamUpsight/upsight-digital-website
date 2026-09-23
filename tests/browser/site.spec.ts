@@ -76,9 +76,9 @@ test('keyboard navigation, dropdowns, skip link and mobile menu', async ({page})
   await services.click();
   await expect(servicesMenu).toHaveAttribute('open', '');
   for (const row of [
-    ['/services/ga4-gtm-setup/', '/services/mobile-measurement/', '/services/measurement-planning/'],
-    ['/services/server-side-tracking/', '/services/meta-conversions-api/', '/services/tracking-audit/'],
-    ['/services/mobile-analytics/', '/services/cookie-consent/', '/services/analytics-dashboards/'],
+    ['/services/ga4-gtm-setup/', '/services/meta-conversions-api/', '/services/measurement-planning/'],
+    ['/services/mobile-analytics/', '/services/mobile-measurement/', '/services/tracking-audit/'],
+    ['/services/server-side-tracking/', '/services/cookie-consent/', '/services/analytics-dashboards/'],
   ]) {
     const topPositions = await Promise.all(row.map((href) => servicesMenu.locator(`a[href="${href}"]`).evaluate((link) => link.getBoundingClientRect().top)));
     expect(Math.max(...topPositions) - Math.min(...topPositions), JSON.stringify({row, topPositions})).toBeLessThanOrEqual(1);
@@ -128,6 +128,8 @@ test('keyboard navigation, dropdowns, skip link and mobile menu', async ({page})
   await mobileServicesSummary.focus(); await page.keyboard.press('Enter');
   await expect(mobileServicesMenu).toHaveAttribute('open','');
   await expect(viewAllServices).toBeVisible();
+  const mobileServiceHrefs = await mobileServicesMenu.locator('div a').evaluateAll((links) => links.map((link) => link.getAttribute('href')));
+  expect(mobileServiceHrefs.slice(0, -1)).toEqual(['/services/ga4-gtm-setup/','/services/mobile-analytics/','/services/server-side-tracking/','/services/meta-conversions-api/','/services/mobile-measurement/','/services/cookie-consent/','/services/measurement-planning/','/services/tracking-audit/','/services/analytics-dashboards/']);
   await mobileResourcesSummary.click();
   await expect(mobileResourcesMenu).toHaveAttribute('open', '');
   await mobileServicesMenu.getByRole('link',{name:'Server-Side Tracking'}).focus();
@@ -168,6 +170,9 @@ test('Phase 3 services hub uses the updated portfolio and destinations', async (
   await expect(page.locator('#attribution-privacy a[href="/services/tracking-audit/"]')).toHaveCount(0);
   await expect(page.getByRole('heading',{name:'Key capabilities'}).first()).toBeVisible();
   await expect(page.locator('main')).not.toContainText('Scope');
+  const cardOrder = async (group:string) => page.locator(`#${group} [data-service-cards]`).evaluateAll((grids) => grids.flatMap((grid) => Array.from(grid.children, (card) => card.getAttribute('id'))));
+  expect(await cardOrder('measurement-implementation')).toEqual(['ga4-gtm-setup','mobile-analytics','server-side-tracking']);
+  expect(await cardOrder('attribution-privacy')).toEqual(['meta-conversions-api','mobile-measurement','cookie-consent']);
   const assertCardsAreUniform = async () => {
     for (const group of ['measurement-implementation', 'attribution-privacy', 'strategy-reporting']) {
       const heights = await page.locator(`#${group} [data-service-cards]`).evaluate((grid) => Array.from(grid.children, (card) => card.getBoundingClientRect().height));
