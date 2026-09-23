@@ -1,0 +1,29 @@
+---
+const useCases = ['Onboarding', 'Feature Adoption', 'Subscription', 'Commerce'];
+const vendors = ['Firebase', 'Amplitude', 'Mixpanel', 'PostHog'];
+---
+<section class="rounded-2xl border border-border bg-card p-5 md:p-8" aria-labelledby="mobile-explorer-title">
+  <p class="service-kicker">INTERACTIVE EXAMPLE</p><h2 id="mobile-explorer-title" class="service-heading mt-2">Explore an app event model</h2>
+  <div class="mt-6 grid gap-6 lg:grid-cols-[.75fr_1.25fr]">
+    <div class="space-y-5">
+      <fieldset><legend class="mb-2 text-sm font-semibold">Use case</legend><div class="flex flex-wrap gap-2">{useCases.map((x,i)=><button type="button" class="rounded-full border px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" data-usecase={x} aria-pressed={i===0 ? 'true' : 'false'}>{x}</button>)}</div></fieldset>
+      <fieldset><legend class="mb-2 text-sm font-semibold">Analytics platform</legend><div class="flex flex-wrap gap-2">{vendors.map((x,i)=><button type="button" class="rounded-full border px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" data-vendor={x} aria-pressed={i===0 ? 'true' : 'false'}>{x}</button>)}</div></fieldset>
+      <p class="text-sm leading-6 text-muted-foreground">The event contract stays governed across the app and backend. Platform-specific configuration can vary by SDK, plan and product capabilities.</p>
+    </div>
+    <div class="rounded-xl bg-muted/40 p-5"><p class="font-mono text-xs uppercase tracking-wider text-primary">Illustrative event contract</p><pre class="mt-3 overflow-x-auto rounded-lg border bg-background p-4 text-xs leading-6"><code id="mobile-event-payload">&#123;
+&#123;
+  "event": "onboarding_completed",
+  "user_id": "u_28471",
+  "platform": "iOS",
+  "properties": &#123; "step_count": 4 &#125;
+&#125;</code></pre><p class="mt-4 text-sm"><strong>Capability notes</strong></p><p id="vendor-capability" class="mt-1 text-sm text-muted-foreground">Firebase Analytics: app events and user properties are configured in the SDK and reporting setup.</p><p class="mt-4 font-mono text-xs text-primary">APP SDK → PRODUCT ANALYTICS ↔ BACKEND SUBSCRIPTION / ORDER TRUTH → UNIFIED REPORTING</p></div>
+  </div>
+</section>
+<script>
+  const payloads: Record<string,string> = { Onboarding:'onboarding_completed', 'Feature Adoption':'feature_used', Subscription:'subscription_started', Commerce:'purchase' };
+  const notes: Record<string,string> = { Firebase:'Firebase Analytics: app events and user properties are configured in the SDK and reporting setup.', Amplitude:'Amplitude: event and identity design can support product funnels, retention and cohort analysis.', Mixpanel:'Mixpanel: event properties and identity choices shape reports and user analysis.', PostHog:'PostHog: product analytics can connect with other available PostHog capabilities, depending on setup and plan.' };
+  const payload = document.querySelector<HTMLElement>('#mobile-event-payload'); const note = document.querySelector<HTMLElement>('#vendor-capability');
+  const update = (button: HTMLButtonElement, selector: string, callback: (value:string)=>void) => { document.querySelectorAll<HTMLButtonElement>(selector).forEach((item)=>{const selected=item===button; item.setAttribute('aria-pressed',String(selected)); item.classList.toggle('bg-primary/10',selected); item.classList.toggle('border-primary',selected);}); callback(button.dataset.usecase || button.dataset.vendor || ''); };
+  document.querySelectorAll<HTMLButtonElement>('[data-usecase]').forEach((button)=>button.addEventListener('click',()=>update(button,'[data-usecase]', value=>{if(payload) payload.textContent=JSON.stringify({event:payloads[value],user_id:'u_28471',platform:'iOS',properties:{example:true}},null,2)})));
+  document.querySelectorAll<HTMLButtonElement>('[data-vendor]').forEach((button)=>button.addEventListener('click',()=>update(button,'[data-vendor]', value=>{if(note) note.textContent=notes[value]})));
+</script>

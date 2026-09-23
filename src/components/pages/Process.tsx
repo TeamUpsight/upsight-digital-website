@@ -31,7 +31,7 @@ export default function Process() {
     {
       number: "02",
       icon: Lightbulb,
-      title: "Measurement Planning",
+      title: "Measurement Planning & Architecture Design",
       description:
         "We design a tracking architecture tailored to your business model, defining events, parameters, and data structure for scalable analytics.",
       activities: [

@@ -9,6 +9,14 @@ export interface Technology {
 // See public/images/tech/README.md for sources and trademark notice.
 export const technologyCatalog = {
   googleAnalytics: { key: 'googleAnalytics', name: 'Google Analytics 4', logo: '/images/tech/google-analytics.svg' },
+  firebaseAnalytics: { key: 'firebaseAnalytics', name: 'Firebase Analytics', logo: '/images/tech/firebase.svg' },
+  amplitude: { key: 'amplitude', name: 'Amplitude', logo: '/images/tech/amplitude.svg' },
+  mixpanel: { key: 'mixpanel', name: 'Mixpanel', logo: '/images/tech/mixpanel.svg' },
+  posthog: { key: 'posthog', name: 'PostHog', logo: '/images/tech/posthog.svg' },
+  appsflyer: { key: 'appsflyer', name: 'AppsFlyer', logo: '/images/tech/appsflyer.svg' },
+  adjust: { key: 'adjust', name: 'Adjust', logo: '/images/tech/adjust.svg' },
+  branch: { key: 'branch', name: 'Branch', logo: '/images/tech/branch.svg' },
+  kochava: { key: 'kochava', name: 'Kochava', logo: '/images/tech/kochava.svg' },
   googleTagManager: { key: 'googleTagManager', name: 'Google Tag Manager', logo: '/images/tech/google-tag-manager.svg' },
   serverSideGtm: { key: 'serverSideGtm', name: 'Server-Side GTM', logo: '/images/tech/server-side-gtm.svg', label: 'sGTM' },
   metaCapi: { key: 'metaCapi', name: 'Meta Pixel / CAPI', logo: '/images/tech/meta.svg', label: 'CAPI' },

@@ -15,7 +15,7 @@ async function mockVerification(page: Page) {
 test.beforeEach(async ({page}) => { await mockVerification(page); });
 
 const canonicalUrl = (path: string) => path === '/' ? 'https://upsight.digital/' : `https://upsight.digital${path.endsWith('/') ? path : `${path}/`}`;
-const publicRoutes = ['/', '/services/', '/services/tracking-audit/', '/services/server-side-tracking/', '/services/ga4-gtm-setup/', '/services/meta-conversions-api/', '/services/ecommerce-tracking/', '/services/analytics-dashboards/', '/services/cookie-consent/', '/who-its-for/', '/process/', '/about/', '/case-studies/', '/case-studies/slice/', '/case-studies/roadsurfer/', '/contact/', '/health-check/', '/404/'];
+const publicRoutes = ['/', '/services/', '/services/tracking-audit/', '/services/server-side-tracking/', '/services/ga4-gtm-setup/', '/services/meta-conversions-api/', '/services/mobile-analytics/', '/services/mobile-measurement/', '/services/measurement-planning/', '/services/analytics-dashboards/', '/services/cookie-consent/', '/who-its-for/', '/process/', '/about/', '/case-studies/', '/case-studies/slice/', '/case-studies/roadsurfer/', '/contact/', '/health-check/', '/404/'];
 
 for (const path of publicRoutes) {
   test(`semantic HTML, assets and accessibility: ${path}`, async ({ page }) => {
@@ -143,13 +143,58 @@ test('keyboard navigation, dropdowns, skip link and mobile menu', async ({page})
 
 test('service cards use detailed pages and case-study back links use final URLs', async ({page}) => {
   await page.goto('/');
-  const expectedServices = ['/services/server-side-tracking/', '/services/meta-conversions-api/', '/services/cookie-consent/', '/services/tracking-audit/', '/services/analytics-dashboards/', '/services/ecommerce-tracking/'];
+  const expectedServices = ['/services/server-side-tracking/', '/services/meta-conversions-api/', '/services/cookie-consent/', '/services/tracking-audit/', '/services/analytics-dashboards/', '/services/ga4-gtm-setup/'];
   for (const href of expectedServices) await expect(page.locator(`main a[href="${href}"]`).first()).toBeVisible();
   for (const slug of ['slice','roadsurfer']) {
     await page.goto(`/case-studies/${slug}/`);
     await page.locator('main a[href="/case-studies/"]').click();
     await expect(page).toHaveURL(/\/case-studies\/$/);
   }
+});
+
+test('Phase 3 services hub uses the updated portfolio and destinations', async ({page}) => {
+  await page.goto('/services/');
+  for (const [label,href] of [['GA4/GTM Setup','/services/ga4-gtm-setup/'],['Mobile Analytics','/services/mobile-analytics/'],['Mobile Measurement','/services/mobile-measurement/'],['Measurement Planning & Architecture Design','/services/measurement-planning/']]) {
+    await expect(page.locator(`main a[href="${href}"]`).first()).toBeVisible();
+    await expect(page.locator('main')).toContainText(label);
+  }
+  for (const obsolete of ['GA4/GTM Setup (Web)','GA4/GTM Setup (Mobile)','Multi-Touch Attribution','Ecommerce & Funnel Tracking','Custom Funnel Tracking']) await expect(page.locator('main')).not.toContainText(obsolete);
+  await expect(page.locator('main a[href="/services/ecommerce-tracking/"]')).toHaveCount(0);
+});
+
+test('Mobile Analytics explorer updates its event model and vendor panel by keyboard', async ({page}) => {
+  await page.goto('/services/mobile-analytics/');
+  for (const vendor of ['Firebase Analytics','Amplitude','Mixpanel','PostHog']) await expect(page.locator(`main img[alt="${vendor} logo"]`)).toBeVisible();
+  const explorer=page.locator('#mobile-explorer-title').locator('..');
+  const subscription=explorer.getByRole('button',{name:'Subscription'}); await subscription.focus(); await page.keyboard.press('Enter');
+  await expect(subscription).toHaveAttribute('aria-pressed','true');
+  await expect(page.locator('#mobile-event-payload')).toContainText('subscription_started');
+  const amplitude=explorer.getByRole('button',{name:'Amplitude'}); await amplitude.focus(); await page.keyboard.press('Enter');
+  await expect(page.locator('#vendor-capability')).toContainText('funnels, retention and cohort');
+  await expect(page.locator('#identity-architecture')).toBeVisible();
+  await expect(page.locator('main')).toContainText('QA');
+});
+
+test('Mobile Measurement flow updates attribution states accessibly', async ({page}) => {
+  await page.goto('/services/mobile-measurement/');
+  for (const vendor of ['AppsFlyer','Adjust','Branch','Kochava']) await expect(page.locator(`main img[alt="${vendor} logo"]`)).toBeVisible();
+  await page.getByRole('button',{name:'Android'}).focus(); await page.keyboard.press('Enter');
+  await expect(page.locator('#mmp-platform-note')).toContainText('Android attribution signals');
+  await page.getByRole('button',{name:'Re-engagement'}).click(); await expect(page.locator('[data-step-two]')).toContainText('re-engagement');
+  await page.getByRole('button',{name:'Deferred link'}).click(); await expect(page.locator('[data-step-three]')).toContainText('after install');
+  await expect(page.locator('main')).toContainText('Mobile Measurement After ATT');
+  await expect(page.locator('#mmp-qa')).toBeVisible();
+});
+
+test('Measurement Architecture builder changes scenarios and node inspector', async ({page}) => {
+  await page.goto('/services/measurement-planning/');
+  for (const scenario of ['Ecommerce','Lead Generation','Mobile App']) {
+    const choice=page.getByRole('button',{name:scenario,exact:true}); await choice.click(); await expect(choice).toHaveAttribute('aria-pressed','true');
+  }
+  await expect(page.locator('[data-stage="Sources"]')).toContainText('App');
+  await page.locator('[data-node="Collection"]').click();
+  await expect(page.locator('#node-name')).toHaveText('Collection');
+  for (const heading of ['Every KPI Needs a Source of Truth','Document Every Important Connection','Architecture Is a Design Decision, Not a Tool List','Plan the Work in Dependent Phases','Make Responsibilities Visible']) await expect(page.getByRole('heading',{name:heading})).toBeVisible();
 });
 
 test('service detail explorers and Services navigation progressively enhance', async ({page}) => {
@@ -216,17 +261,11 @@ test('Phase 2 service learning tools update accessible, illustrative states', as
   await capi.getByRole('button', {name:'Matched event IDs', exact:true}).focus(); await page.keyboard.press('Enter');
   await expect(capi).toContainText('Deduplication: MATCHED');
 
+  const ecommerceRedirect = await page.request.get('/services/ecommerce-tracking/', { maxRedirects: 0 });
+  expect(ecommerceRedirect?.status()).toBe(301);
+  expect(ecommerceRedirect.headers().location).toContain('/services/ga4-gtm-setup/');
   await page.goto('/services/ecommerce-tracking/');
-  const ecommerce = page.getByTestId('ecommerce-journey');
-  await expect(ecommerce).toContainText('transaction_id: ORD-102847');
-  await ecommerce.getByRole('tab', {name:/PURCHASE/}).click();
-  await ecommerce.getByText('Inspect event payload', {exact:true}).click();
-  await expect(ecommerce.locator('[data-commerce-payload]')).toContainText('"transaction_id": "ORD-102847"');
-  await expect(ecommerce.locator('[data-commerce-payload]')).toContainText('"items"');
-  await ecommerce.getByRole('button', {name:'Show common tracking issues'}).click();
-  await expect(ecommerce).toContainText('item_id missing');
-  await ecommerce.getByRole('tab', {name:/VIEW PRODUCT/}).focus(); await page.keyboard.press('Enter');
-  await expect(ecommerce).toContainText('product detail viewed');
+  await expect(page).toHaveURL(/\/services\/ga4-gtm-setup\/$/);
 
   await page.goto('/services/cookie-consent/');
   const consent = page.getByTestId('consent-routing-simulator');
@@ -465,7 +504,7 @@ test('case-study content is visible without JavaScript', async ({browser}) => {
 });
 
 test('SEO structured data is valid and Slice metrics remain non-zero', async ({page}) => {
-  for (const path of ['/services/tracking-audit/', '/services/server-side-tracking/', '/services/ga4-gtm-setup/', '/services/meta-conversions-api/', '/services/ecommerce-tracking/', '/services/analytics-dashboards/', '/services/cookie-consent/']) {
+  for (const path of ['/services/tracking-audit/', '/services/server-side-tracking/', '/services/ga4-gtm-setup/', '/services/meta-conversions-api/', '/services/mobile-analytics/', '/services/mobile-measurement/', '/services/measurement-planning/', '/services/analytics-dashboards/', '/services/cookie-consent/']) {
     await page.goto(path);
     const schemas = await page.locator('script[type="application/ld+json"]').allTextContents();
     const parsed = schemas.map(schema => JSON.parse(schema));
