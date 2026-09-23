@@ -228,15 +228,6 @@ test('Phase 2 service learning tools update accessible, illustrative states', as
   await ecommerce.getByRole('tab', {name:/VIEW PRODUCT/}).focus(); await page.keyboard.press('Enter');
   await expect(ecommerce).toContainText('product detail viewed');
 
-  await page.goto('/services/analytics-dashboards/');
-  const dashboard = page.getByTestId('dashboard-demo');
-  await expect(dashboard).toContainText(/Interactive demo using illustrative data/i);
-  const initialRevenue = await dashboard.locator('[data-kpi="revenue"]').textContent();
-  await dashboard.locator('[data-filter="period"]').selectOption('7');
-  await dashboard.locator('[data-filter="channel"]').selectOption('Meta');
-  await expect(dashboard.locator('[data-kpi="revenue"]')).not.toHaveText(initialRevenue ?? '');
-  await expect(dashboard.locator('svg[role="img"]')).toHaveAttribute('aria-label', /Illustrative revenue trend/);
-
   await page.goto('/services/cookie-consent/');
   const consent = page.getByTestId('consent-routing-simulator');
   expect(await consent.locator('[data-consent-signals] dd').allTextContents()).toEqual(['granted','denied','denied','denied']);
@@ -250,6 +241,57 @@ test('Phase 2 service learning tools update accessible, illustrative states', as
   await expect(consent.locator('[data-tag-routing] dd').nth(2)).toHaveText('Blocked by configured marketing rule');
   await consent.getByRole('button', {name:'Not detected', exact:true}).click();
   await expect(consent.locator('[data-gpc-route]')).toHaveText('Restricted by detected GPC signal');
+});
+
+test('Dashboard demo connects US, UK and DE reporting controls accessibly', async ({page}) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('/services/analytics-dashboards/');
+  await expect(page.locator('h1')).toHaveCount(1);
+  const hero = page.locator('[data-dashboard-hero-preview]');
+  const dashboard = page.getByTestId('dashboard-demo');
+  await expect(hero).toBeVisible();
+  await expect(dashboard).toBeVisible();
+  await expect(dashboard).toHaveAttribute('data-market', 'US');
+  await expect(dashboard.locator('[data-kpi="revenue"]')).toHaveText('$184,240');
+  await expect(dashboard.locator('[data-trend-chart]')).toHaveAttribute('aria-label', /Illustrative US.*USD/);
+  const initialRevenue = await dashboard.locator('[data-kpi="revenue"]').textContent();
+  const initialPath = await dashboard.locator('[data-trend-line]').getAttribute('d');
+
+  await dashboard.getByRole('button', {name:'UK', exact:true}).click();
+  await expect(dashboard).toHaveAttribute('data-market', 'UK');
+  await expect(dashboard.locator('[data-kpi="revenue"]')).toHaveText(/£/);
+  await expect(dashboard.locator('[data-kpi="revenue"]')).not.toHaveText(initialRevenue ?? '');
+  await expect(dashboard.locator('[data-trend-line]')).not.toHaveAttribute('d', initialPath ?? '');
+  await expect(dashboard.locator('[data-trend-chart]')).toHaveAttribute('aria-label', /GBP/);
+
+  await dashboard.getByRole('button', {name:'DE', exact:true}).click();
+  await expect(dashboard.locator('[data-kpi="revenue"]')).toHaveText(/€/);
+  await dashboard.getByRole('button', {name:'US', exact:true}).click();
+  await expect(dashboard.locator('[data-kpi="revenue"]')).toHaveText('$184,240');
+
+  const beforePeriod = await dashboard.locator('[data-kpi="revenue"]').textContent();
+  await dashboard.getByRole('button', {name:'Last 7 Days'}).click();
+  await expect(dashboard.locator('[data-kpi="revenue"]')).not.toHaveText(beforePeriod ?? '');
+  const beforeChannel = await dashboard.locator('[data-kpi="revenue"]').textContent();
+  await dashboard.getByRole('button', {name:'Google Ads', exact:true}).click();
+  await expect(dashboard).toHaveAttribute('data-channel', 'Google Ads');
+  await expect(dashboard.locator('[data-kpi="revenue"]')).not.toHaveText(beforeChannel ?? '');
+  await expect(dashboard.locator('[data-dashboard-table] tr')).toHaveCount(1);
+  await expect(dashboard.locator('[data-funnel]')).toContainText('100% of sessions');
+  await dashboard.locator('[data-trend-index]').first().focus();
+  await expect(dashboard.locator('[data-chart-tooltip]')).toContainText(/\$/);
+
+  for (const technology of ['Google Data Studio','BigQuery','Power BI','Snowflake','Amazon Marketing Cloud']) {
+    await expect(page.getByTestId('reporting-platforms')).toContainText(technology);
+    await expect(page.getByRole('img', {name:`${technology} logo`})).toBeVisible();
+  }
+  await expect(page.locator('text=Illustrative dashboard data')).toBeVisible();
+  const answers = await page.locator('[data-dashboard-faq] details > p').allTextContents();
+  expect(answers.every(answer => /^(Yes|No)\./.test(answer.trim()))).toBe(true);
+  const audit = await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','best-practice']).analyze();
+  expect(audit.violations).toEqual([]);
+  expect(errors).toEqual([]);
 });
 
 test('Cookie Consent page content, accuracy, accessibility and routing controls', async ({page, browser}) => {
