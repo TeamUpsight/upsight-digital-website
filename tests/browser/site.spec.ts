@@ -155,9 +155,11 @@ test('service cards use detailed pages and case-study back links use final URLs'
 test('Phase 3 services hub uses the updated portfolio and destinations', async ({page}) => {
   await page.goto('/services/');
   await expect(page.getByRole('heading',{name:'Attribution & Privacy'})).toBeVisible();
-  await expect(page.getByRole('heading',{name:'Strategy, Quality & Reporting'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Strategy & Reporting'})).toBeVisible();
   await expect(page.locator('#strategy-quality-reporting a[href="/services/tracking-audit/"]')).toBeVisible();
   await expect(page.locator('#attribution-privacy a[href="/services/tracking-audit/"]')).toHaveCount(0);
+  await expect(page.getByRole('heading',{name:'Key capabilities'}).first()).toBeVisible();
+  await expect(page.locator('main')).not.toContainText('Scope');
   for (const [label,href] of [['GA4/GTM Setup','/services/ga4-gtm-setup/'],['Mobile Analytics','/services/mobile-analytics/'],['Mobile Measurement','/services/mobile-measurement/'],['Measurement Planning & Architecture Design','/services/measurement-planning/']]) {
     await expect(page.locator(`main a[href="${href}"]`).first()).toBeVisible();
     await expect(page.locator('main')).toContainText(label);

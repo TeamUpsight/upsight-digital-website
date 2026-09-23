@@ -9,7 +9,7 @@ export interface Technology {
 // See public/images/tech/README.md for sources and trademark notice.
 export const technologyCatalog = {
   googleAnalytics: { key: 'googleAnalytics', name: 'Google Analytics 4', logo: '/images/tech/google-analytics.svg' },
-  firebaseAnalytics: { key: 'firebaseAnalytics', name: 'Firebase Analytics', logo: '/images/tech/firebase.svg' },
+  firebaseAnalytics: { key: 'firebaseAnalytics', name: 'Firebase Analytics', logo: '/images/tech/firebase.png' },
   amplitude: { key: 'amplitude', name: 'Amplitude', logo: '/images/tech/amplitude.svg' },
   mixpanel: { key: 'mixpanel', name: 'Mixpanel', logo: '/images/tech/mixpanel.svg' },
   posthog: { key: 'posthog', name: 'PostHog', logo: '/images/tech/posthog.svg' },
