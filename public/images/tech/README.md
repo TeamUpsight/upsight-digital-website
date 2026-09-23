@@ -6,6 +6,7 @@ product-style utility marks for products without a Simple Icons source. Brand na
 and marks remain their respective owners' trademarks. They are decorative product
 identifiers beside visible names, not certification or partnership claims.
 
-`power-bi.svg` is the unaltered Microsoft Power BI App SVG from Microsoft's public
-PowerBI-Icons repository. `amazon-marketing-cloud.png` is the unaltered asset supplied
-by the site owner. `snowflake.svg` is sourced from Simple Icons.
+`power-bi.svg` is the unaltered 48px color Power BI mark from Microsoft's
+`@fabric-msft/svg-icons` package. `snowflake.svg` is the blue bug with registration
+mark from Snowflake's official logo package. `amazon-marketing-cloud.png` is the
+unaltered asset supplied by the site owner.

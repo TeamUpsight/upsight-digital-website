@@ -6,6 +6,7 @@ import DashboardDemo from '../../components/services/DashboardDemo.astro';
 import ServiceProofCard from '../../components/services/ServiceProofCard.astro';
 import ServiceCTA from '../../components/services/ServiceCTA.astro';
 import { serviceSchema } from '../../lib/seo';
+import '../../styles/dashboard.css';
 
 const capabilities = [
   ['Measurement & KPI Design','KPI definitions, business logic, attribution context, currency and market definitions, and stakeholder requirements.'],
@@ -37,9 +38,9 @@ const faqs = [
 
   <div class="container py-10 md:py-16"><DashboardDemo /></div>
 
-  <section class="bg-muted/30 py-12 md:py-16"><div class="container grid gap-8 lg:grid-cols-[.8fr_1.2fr]"><div><p class="service-kicker">REPORTING FOUNDATION</p><h2 class="service-heading mt-3">From Raw Data to Decision-Ready Reporting</h2></div><div><p class="leading-7 text-muted-foreground">A dashboard is only as useful as the definitions and data behind it. Upsight starts by defining what each KPI means, identifying the system that owns it, and validating how the metric should be calculated before it reaches the reporting layer.</p><ol class="reporting-process mt-7" aria-label="Reporting process">{['Business Questions','KPI Definitions','Data Sources','Transformation','Validation','Dashboard'].map((step, index) => <li><span>{index + 1}</span><strong>{step}</strong></li>)}</ol></div></div></section>
+  <section class="bg-muted/30 py-12 md:py-16"><div class="container"><div class="grid gap-6 lg:grid-cols-[.8fr_1.2fr]"><div><p class="service-kicker">REPORTING FOUNDATION</p><h2 class="service-heading mt-3">From Raw Data to Decision-Ready Reporting</h2></div><p class="leading-7 text-muted-foreground">A dashboard is only as useful as the definitions and data behind it. Upsight starts by defining what each KPI means, identifying the system that owns it, and validating how the metric should be calculated before it reaches the reporting layer.</p></div><ol class="reporting-process mt-8" aria-label="Reporting process">{['Business Questions','KPI Definitions','Data Sources','Transformation','Validation','Dashboard'].map((step, index) => <li><span>{index + 1}</span><strong>{step}</strong></li>)}</ol></div></section>
 
-  <section class="py-12 md:py-16"><div class="container"><p class="service-kicker">WHAT UPSIGHT BUILDS</p><h2 class="service-heading mt-3">A useful reporting system has clear inputs, logic and views</h2><div class="mt-7 grid gap-4 md:grid-cols-2">{capabilities.map(([title, detail]) => <article class="service-proof-card"><h3>{title}</h3><p>{detail}</p></article>)}</div></div></section>
+  <section class="py-12 md:py-16"><div class="container"><p class="service-kicker">WHAT UPSIGHT BUILDS</p><h2 class="service-heading mt-3">From metric design to stakeholder views</h2><div class="mt-7 grid gap-4 md:grid-cols-2">{capabilities.map(([title, detail]) => <article class="service-proof-card"><h3>{title}</h3><p>{detail}</p></article>)}</div></div></section>
 
   <section class="bg-muted/30 py-12 md:py-16" data-testid="reporting-platforms"><div class="container"><p class="service-kicker">TECHNOLOGY</p><h2 class="service-heading mt-3">Reporting &amp; Data Platforms</h2><p class="mt-4 max-w-3xl leading-7 text-muted-foreground">We work across reporting tools, cloud warehouses and advertising clean-room environments depending on the data, scale and decisions the dashboard needs to support.</p><div class="technology-grid mt-7">{technologies.map(([name, logo, detail]) => <article class="technology-card"><img src={logo} alt={`${name} logo`} loading="lazy" width="72" height="72"/><div><h3>{name}</h3><p>{detail}</p></div></article>)}</div></div></section>
 

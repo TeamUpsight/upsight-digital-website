@@ -1,53 +1,25 @@
 <aside class="dashboard-hero-preview" data-dashboard-hero-preview aria-label="Illustrative executive dashboard preview">
   <div class="dashboard-preview-head">
-    <div><p class="service-kicker">DASHBOARD PREVIEW</p><p class="dashboard-preview-title">Executive performance</p></div>
-    <span class="dashboard-illustrative">Illustrative dashboard data</span>
-  </div>
-  <div class="dashboard-market-switcher" aria-label="Preview market">
-    <button type="button" data-hero-market="US" aria-pressed="true">US</button>
-    <button type="button" data-hero-market="UK" aria-pressed="false">UK</button>
-    <button type="button" data-hero-market="DE" aria-pressed="false">DE</button>
+    <div><p class="service-kicker">EXECUTIVE SNAPSHOT</p><p class="dashboard-preview-title">US performance</p></div>
+    <span class="dashboard-preview-signal"><span aria-hidden="true"></span> Illustrative data</span>
   </div>
   <div class="dashboard-preview-kpis">
-    <article><span>Revenue</span><strong data-hero-kpi="revenue">$184,240</strong></article>
-    <article><span>Orders</span><strong data-hero-kpi="orders">612</strong></article>
-    <article><span>Conversion rate</span><strong data-hero-kpi="conversion">2.8%</strong></article>
-    <article><span>ROAS</span><strong data-hero-kpi="roas">3.37x</strong></article>
+    <article><span>Revenue</span><strong>$184,240</strong><small>USD · Last 30 days</small></article>
+    <article><span>Orders</span><strong>612</strong><small>Completed orders</small></article>
+    <article><span>Conversion rate</span><strong>2.8%</strong><small>Orders / sessions</small></article>
+    <article><span>ROAS</span><strong>3.37x</strong><small>Revenue / spend</small></article>
   </div>
-  <div class="dashboard-preview-chart" data-hero-chart-wrap>
-    <div class="dashboard-preview-chart-head"><span>Revenue trend</span><span data-hero-chart-period>Last 30 days</span></div>
-    <svg viewBox="0 0 340 104" role="img" aria-label="Illustrative US revenue trend" data-hero-chart>
-      <defs><linearGradient id="heroRevenueFill" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#25c99e" stop-opacity=".28"/><stop offset="1" stop-color="#25c99e" stop-opacity="0"/></linearGradient></defs>
-      <path class="dashboard-preview-grid" d="M8 24H332M8 54H332M8 84H332"/>
-      <path data-hero-area fill="url(#heroRevenueFill)" d="M8 84 L8 72 L72 62 L136 67 L200 38 L264 47 L332 19 L332 84 Z"/>
-      <path data-hero-line fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M8 72 L72 62 L136 67 L200 38 L264 47 L332 19"/>
-      <circle data-hero-point cx="332" cy="19" r="4"/>
-    </svg>
+  <div class="dashboard-preview-signal-row">
+    <div class="dashboard-preview-trend">
+      <div class="dashboard-preview-chart-head"><span>Revenue signal</span><span>Last 30 days</span></div>
+      <svg viewBox="0 0 340 70" role="img" aria-label="Illustrative US revenue trend rising over the last 30 days">
+        <defs><linearGradient id="heroRevenueFill" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#25c99e" stop-opacity=".24"/><stop offset="1" stop-color="#25c99e" stop-opacity="0"/></linearGradient></defs>
+        <path class="dashboard-preview-grid" d="M4 60H336" />
+        <path class="dashboard-preview-area" fill="url(#heroRevenueFill)" d="M4 60 L4 51 L58 44 L110 48 L164 31 L218 36 L272 18 L336 10 L336 60 Z"/>
+        <path class="dashboard-preview-line" d="M4 51 L58 44 L110 48 L164 31 L218 36 L272 18 L336 10" />
+        <circle class="dashboard-preview-point" cx="336" cy="10" r="3.5" />
+      </svg>
+    </div>
+    <div class="dashboard-preview-channel"><span>Channel signal</span><div class="dashboard-preview-channel-bars" role="img" aria-label="Illustrative revenue contribution: Google Ads highest, Meta second, Organic third"><i style="--signal-width:88%"></i><i style="--signal-width:68%"></i><i style="--signal-width:43%"></i></div><small>Ads · Meta · Organic</small></div>
   </div>
-  <div class="dashboard-preview-mix"><div class="dashboard-preview-chart-head"><span>Channel mix</span><span data-hero-market-label>US</span></div><div data-hero-bars></div></div>
 </aside>
-
-<script>
-  const root = document.querySelector<HTMLElement>('[data-dashboard-hero-preview]');
-  if (root) {
-    const data = {
-      US: { revenue:'$184,240', orders:'612', conversion:'2.8%', roas:'3.37x', line:'M8 72 L72 62 L136 67 L200 38 L264 47 L332 19', area:'M8 84 L8 72 L72 62 L136 67 L200 38 L264 47 L332 19 L332 84 Z', point:['332','19'], bars:[['Google Ads',68],['Meta',49],['Organic',33]] },
-      UK: { revenue:'£146,800', orders:'528', conversion:'2.6%', roas:'3.14x', line:'M8 75 L72 57 L136 64 L200 47 L264 29 L332 38', area:'M8 84 L8 75 L72 57 L136 64 L200 47 L264 29 L332 38 L332 84 Z', point:['332','38'], bars:[['Google Ads',63],['Meta',44],['Organic',39]] },
-      DE: { revenue:'€171,300', orders:'579', conversion:'2.7%', roas:'3.29x', line:'M8 77 L72 68 L136 43 L200 52 L264 25 L332 31', area:'M8 84 L8 77 L72 68 L136 43 L200 52 L264 25 L332 31 L332 84 Z', point:['332','31'], bars:[['Google Ads',65],['Meta',42],['Organic',36]] },
-    } as const;
-    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-hero-market]')];
-    const render = (market:keyof typeof data) => {
-      const active = data[market];
-      (['revenue','orders','conversion','roas'] as const).forEach(key => root.querySelector<HTMLElement>(`[data-hero-kpi="${key}"]`)!.textContent = active[key]);
-      root.querySelector('[data-hero-line]')!.setAttribute('d', active.line);
-      root.querySelector('[data-hero-area]')!.setAttribute('d', active.area);
-      const point = root.querySelector('[data-hero-point]')!; point.setAttribute('cx',active.point[0]); point.setAttribute('cy',active.point[1]);
-      root.querySelector('[data-hero-chart]')!.setAttribute('aria-label',`Illustrative ${market} revenue trend`);
-      root.querySelector('[data-hero-market-label]')!.textContent = market;
-      root.querySelector('[data-hero-bars]')!.innerHTML = active.bars.map(([label,value]) => `<div class="dashboard-preview-bar"><span>${label}</span><i><b style="width:${value}%"></b></i></div>`).join('');
-      buttons.forEach(button => button.setAttribute('aria-pressed',String(button.dataset.heroMarket === market)));
-    };
-    buttons.forEach(button => button.addEventListener('click',() => render(button.dataset.heroMarket as keyof typeof data)));
-    render('US');
-  }
-</script>
