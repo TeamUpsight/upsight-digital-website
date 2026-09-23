@@ -243,9 +243,60 @@ test('Phase 2 service learning tools update accessible, illustrative states', as
   await consent.getByRole('button', {name:'Accept All'}).click();
   expect(await consent.locator('[data-consent-signals] dd').allTextContents()).toEqual(['granted','granted','granted','granted']);
   await expect(consent.locator('[data-tag-routing] dd').nth(2)).toHaveText('Allowed by configured consent rule');
+  await consent.getByRole('button', {name:'Analytics Only'}).click();
+  expect(await consent.locator('[data-consent-signals] dd').allTextContents()).toEqual(['granted','denied','denied','denied']);
   await consent.getByRole('button', {name:'Reject Non-Essential'}).focus(); await page.keyboard.press('Enter');
   expect(await consent.locator('[data-consent-signals] dd').allTextContents()).toEqual(['denied','denied','denied','denied']);
-  await expect(consent.locator('[data-tag-routing] dd').nth(2)).toHaveText('Blocked by configured consent rule');
+  await expect(consent.locator('[data-tag-routing] dd').nth(2)).toHaveText('Blocked by configured marketing rule');
+  await consent.getByRole('button', {name:'Not detected', exact:true}).click();
+  await expect(consent.locator('[data-gpc-route]')).toHaveText('Restricted by detected GPC signal');
+});
+
+test('Cookie Consent page content, accuracy, accessibility and routing controls', async ({page, browser}) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('/services/cookie-consent/');
+  await expect(page.locator('h1')).toHaveCount(1);
+  for (const proof of ['Top 50','165+','8.8M+','10+']) await expect(page.locator('main')).toContainText(proof);
+  await expect(page.getByRole('img', {name:/Cookiebot.*Certified Partner/})).toBeVisible();
+  for (const region of ['EU / EEA','United Kingdom','United States']) await expect(page.locator('main')).toContainText(region);
+  await expect(page.getByRole('heading', {name:'We Work With Your CMP'})).toBeVisible();
+  await expect(page.locator('details summary', {hasText:'Can Upsight work with our existing CMP?'})).toHaveCount(1);
+  const consent = page.getByTestId('consent-routing-simulator');
+  await expect(consent).toBeVisible();
+  await expect(consent).toContainText('Analytics Only');
+  await expect(consent).toContainText('Consent-restricted behaviour');
+  await expect(page.locator('main')).toContainText('not legal advice');
+  for (const concept of ['GDPR','ePrivacy','UK GDPR','PECR','CCPA','GPC','Consent Mode','IAB TCF']) await expect(page.locator('main')).toContainText(concept);
+  const body = (await page.locator('main').innerText()).toLowerCase();
+  for (const prohibited of [/100% compliant/,/guaranteed compliance/,/stay 100% legal/,/zero leakage/,/maximize accept rate/]) expect(body).not.toMatch(prohibited);
+  const audit = await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','best-practice']).analyze();
+  expect(audit.violations).toEqual([]);
+
+  await consent.getByRole('button', {name:'Accept All'}).click();
+  expect(await consent.locator('[data-consent-signals] dd').allTextContents()).toEqual(['granted','granted','granted','granted']);
+  await consent.getByRole('button', {name:'Analytics Only'}).focus();
+  await page.keyboard.press('Enter');
+  expect(await consent.locator('[data-consent-signals] dd').allTextContents()).toEqual(['granted','denied','denied','denied']);
+  await consent.getByRole('button', {name:'Reject Non-Essential'}).click();
+  expect(await consent.locator('[data-consent-signals] dd').allTextContents()).toEqual(['denied','denied','denied','denied']);
+  await consent.getByRole('button', {name:'Not detected'}).click();
+  await expect(consent.locator('[data-gpc-route]')).toHaveText('Restricted by detected GPC signal');
+  expect(errors).toEqual([]);
+
+  await page.setViewportSize({width:390,height:844});
+  await page.reload();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+
+  const noJsContext = await browser.newContext({javaScriptEnabled:false});
+  const noJsPage = await noJsContext.newPage();
+  await noJsPage.goto('/services/cookie-consent/');
+  await expect(noJsPage.locator('h1')).toHaveCount(1);
+  await expect(noJsPage.getByRole('heading', {name:'Privacy Rules Work Differently by Region'})).toBeVisible();
+  await expect(noJsPage.getByRole('heading', {name:'We Work With Your CMP'})).toBeVisible();
+  await expect(noJsPage.locator('section').filter({has:noJsPage.getByRole('heading', {name:'Cookie Consent Questions'})}).locator('details summary')).toHaveCount(11);
+  await expect(noJsPage.getByTestId('consent-routing-simulator').locator('[data-consent-signals] dd')).toHaveText(['granted','denied','denied','denied']);
+  await noJsContext.close();
 });
 
 test('Contact query opens form; errors, success and repeat submission work', async ({page}) => {
