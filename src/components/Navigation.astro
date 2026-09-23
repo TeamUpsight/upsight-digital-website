@@ -14,7 +14,7 @@ const serviceGroups = [
     { href: '/services/cookie-consent/', label: 'Cookie Consent & CMP', detail: 'Consent Mode and tag behavior' },
   ]},
   { title: 'STRATEGY & REPORTING', links: [
-    { href: '/services/measurement-planning/', label: 'Measurement Planning & Architecture', detail: 'System design, flows and implementation plan' },
+    { href: '/services/measurement-planning/', label: 'Measurement Planning', detail: 'Architecture, flows and implementation plan' },
     { href: '/services/tracking-audit/', label: 'Tracking Audit', detail: 'Technical QA and remediation priorities' },
     { href: '/services/analytics-dashboards/', label: 'Analytics Dashboards', detail: 'KPI reporting and decision support' },
   ]},
@@ -45,7 +45,7 @@ const servicesActive = path === '/services' || path.startsWith('/services/');
               <path d="m6 9 6 6 6-6" />
             </svg>
           </summary>
-          <div class="absolute left-0 top-full z-50 pt-2"><div class="w-[760px] rounded-lg border border-border bg-card p-5 shadow-xl"><div class="grid grid-cols-3 gap-4">{serviceGroups.map((group) => <div><p class="service-kicker text-xs">{group.title}</p><div class="mt-2 flex flex-col gap-1">{group.links.map((link) => <a href={link.href} class="rounded p-2 hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"><span class="block text-sm font-semibold">{link.label}</span><span class="mt-1 block text-xs text-muted-foreground">{link.detail}</span></a>)}</div></div>)}</div><a href="/services/" class="mt-3 inline-block text-sm font-semibold text-primary">View all services →</a></div></div>
+          <div class="absolute left-0 top-full z-50 pt-2"><div class="w-[760px] rounded-lg border border-border bg-card p-5 shadow-xl"><div class="grid grid-cols-3 gap-4">{serviceGroups.map((group) => <div class="min-w-0"><p class="service-kicker h-8 whitespace-nowrap text-xs leading-4">{group.title}</p><div class="mt-2 grid h-[14.5rem] grid-rows-3 gap-1">{group.links.map((link) => <a href={link.href} class="flex h-full min-w-0 flex-col overflow-hidden rounded p-2 hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"><span class="block text-sm font-semibold leading-5">{link.label}</span><span class="mt-1 block min-h-8 text-xs leading-4 text-muted-foreground">{link.detail}</span></a>)}</div></div>)}</div><a href="/services/" class="mt-3 inline-block text-sm font-semibold text-primary">View all services →</a></div></div>
         </details>
 
         <a href={caseStudiesLink.href} aria-current={active(caseStudiesLink.href) ? 'page' : undefined} class:list={["text-sm font-medium transition-colors hover:text-primary", active(caseStudiesLink.href) ? "text-primary" : "text-foreground/80"]}>{caseStudiesLink.label}</a>

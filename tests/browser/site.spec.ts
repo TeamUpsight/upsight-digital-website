@@ -75,6 +75,14 @@ test('keyboard navigation, dropdowns, skip link and mobile menu', async ({page})
   await expect(servicesMenu).not.toHaveAttribute('open');
   await services.click();
   await expect(servicesMenu).toHaveAttribute('open', '');
+  for (const row of [
+    ['/services/ga4-gtm-setup/', '/services/mobile-measurement/', '/services/measurement-planning/'],
+    ['/services/server-side-tracking/', '/services/meta-conversions-api/', '/services/tracking-audit/'],
+    ['/services/mobile-analytics/', '/services/cookie-consent/', '/services/analytics-dashboards/'],
+  ]) {
+    const topPositions = await Promise.all(row.map((href) => servicesMenu.locator(`a[href="${href}"]`).evaluate((link) => link.getBoundingClientRect().top)));
+    expect(Math.max(...topPositions) - Math.min(...topPositions), JSON.stringify({row, topPositions})).toBeLessThanOrEqual(1);
+  }
   await services.click();
   await expect(servicesMenu).not.toHaveAttribute('open');
   await services.click();
@@ -156,10 +164,24 @@ test('Phase 3 services hub uses the updated portfolio and destinations', async (
   await page.goto('/services/');
   await expect(page.getByRole('heading',{name:'Attribution & Privacy'})).toBeVisible();
   await expect(page.getByRole('heading',{name:'Strategy & Reporting'})).toBeVisible();
-  await expect(page.locator('#strategy-quality-reporting a[href="/services/tracking-audit/"]')).toBeVisible();
+  await expect(page.locator('#strategy-reporting a[href="/services/tracking-audit/"]')).toBeVisible();
   await expect(page.locator('#attribution-privacy a[href="/services/tracking-audit/"]')).toHaveCount(0);
   await expect(page.getByRole('heading',{name:'Key capabilities'}).first()).toBeVisible();
   await expect(page.locator('main')).not.toContainText('Scope');
+  const assertCardsAreUniform = async () => {
+    for (const group of ['measurement-implementation', 'attribution-privacy', 'strategy-reporting']) {
+      const heights = await page.locator(`#${group} [data-service-cards]`).evaluate((grid) => Array.from(grid.children, (card) => card.getBoundingClientRect().height));
+      expect(Math.max(...heights) - Math.min(...heights)).toBeLessThanOrEqual(1);
+    }
+    const buttons = await page.getByRole('link', {name:'View service', exact:true}).evaluateAll((links) => links.map((link) => {
+      const {width, height} = link.getBoundingClientRect();
+      return `${width.toFixed(1)}x${height.toFixed(1)}`;
+    }));
+    expect(new Set(buttons).size).toBe(1);
+  };
+  await assertCardsAreUniform();
+  await page.setViewportSize({width:390,height:844});
+  await assertCardsAreUniform();
   for (const [label,href] of [['GA4/GTM Setup','/services/ga4-gtm-setup/'],['Mobile Analytics','/services/mobile-analytics/'],['Mobile Measurement','/services/mobile-measurement/'],['Measurement Planning & Architecture Design','/services/measurement-planning/']]) {
     await expect(page.locator(`main a[href="${href}"]`).first()).toBeVisible();
     await expect(page.locator('main')).toContainText(label);
@@ -183,6 +205,7 @@ test('Mobile Analytics explorer updates its event model and vendor panel by keyb
 
 test('Mobile Measurement flow updates attribution states accessibly', async ({page}) => {
   await page.goto('/services/mobile-measurement/');
+  await expect(page.getByRole('heading',{level:1})).toHaveText('Mobile Measurement & MMP Implementation');
   for (const vendor of ['AppsFlyer','Adjust','Branch','Kochava']) await expect(page.locator(`main img[alt="${vendor} logo"]`)).toBeVisible();
   await page.getByRole('button',{name:'Android'}).focus(); await page.keyboard.press('Enter');
   await expect(page.locator('#mmp-platform-note')).toContainText('Android attribution signals');
@@ -194,6 +217,7 @@ test('Mobile Measurement flow updates attribution states accessibly', async ({pa
 
 test('Measurement Architecture builder changes scenarios and node inspector', async ({page}) => {
   await page.goto('/services/measurement-planning/');
+  await expect(page.getByRole('heading',{level:1})).toHaveText('Measurement Planning & Architecture Design');
   for (const scenario of ['Ecommerce','Lead Generation','Mobile App']) {
     const choice=page.getByRole('button',{name:scenario,exact:true}); await choice.click(); await expect(choice).toHaveAttribute('aria-pressed','true');
   }
