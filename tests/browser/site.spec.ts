@@ -251,12 +251,18 @@ test('Dashboard demo connects US, UK and DE reporting controls accessibly', asyn
   const hero = page.locator('[data-dashboard-hero-preview]');
   const dashboard = page.getByTestId('dashboard-demo');
   await expect(hero).toBeVisible();
+  await expect(hero.getByRole('button')).toHaveCount(0);
   await expect(dashboard).toBeVisible();
+  await expect(dashboard.locator('[data-dashboard-state]')).toHaveCount(0);
+  await expect(dashboard.locator('.dashboard-top .dashboard-filters fieldset')).toHaveCount(3);
   await expect(dashboard).toHaveAttribute('data-market', 'US');
   await expect(dashboard.locator('[data-kpi="revenue"]')).toHaveText('$184,240');
   await expect(dashboard.locator('[data-trend-chart]')).toHaveAttribute('aria-label', /Illustrative US.*USD/);
   const initialRevenue = await dashboard.locator('[data-kpi="revenue"]').textContent();
   const initialPath = await dashboard.locator('[data-trend-line]').getAttribute('d');
+  const googleBarValue = dashboard.locator('[data-channel-bar="Google Ads"] > div:first-child > span');
+  const initialBarValue = await googleBarValue.textContent();
+  const initialFunnel = await dashboard.locator('[data-funnel-stage="4"] b').textContent();
 
   await dashboard.getByRole('button', {name:'UK', exact:true}).click();
   await expect(dashboard).toHaveAttribute('data-market', 'UK');
@@ -264,6 +270,9 @@ test('Dashboard demo connects US, UK and DE reporting controls accessibly', asyn
   await expect(dashboard.locator('[data-kpi="revenue"]')).not.toHaveText(initialRevenue ?? '');
   await expect(dashboard.locator('[data-trend-line]')).not.toHaveAttribute('d', initialPath ?? '');
   await expect(dashboard.locator('[data-trend-chart]')).toHaveAttribute('aria-label', /GBP/);
+  await expect(dashboard.locator('[data-channel-bar="Google Ads"]')).toContainText(/£/);
+  await expect(googleBarValue).not.toHaveText(initialBarValue ?? '');
+  await expect(dashboard.locator('[data-funnel-stage="4"] b')).not.toHaveText(initialFunnel ?? '');
 
   await dashboard.getByRole('button', {name:'DE', exact:true}).click();
   await expect(dashboard.locator('[data-kpi="revenue"]')).toHaveText(/€/);
@@ -271,7 +280,7 @@ test('Dashboard demo connects US, UK and DE reporting controls accessibly', asyn
   await expect(dashboard.locator('[data-kpi="revenue"]')).toHaveText('$184,240');
 
   const beforePeriod = await dashboard.locator('[data-kpi="revenue"]').textContent();
-  await dashboard.getByRole('button', {name:'Last 7 Days'}).click();
+  await dashboard.getByRole('button', {name:'7 days'}).click();
   await expect(dashboard.locator('[data-kpi="revenue"]')).not.toHaveText(beforePeriod ?? '');
   const beforeChannel = await dashboard.locator('[data-kpi="revenue"]').textContent();
   await dashboard.getByRole('button', {name:'Google Ads', exact:true}).click();
@@ -279,14 +288,26 @@ test('Dashboard demo connects US, UK and DE reporting controls accessibly', asyn
   await expect(dashboard.locator('[data-kpi="revenue"]')).not.toHaveText(beforeChannel ?? '');
   await expect(dashboard.locator('[data-dashboard-table] tr')).toHaveCount(1);
   await expect(dashboard.locator('[data-funnel]')).toContainText('100% of sessions');
-  await dashboard.locator('[data-trend-index]').first().focus();
-  await expect(dashboard.locator('[data-chart-tooltip]')).toContainText(/\$/);
+  await expect(dashboard.locator('[data-channel-bar="Meta"]')).not.toHaveClass(/is-active/);
+  await dashboard.locator('[data-trend-index]').nth(3).hover();
+  await expect(dashboard.locator('[data-trend-tooltip]')).toBeVisible();
+  await expect(dashboard.locator('[data-trend-tooltip]')).toContainText(/\$[\d,]+/);
+  await dashboard.locator('[data-channel-bar="Google Ads"]').hover();
+  await expect(dashboard.locator('[data-channel-bar="Google Ads"] [data-channel-tooltip]')).toBeVisible();
+  await expect(dashboard.locator('[data-channel-bar="Google Ads"] [data-channel-tooltip]')).toContainText(/Revenue \$/);
+  await dashboard.locator('[data-funnel-stage="2"]').hover();
+  await expect(dashboard.locator('[data-funnel-stage="2"] [data-funnel-tooltip]')).toBeVisible();
+  await expect(dashboard.locator('[data-funnel-stage="2"] [data-funnel-tooltip]')).toContainText(/% of previous stage/);
+  await dashboard.locator('.dashboard-data-details summary').click();
+  await expect(dashboard.locator('[data-trend-summary] dd')).not.toHaveCount(0);
 
   for (const technology of ['Google Data Studio','BigQuery','Power BI','Snowflake','Amazon Marketing Cloud']) {
     await expect(page.getByTestId('reporting-platforms')).toContainText(technology);
     await expect(page.getByRole('img', {name:`${technology} logo`})).toBeVisible();
   }
-  await expect(page.locator('text=Illustrative dashboard data')).toBeVisible();
+  await expect(page.getByRole('img', {name:'Power BI logo'})).toHaveAttribute('src', '/images/tech/power-bi.svg');
+  await expect(page.getByRole('img', {name:'Snowflake logo'})).toHaveAttribute('src', '/images/tech/snowflake.svg');
+  await expect(hero).toContainText('Illustrative data');
   const answers = await page.locator('[data-dashboard-faq] details > p').allTextContents();
   expect(answers.every(answer => /^(Yes|No)\./.test(answer.trim()))).toBe(true);
   const audit = await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','best-practice']).analyze();

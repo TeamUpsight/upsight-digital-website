@@ -1,15 +1,16 @@
 <section class="dashboard-demo" data-dashboard-demo data-testid="dashboard-demo" aria-label="Interactive dashboard with illustrative data">
-  <div class="dashboard-top"><div><p class="service-kicker">INTERACTIVE DEMO · ILLUSTRATIVE DATA</p><h2 class="service-heading mt-3">Explore a connected reporting workspace</h2></div><p class="dashboard-state" data-dashboard-state aria-live="polite">US · Last 30 Days · All Channels</p></div>
-  <div class="dashboard-filters" aria-label="Dashboard filters">
-    <fieldset><legend>Period</legend><div class="dashboard-segmented"><button type="button" data-period="7" aria-pressed="false">Last 7 Days</button><button type="button" data-period="30" aria-pressed="true">Last 30 Days</button><button type="button" data-period="90" aria-pressed="false">Quarter</button></div></fieldset>
-    <fieldset><legend>Market</legend><div class="dashboard-segmented"><button type="button" data-market="US" aria-pressed="true">US</button><button type="button" data-market="UK" aria-pressed="false">UK</button><button type="button" data-market="DE" aria-pressed="false">DE</button></div></fieldset>
-    <fieldset><legend>Channel</legend><div class="dashboard-segmented"><button type="button" data-channel="All Channels" aria-pressed="true">All Channels</button><button type="button" data-channel="Google Ads" aria-pressed="false">Google Ads</button><button type="button" data-channel="Meta" aria-pressed="false">Meta</button><button type="button" data-channel="Organic" aria-pressed="false">Organic</button></div></fieldset>
+  <div class="dashboard-top"><div class="dashboard-top-copy"><p class="service-kicker">INTERACTIVE DEMO · ILLUSTRATIVE DATA</p><h2 class="service-heading mt-2">Explore a connected reporting workspace</h2></div>
+    <div class="dashboard-filters" role="group" aria-label="Dashboard filters">
+      <fieldset><legend>Period</legend><div class="dashboard-segmented"><button type="button" data-period="7" aria-pressed="false">7 days</button><button type="button" data-period="30" aria-pressed="true">30 days</button><button type="button" data-period="90" aria-pressed="false">Quarter</button></div></fieldset>
+      <fieldset><legend>Market</legend><div class="dashboard-segmented"><button type="button" data-market="US" aria-pressed="true">US</button><button type="button" data-market="UK" aria-pressed="false">UK</button><button type="button" data-market="DE" aria-pressed="false">DE</button></div></fieldset>
+      <fieldset><legend>Channel</legend><div class="dashboard-segmented"><button type="button" data-channel="All Channels" aria-pressed="true">All</button><button type="button" data-channel="Google Ads" aria-pressed="false">Google Ads</button><button type="button" data-channel="Meta" aria-pressed="false">Meta</button><button type="button" data-channel="Organic" aria-pressed="false">Organic</button></div></fieldset>
+    </div>
   </div>
   <div class="dashboard-kpis"><article><span>Revenue</span><strong data-kpi="revenue">$184,240</strong><small>Attributed reporting revenue</small></article><article><span>Orders</span><strong data-kpi="orders">612</strong><small>Illustrative completed orders</small></article><article><span>Conversion rate</span><strong data-kpi="conversion">2.8%</strong><small>Orders / sessions</small></article><article><span>Media spend</span><strong data-kpi="spend">$54,600</strong><small>Paid channels only</small></article><article><span>CPA</span><strong data-kpi="cpa">$89.22</strong><small>Spend / orders</small></article><article><span>ROAS</span><strong data-kpi="roas">3.37x</strong><small>Revenue / spend</small></article></div>
   <div class="dashboard-grid">
-    <article class="dashboard-chart dashboard-trend-card"><div class="dashboard-chart-title"><div><h3>Revenue trend</h3><p data-chart-label>Last 30 Days · US</p></div><output data-chart-tooltip aria-live="polite">Select a point for detail</output></div><svg viewBox="0 0 520 244" role="img" aria-label="Illustrative US revenue trend chart" class="dashboard-trend" data-trend-chart><path d="M44 28H500M44 91H500M44 154H500M44 217H500" class="dashboard-gridline"/><path data-trend-area class="dashboard-trend-area"/><path data-trend-line class="dashboard-trend-line"/><g data-trend-points></g><g data-trend-labels></g></svg><dl class="sr-only" data-trend-summary aria-label="Revenue trend values"></dl></article>
-    <article class="dashboard-chart dashboard-channel-card"><div class="dashboard-chart-title"><div><h3>Channel performance</h3><p>Revenue contribution</p></div><span class="dashboard-chart-key"><i></i> Active selection</span></div><div class="dashboard-channel-bars" data-channel-bars></div></article>
-    <article class="dashboard-chart dashboard-funnel-card"><div class="dashboard-chart-title"><div><h3>Conversion funnel</h3><p>Progression from sessions to completed orders</p></div></div><ol class="dashboard-funnel" data-funnel></ol></article>
+    <article class="dashboard-chart dashboard-trend-card"><div class="dashboard-chart-title"><div><h3>Revenue trend</h3><p data-chart-label>Last 30 Days · US · USD</p></div><span class="dashboard-chart-unit">Revenue</span></div><div class="dashboard-chart-plot" data-trend-plot><svg viewBox="0 0 520 244" role="img" aria-label="Illustrative US revenue trend chart" class="dashboard-trend" data-trend-chart><defs><linearGradient id="dashboardTrendFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#25c99e" stop-opacity=".22"/><stop offset="1" stop-color="#25c99e" stop-opacity="0"/></linearGradient></defs><path d="M44 28H500M44 91H500M44 154H500M44 217H500" class="dashboard-gridline"/><g data-trend-axis></g><path data-trend-area class="dashboard-trend-area"/><path data-trend-line class="dashboard-trend-line"/><line data-trend-guide class="dashboard-trend-guide" y1="28" y2="217"/><g data-trend-points></g><g data-trend-labels></g></svg><div class="dashboard-tooltip" data-trend-tooltip hidden><span data-tip-date></span><strong data-tip-value></strong></div></div><details class="dashboard-data-details"><summary>View trend values</summary><dl data-trend-summary aria-label="Revenue trend values"></dl></details></article>
+    <article class="dashboard-chart dashboard-channel-card"><div class="dashboard-chart-title"><div><h3>Channel performance</h3><p>Revenue contribution by source</p></div><span class="dashboard-chart-key"><i></i> Selected</span></div><div class="dashboard-channel-bars" data-channel-bars></div></article>
+    <article class="dashboard-chart dashboard-funnel-card"><div class="dashboard-chart-title"><div><h3>Conversion funnel</h3><p>Sessions to completed orders</p></div></div><div class="dashboard-funnel-visual"><svg viewBox="0 0 240 188" role="img" aria-label="Illustrative conversion funnel narrowing from sessions to orders" data-funnel-svg><g data-funnel-shapes></g></svg><ol class="dashboard-funnel" data-funnel></ol></div></article>
     <article class="dashboard-chart dashboard-table-wrap"><div class="dashboard-chart-title"><div><h3>Channel detail</h3><p>Spend, revenue and order context</p></div></div><table><thead><tr><th scope="col">Channel</th><th scope="col">Spend</th><th scope="col">Revenue</th><th scope="col">Orders</th><th scope="col">ROAS</th></tr></thead><tbody data-dashboard-table><tr><th scope="row">Google Ads</th><td>$31,500</td><td>$91,800</td><td>284</td><td>2.91x</td></tr><tr><th scope="row">Meta</th><td>$23,100</td><td>$65,400</td><td>221</td><td>2.83x</td></tr><tr><th scope="row">Organic</th><td>—</td><td>$27,040</td><td>107</td><td>—</td></tr></tbody></table></article>
   </div>
 </section>
@@ -46,26 +47,72 @@
     const money=(value:number,symbol:string)=>`${symbol}${format(value)}`;
     const activeRows=()=>{const dataset=dashboardData[state.market].periods[state.period];return (state.channel==='All Channels'?channels:[state.channel]).map(channel=>({channel,...dataset.channels[channel]}));};
     const renderTrend=(values:number[],dates:readonly string[],symbol:string)=>{
-      const chart=root.querySelector<SVGSVGElement>('[data-trend-chart]')!,maximum=Math.max(...values)*1.12,minimum=Math.min(...values)*.76;
-      const x=(index:number)=>44+index*(456/Math.max(values.length-1,1)); const y=(value:number)=>217-((value-minimum)/(maximum-minimum||1))*174;
-      const points=values.map((value,index)=>[x(index),y(value)] as const); const path=points.map(([xPos,yPos],index)=>`${index?'L':'M'}${xPos.toFixed(1)} ${yPos.toFixed(1)}`).join(' ');
-      root.querySelector('[data-trend-line]')!.setAttribute('d',path); root.querySelector('[data-trend-area]')!.setAttribute('d',`${path} L${points.at(-1)![0].toFixed(1)} 217 L44 217 Z`);
+      const chart=root.querySelector<SVGSVGElement>('[data-trend-chart]')!;
+      const maximum=Math.max(...values)*1.12,minimum=Math.min(...values)*.76;
+      const x=(index:number)=>44+index*(456/Math.max(values.length-1,1));
+      const y=(value:number)=>217-((value-minimum)/(maximum-minimum||1))*174;
+      const points=values.map((value,index)=>[x(index),y(value)] as const);
+      const path=points.map(([xPos,yPos],index)=>`${index?'L':'M'}${xPos.toFixed(1)} ${yPos.toFixed(1)}`).join(' ');
+      root.querySelector('[data-trend-line]')!.setAttribute('d',path);
+      root.querySelector('[data-trend-area]')!.setAttribute('d',`${path} L${points.at(-1)![0].toFixed(1)} 217 L44 217 Z`);
       chart.setAttribute('aria-label',`Illustrative ${state.market} ${periodData[state.period].label.toLowerCase()} revenue trend in ${dashboardData[state.market].currency}`);
-      root.querySelector('[data-trend-points]')!.innerHTML=points.map(([xPos,yPos],index)=>`<circle class="dashboard-trend-point" data-trend-index="${index}" tabindex="0" role="img" aria-label="${dates[index]}: ${money(values[index],symbol)}" cx="${xPos}" cy="${yPos}" r="5"/>`).join('');
+      root.querySelector('[data-trend-axis]')!.innerHTML=[0,1,2,3].map(index=>`<text x="37" y="${217-index*63+3}" text-anchor="end">${symbol}${format(minimum+(maximum-minimum)*index/3)}</text>`).join('');
+      root.querySelector('[data-trend-points]')!.innerHTML=points.map(([xPos,yPos],index)=>`<circle class="dashboard-trend-point" data-trend-index="${index}" cx="${xPos}" cy="${yPos}" r="5"/>`).join('');
       root.querySelector('[data-trend-labels]')!.innerHTML=dates.map((date,index)=>`<text x="${x(index)}" y="238" text-anchor="middle">${date}</text>`).join('');
       root.querySelector('[data-trend-summary]')!.innerHTML=values.map((value,index)=>`<div><dt>${dates[index]}</dt><dd>${money(value,symbol)}</dd></div>`).join('');
-      const show=(index:number)=>root.querySelector('[data-chart-tooltip]')!.textContent=`${dates[index]} · ${money(values[index],symbol)}`;
-      root.querySelectorAll<SVGCircleElement>('[data-trend-index]').forEach(point=>['mouseenter','focus'].forEach(event=>point.addEventListener(event,()=>show(Number(point.dataset.trendIndex)))));
+      const tooltip=root.querySelector<HTMLElement>('[data-trend-tooltip]')!;
+      const guide=root.querySelector<SVGLineElement>('[data-trend-guide]')!;
+      const show=(index:number)=>{
+        tooltip.querySelector('[data-tip-date]')!.textContent=dates[index];
+        tooltip.querySelector('[data-tip-value]')!.textContent=money(values[index],symbol);
+        tooltip.style.left=`clamp(5.7rem, ${points[index][0]/520*100}%, calc(100% - 5.7rem))`;
+        tooltip.style.top=`clamp(5.3rem, ${points[index][1]/244*100}%, 100%)`;
+        tooltip.hidden=false;
+        guide.setAttribute('x1',String(points[index][0])); guide.setAttribute('x2',String(points[index][0])); guide.classList.add('is-visible');
+        root.querySelectorAll('[data-trend-index]').forEach(point=>point.classList.toggle('is-active',point.getAttribute('data-trend-index')===String(index)));
+      };
+      const hide=()=>{tooltip.hidden=true;guide.classList.remove('is-visible');root.querySelectorAll('[data-trend-index]').forEach(point=>point.classList.remove('is-active'));};
+      root.querySelectorAll<SVGCircleElement>('[data-trend-index]').forEach(point=>point.addEventListener('mouseenter',()=>show(Number(point.dataset.trendIndex))));
+      root.querySelector<HTMLElement>('[data-trend-plot]')!.onmouseleave=hide;
+      hide();
     };
     const render=()=>{
       const data=dashboardData[state.market],active=activeRows(),revenue=active.reduce((sum,row)=>sum+row.revenue,0),orders=active.reduce((sum,row)=>sum+row.orders,0),spend=active.reduce((sum,row)=>sum+row.spend,0),sessions=active.reduce((sum,row)=>sum+row.sessions,0);
       const kpis={revenue:money(revenue,data.symbol),orders:format(orders),conversion:`${(orders/sessions*100).toFixed(1)}%`,spend:spend?money(spend,data.symbol):'—',cpa:spend?money(spend/orders,data.symbol):'—',roas:spend?`${(revenue/spend).toFixed(2)}x`:'—'};
       Object.entries(kpis).forEach(([key,value])=>root.querySelector<HTMLElement>(`[data-kpi="${key}"]`)!.textContent=value);
-      root.querySelector('[data-dashboard-state]')!.textContent=`${state.market} · ${periodData[state.period].label} · ${state.channel}`; root.querySelector('[data-chart-label]')!.textContent=`${periodData[state.period].label} · ${state.market} · ${data.currency}`;
+      root.querySelector('[data-chart-label]')!.textContent=`${periodData[state.period].label} · ${state.market} · ${data.currency}`;
       const trend=data.periods[state.period].dates.map((_,index)=>active.reduce((sum,row)=>sum+row.trend[index],0)); renderTrend(trend,data.periods[state.period].dates,data.symbol);
-      root.querySelector('[data-channel-bars]')!.innerHTML=channels.map(channel=>{const row=data.periods[state.period].channels[channel],isActive=state.channel==='All Channels'||state.channel===channel,max=Math.max(...channels.map(item=>data.periods[state.period].channels[item].revenue));return `<div class="dashboard-channel-bar ${isActive?'is-active':''}"><div><strong>${channel}</strong><span>${money(row.revenue,data.symbol)}</span></div><i><b style="width:${Math.max(12,row.revenue/max*100)}%"></b></i><small>${row.spend?`${(row.revenue/row.spend).toFixed(2)}x ROAS`:'Organic reporting revenue'}</small></div>`}).join('');
+      root.querySelector('[data-channel-bars]')!.innerHTML=channels.map(channel=>{
+        const row=data.periods[state.period].channels[channel];
+        const isActive=state.channel==='All Channels'||state.channel===channel;
+        const max=Math.max(...channels.map(item=>data.periods[state.period].channels[item].revenue));
+        const roas=row.spend?`${(row.revenue/row.spend).toFixed(2)}x`:'—';
+        return `<div class="dashboard-channel-bar ${isActive?'is-active':''}" data-channel-bar="${channel}" tabindex="0"><div><strong>${channel}</strong><span>${money(row.revenue,data.symbol)}</span></div><i><b style="width:${row.revenue/max*100}%"></b></i><div class="dashboard-tooltip" data-channel-tooltip hidden><span>${channel}</span><strong>Revenue ${money(row.revenue,data.symbol)}</strong><small>ROAS ${roas} · Spend ${row.spend?money(row.spend,data.symbol):'—'}</small></div></div>`;
+      }).join('');
+      root.querySelectorAll<HTMLElement>('[data-channel-bar]').forEach(bar=>{
+        const tip=bar.querySelector<HTMLElement>('[data-channel-tooltip]')!;
+        bar.addEventListener('mouseenter',()=>tip.hidden=false);bar.addEventListener('mouseleave',()=>tip.hidden=true);
+        bar.addEventListener('focus',()=>tip.hidden=false);bar.addEventListener('blur',()=>tip.hidden=true);
+      });
       const stages:[string,number][]=[['Sessions',sessions],['Product Views',Math.round(sessions*.449)],['Add to Cart',Math.round(sessions*.102)],['Checkout',Math.round(sessions*.0444)],['Orders',orders]];
-      root.querySelector('[data-funnel]')!.innerHTML=stages.map(([label,count],index)=>{const previous=index?stages[index-1][1]:count,ratio=index?count/previous*100:100,width=Math.max(24,count/sessions*100);return `<li style="--funnel-width:${width}%"><span>${label}</span><b>${format(count)}</b><small>${index?`${ratio.toFixed(1)}% of previous stage`:'100% of sessions'}</small></li>`}).join('');
+      root.querySelector('[data-funnel-shapes]')!.innerHTML=stages.map(([,count],index)=>{
+        const next=stages[index+1]?.[1]??count*.87;
+        const top=110*Math.sqrt(count/sessions),bottom=110*Math.sqrt(next/sessions),y=4+index*36;
+        return `<polygon data-funnel-shape="${index}" points="${120-top},${y} ${120+top},${y} ${120+bottom},${y+34} ${120-bottom},${y+34}"/>`;
+      }).join('');
+      root.querySelector('[data-funnel]')!.innerHTML=stages.map(([label,count],index)=>{
+        const previous=index?stages[index-1][1]:count,ratio=index?count/previous*100:100;
+        return `<li data-funnel-stage="${index}" tabindex="0"><div><span>${label}</span><b>${format(count)}</b></div><small>${index?`${ratio.toFixed(1)}% of previous stage`:'100% of sessions'}</small><div class="dashboard-tooltip" data-funnel-tooltip hidden><span>${label}</span><strong>${format(count)}</strong><small>${index?`${ratio.toFixed(1)}% of previous stage`:'100% of sessions'}</small></div></li>`;
+      }).join('');
+      stages.forEach((_,index)=>{
+        const stage=root.querySelector<HTMLElement>(`[data-funnel-stage="${index}"]`)!;
+        const shape=root.querySelector<SVGPolygonElement>(`[data-funnel-shape="${index}"]`)!;
+        const tip=stage.querySelector<HTMLElement>('[data-funnel-tooltip]')!;
+        const show=()=>{tip.hidden=false;shape.classList.add('is-active');stage.classList.add('is-active');};
+        const hide=()=>{tip.hidden=true;shape.classList.remove('is-active');stage.classList.remove('is-active');};
+        for(const target of [stage,shape]){target.addEventListener('mouseenter',show);target.addEventListener('mouseleave',hide);}
+        stage.addEventListener('focus',show);stage.addEventListener('blur',hide);
+      });
       root.querySelector('[data-dashboard-table]')!.innerHTML=active.map(row=>`<tr><th scope="row">${row.channel}</th><td>${row.spend?money(row.spend,data.symbol):'—'}</td><td>${money(row.revenue,data.symbol)}</td><td>${format(row.orders)}</td><td>${row.spend?`${(row.revenue/row.spend).toFixed(2)}x`:'—'}</td></tr>`).join('');
       root.querySelectorAll<HTMLButtonElement>('[data-period],[data-market],[data-channel]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.period===state.period||button.dataset.market===state.market||button.dataset.channel===state.channel))); root.dataset.market=state.market; root.dataset.period=state.period; root.dataset.channel=state.channel;
     };
