@@ -75,13 +75,21 @@ test('keyboard navigation, dropdowns, skip link and mobile menu', async ({page})
   await expect(servicesMenu).not.toHaveAttribute('open');
   await services.click();
   await expect(servicesMenu).toHaveAttribute('open', '');
-  for (const row of [
+  const serviceRows = [
     ['/services/ga4-gtm-setup/', '/services/meta-conversions-api/', '/services/measurement-planning/'],
     ['/services/mobile-analytics/', '/services/mobile-measurement/', '/services/tracking-audit/'],
     ['/services/server-side-tracking/', '/services/cookie-consent/', '/services/analytics-dashboards/'],
-  ]) {
-    const topPositions = await Promise.all(row.map((href) => servicesMenu.locator(`a[href="${href}"]`).evaluate((link) => link.getBoundingClientRect().top)));
-    expect(Math.max(...topPositions) - Math.min(...topPositions), JSON.stringify({row, topPositions})).toBeLessThanOrEqual(1);
+  ];
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+  });
+  const rowPositions = await servicesMenu.evaluate((menu, rows) => rows.map((row) => row.map((href) => {
+    const link = menu.querySelector<HTMLAnchorElement>(`a[href="${href}"]`);
+    return link?.getBoundingClientRect().top ?? Number.NaN;
+  })), serviceRows);
+  for (const [index, topPositions] of rowPositions.entries()) {
+    expect(Math.max(...topPositions) - Math.min(...topPositions), JSON.stringify({row:serviceRows[index], topPositions})).toBeLessThanOrEqual(1);
   }
   await services.click();
   await expect(servicesMenu).not.toHaveAttribute('open');
