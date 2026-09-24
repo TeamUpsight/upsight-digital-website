@@ -7,7 +7,7 @@ Upsight Digital serves brands and marketing agencies globally. The site contains
 ## Core pages
 
 - [Homepage](https://upsight.digital/): Overview of Upsight Digital, its analytics capabilities, trust signals, and client outcomes.
-- [Analytics & Tracking Services](https://upsight.digital/services): Server-side tracking, GA4/GTM, Meta CAPI, ecommerce tracking, audits, dashboards, and measurement planning.
+- [Analytics, Tracking & Measurement Services](https://upsight.digital/services): Web and mobile analytics, server-side measurement, mobile attribution, consent management, tracking audits, measurement architecture and reporting.
 - [Cookie Consent & CMP Setup](https://upsight.digital/services/cookie-consent): Consent management, Google Consent Mode v2, CMP selection, and privacy-focused tracking implementation.
 - [Who We Serve](https://upsight.digital/who-its-for): Analytics support for marketing agencies, ecommerce companies, and website owners.
 - [Implementation Process](https://upsight.digital/process): Upsight Digital's audit, planning, implementation, validation, and optimization process.

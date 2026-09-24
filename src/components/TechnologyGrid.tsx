@@ -5,7 +5,7 @@ export default function TechnologyGrid({ keys, className = 'grid grid-cols-2 md:
   return <div className={className}>{selectTechnologies(keys).map((technology) => (
     <Card key={technology.key} className="hover:border-primary/50 transition-colors">
       <CardContent className="p-4 flex flex-col items-center justify-center gap-3 min-h-[100px]">
-        <img src={technology.logo} alt="" aria-hidden="true" className="h-9 w-9 object-contain" width="36" height="36" loading="lazy" decoding="async" />
+        <img src={technology.logo} alt="" aria-hidden="true" className={`h-10 w-[140px] object-contain ${technology.key === 'posthog' ? 'rounded bg-white p-1' : ''}`} width="140" height="40" loading="lazy" decoding="async" />
         <span className="text-sm font-medium text-center">{technology.name}</span>
       </CardContent>
     </Card>

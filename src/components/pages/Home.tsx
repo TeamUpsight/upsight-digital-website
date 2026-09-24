@@ -12,7 +12,6 @@ import {
   Lock,
   RefreshCw,
   Server,
-  ShoppingCart,
   Target,
   TrendingUp,
   Users,
@@ -73,11 +72,11 @@ export default function Home({ children }: { children?: ReactNode }) {
       link: "/services/analytics-dashboards/",
     },
     {
-      icon: ShoppingCart,
-      title: "Ecommerce Tracking",
+      icon: BarChart3,
+      title: "GA4/GTM Setup",
       description:
-        "Track the full customer journey from product view to purchase. Enhanced ecommerce for Shopify, WooCommerce, and custom platforms.",
-      link: "/services/ecommerce-tracking/",
+        "Plan and implement website events, ecommerce measurement, conversions, and data-layer requirements in GA4 and GTM.",
+      link: "/services/ga4-gtm-setup/",
     },
   ];
 
